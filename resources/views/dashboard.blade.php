@@ -11,23 +11,6 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     {{ __("You're logged in!") }} <br>
                     <!-- table content -->
-                     <table>
-                        <thead>
-                            <tr>
-                                <th>Nama Ikan</th>
-                                <th>Harga Ikan</th>
-                                <th>Stok Ikan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach(App\Models\IkanModel::all() as $ikan)
-                            <tr>
-                                <td>{{ $ikan->nama_ikan }}</td>
-                                <td>{{ $ikan->harga_ikan }}</td>
-                                <td>{{ $ikan->stok_ikan }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
                 </div>
             </div>
         </div>
