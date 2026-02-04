@@ -10,7 +10,7 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700&display=swap" rel="stylesheet" />
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite('resources/css/app.css')
     
     <script>
         tailwind.config = {
