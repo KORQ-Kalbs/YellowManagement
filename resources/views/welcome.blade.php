@@ -12,6 +12,7 @@
     <!-- Tailwind CSS -->
     @vite('resources/css/app.css')
     
+    
     <script>
         tailwind.config = {
             theme: {
