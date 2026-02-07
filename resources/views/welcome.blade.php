@@ -10,8 +10,8 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700&display=swap" rel="stylesheet" />
     
     <!-- Tailwind CSS -->
-    @vite('resources/css/app.css')
-    
+    @vite('resources/css/app.css')  
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
     
     <script>
         tailwind.config = {
