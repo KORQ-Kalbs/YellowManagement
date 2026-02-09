@@ -8,21 +8,17 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
-     * Fix: Remove redundant product_id and jumlah columns from transaksis table
-     * Karena sudah ada di detail_transaksis
      */
     public function up(): void
     {
-        Schema::table('transaksis', function (Blueprint $table) {
-            // Drop foreign key constraint first
-            $table->dropForeign(['product_id']);
-            
-            // Drop redundant columns
-            $table->dropColumn(['product_id', 'jumlah']);
-            
-            // Add invoice number for better tracking
-            $table->string('no_invoice')->unique()->after('id');
+        Schema::create('transaksis', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('no_invoice')->unique();
+            $table->dateTime('tanggal_transaksi')->useCurrent();
+            $table->decimal('total_harga', 15, 2);
+            $table->enum('status', ['completed', 'pending', 'cancelled'])->default('pending');
+            $table->timestamps();
         });
     }
 
@@ -31,15 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('transaksis', function (Blueprint $table) {
-            $table->dropColumn('no_invoice');
-            
-            $table->foreignId('product_id')
-                ->after('user_id')
-                ->constrained('products')
-                ->cascadeOnDelete();
-            
-            $table->integer('jumlah')->after('product_id');
-        });
+        Schema::dropIfExists('transaksis');
     }
 };
