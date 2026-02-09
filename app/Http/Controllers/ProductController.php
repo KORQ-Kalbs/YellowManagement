@@ -21,7 +21,7 @@ class ProductController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('products.index', compact('products'));
+        return view('admin.products.index', compact('products'));
     }
 
     /**

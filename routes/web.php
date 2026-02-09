@@ -45,6 +45,21 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Kategori Management
     Route::resource('kategoris', KategoriController::class);
     
+    // Units Management
+    Route::get('/units', function () {
+        return view('admin.units.index');
+    })->name('units.index');
+    
+    // Transactions Management
+    Route::get('/transactions', function () {
+        return view('admin.transactions.index');
+    })->name('transactions.index');
+    
+    // Settings
+    Route::get('/settings', function () {
+        return view('admin.settings.index');
+    })->name('settings.index');
+    
     // View All Transactions (Admin can see all)
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');

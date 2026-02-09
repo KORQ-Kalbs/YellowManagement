@@ -1,256 +1,139 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold">Point of Sale (POS)</h2>
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+                    Dashboard Kasir
+                </h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    Selamat datang kembali, {{ auth()->user()->name }}
+                </p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm text-gray-600 dark:text-gray-400">{{ now()->format('d F Y') }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-500">{{ now()->format('H:i') }}</p>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-6">
-        <div class="mx-auto max-w-7xl">
-            
-            @if(session('success'))
-                <div class="p-4 mb-4 text-green-800 bg-green-100 rounded">
-                    {{ session('success') }}
-                </div>
-            @endif
+    <div class="space-y-8">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Total Transactions Today -->
+            <x-stat-card
+                label="Transaksi Hari Ini"
+                :value="$transaksi_hari_ini ?? 0"
+                color="blue"
+            >
+                <x-slot name="icon">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
+                    </svg>
+                </x-slot>
+            </x-stat-card>
 
-            @if(session('error'))
-                <div class="p-4 mb-4 text-red-800 bg-red-100 rounded">
-                    {{ session('error') }}
-                </div>
-            @endif
+            <!-- Revenue Today -->
+            <x-stat-card
+                label="Pendapatan Hari Ini"
+                :value="'Rp ' . number_format($pendapatan_hari_ini ?? 0, 0, ',', '.')"
+                color="green"
+            >
+                <x-slot name="icon">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                </x-slot>
+            </x-stat-card>
 
-            <form action="{{ route('kasir.transaksi.store') }}" method="POST" id="posForm">
-                @csrf
-                
-                <div class="grid grid-cols-3 gap-4">
-                    
-                    <!-- LEFT: Product Selection -->
-                    <div class="col-span-2 p-4 bg-white rounded shadow">
-                        <h3 class="mb-4 text-lg font-bold">Pilih Produk</h3>
-                        
-                        <!-- Search & Filter -->
-                        <div class="mb-4">
-                            <input type="text" id="searchProduct" placeholder="Cari produk..." class="w-full p-2 border rounded">
-                        </div>
-
-                        <!-- Category Filter -->
-                        <div class="flex gap-2 mb-4">
-                            <button type="button" onclick="filterCategory('all')" class="px-3 py-1 text-sm bg-gray-200 rounded">Semua</button>
-                            @foreach($kategoris as $kat)
-                                <button type="button" onclick="filterCategory({{ $kat->id }})" class="px-3 py-1 text-sm bg-gray-200 rounded">
-                                    {{ $kat->nama_kategori }}
-                                </button>
-                            @endforeach
-                        </div>
-
-                        <!-- Products Grid -->
-                        <div class="grid grid-cols-3 gap-3" id="productGrid">
-                            @foreach($products as $product)
-                                <div class="p-3 border rounded cursor-pointer product-item hover:bg-gray-50" 
-                                     data-id="{{ $product->id }}"
-                                     data-name="{{ $product->nama_produk }}"
-                                     data-price="{{ $product->harga }}"
-                                     data-stock="{{ $product->stok }}"
-                                     data-category="{{ $product->kategori_id }}"
-                                     onclick="addToCart(this)">
-                                    <div class="font-semibold">{{ $product->nama_produk }}</div>
-                                    <div class="text-sm text-gray-600">{{ $product->kategori->nama_kategori }}</div>
-                                    <div class="text-sm font-bold text-green-600">Rp {{ number_format($product->harga, 0, ',', '.') }}</div>
-                                    <div class="text-xs text-gray-500">Stok: {{ $product->stok }}</div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- RIGHT: Cart & Checkout -->
-                    <div class="p-4 bg-white rounded shadow">
-                        <h3 class="mb-4 text-lg font-bold">Keranjang</h3>
-
-                        <div id="cartItems" class="mb-4 space-y-2">
-                            <p class="text-sm text-gray-500">Belum ada item</p>
-                        </div>
-
-                        <div class="pt-4 border-t">
-                            <div class="flex justify-between mb-2">
-                                <span class="font-bold">Total:</span>
-                                <span class="font-bold" id="totalAmount">Rp 0</span>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block mb-1 text-sm">Metode Pembayaran</label>
-                                <select name="metode_pembayaran" required class="w-full p-2 border rounded">
-                                    <option value="cash">Cash</option>
-                                    <option value="qris">QRIS</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block mb-1 text-sm">Jumlah Bayar</label>
-                                <input type="number" name="jumlah_bayar" id="jumlahBayar" required class="w-full p-2 border rounded" min="0" step="1000">
-                            </div>
-
-                            <div class="mb-4">
-                                <div class="flex justify-between text-sm">
-                                    <span>Kembalian:</span>
-                                    <span id="kembalian">Rp 0</span>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="w-full p-3 font-bold text-white bg-green-600 rounded hover:bg-green-700">
-                                Proses Transaksi
-                            </button>
-
-                            <button type="button" onclick="clearCart()" class="w-full p-2 mt-2 text-sm border rounded hover:bg-gray-50">
-                                Kosongkan Keranjang
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hidden cart data -->
-                <div id="cartData"></div>
-            </form>
+            <!-- Average Transaction -->
+            <x-stat-card
+                label="Rata-rata Transaksi"
+                :value="$transaksi_hari_ini > 0 ? 'Rp ' . number_format($pendapatan_hari_ini / $transaksi_hari_ini, 0, ',', '.') : 'Rp 0'"
+                color="yellow"
+            >
+                <x-slot name="icon">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h.01a1 1 0 110 2H12zm-2.763 5a2 2 0 00-.894 3.756 3.972 3.972 0 01.891-1.631A.5.5 0 1010.5 13h-.5zm1.753-2.908a4 4 0 00-7.671 0H3a2 2 0 100 4h.276a2 2 0 100-4h.724zM10 9a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                </x-slot>
+            </x-stat-card>
         </div>
+
+        <!-- Quick Actions -->
+        <div class="flex flex-wrap gap-4">
+            <a href="{{ route('kasir.pos') }}" wire:navigate class="inline-flex items-center px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Buat Transaksi Baru
+            </a>
+
+            <a href="{{ route('kasir.transaksi.index') }}" wire:navigate class="inline-flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-800 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Lihat Riwayat
+            </a>
+        </div>
+
+        <!-- Recent Transactions -->
+        @if(isset($transaksi_terbaru) && count($transaksi_terbaru) > 0)
+            <x-card title="Transaksi Terbaru" noPadding="true">
+                <x-table>
+                    <x-table-head>
+                        <x-table-heading>No. Invoice</x-table-heading>
+                        <x-table-heading>Tanggal</x-table-heading>
+                        <x-table-heading>Jumlah Item</x-table-heading>
+                        <x-table-heading>Total Harga</x-table-heading>
+                        <x-table-heading>Status</x-table-heading>
+                        <x-table-heading>Aksi</x-table-heading>
+                    </x-table-head>
+                    <x-table-body>
+                        @foreach($transaksi_terbaru as $transaksi)
+                            <x-table-row>
+                                <x-table-cell>
+                                    <span class="font-medium text-gray-900 dark:text-white">{{ $transaksi->no_invoice }}</span>
+                                </x-table-cell>
+                                <x-table-cell>
+                                    {{ $transaksi->tanggal_transaksi->format('d/m/Y H:i') }}
+                                </x-table-cell>
+                                <x-table-cell>
+                                    {{ $transaksi->details->count() }} item
+                                </x-table-cell>
+                                <x-table-cell>
+                                    <span class="font-semibold text-gray-900 dark:text-white">
+                                        Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}
+                                    </span>
+                                </x-table-cell>
+                                <x-table-cell>
+                                    @if($transaksi->status === 'completed')
+                                        <x-badge type="completed">Selesai</x-badge>
+                                    @elseif($transaksi->status === 'pending')
+                                        <x-badge type="pending">Menunggu</x-badge>
+                                    @else
+                                        <x-badge type="cancelled">Dibatalkan</x-badge>
+                                    @endif
+                                </x-table-cell>
+                                <x-table-cell>
+                                    <a href="{{ route('kasir.transaksi.show', $transaksi->id) }}" wire:navigate class="text-yellow-600 hover:text-yellow-700 dark:text-yellow-400 dark:hover:text-yellow-300 font-medium text-sm">
+                                        Lihat
+                                    </a>
+                                </x-table-cell>
+                            </x-table-row>
+                        @endforeach
+                    </x-table-body>
+                </x-table>
+            </x-card>
+        @else
+            <x-card>
+                <div class="text-center py-12">
+                    <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                    </svg>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg">Belum ada transaksi hari ini</p>
+                    <p class="text-gray-500 dark:text-gray-500 text-sm mt-1">Mulai buat transaksi baru untuk melihat di sini</p>
+                </div>
+            </x-card>
+        @endif
     </div>
-
-    <script>
-        let cart = [];
-
-        function addToCart(element) {
-            const productId = element.dataset.id;
-            const productName = element.dataset.name;
-            const productPrice = parseFloat(element.dataset.price);
-            const productStock = parseInt(element.dataset.stock);
-
-            const existingItem = cart.find(item => item.id === productId);
-
-            if (existingItem) {
-                if (existingItem.qty >= productStock) {
-                    alert('Stok tidak mencukupi');
-                    return;
-                }
-                existingItem.qty++;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: productName,
-                    price: productPrice,
-                    qty: 1,
-                    stock: productStock
-                });
-            }
-
-            renderCart();
-        }
-
-        function removeItem(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            renderCart();
-        }
-
-        function updateQty(productId, change) {
-            const item = cart.find(item => item.id === productId);
-            if (item) {
-                item.qty += change;
-                if (item.qty <= 0) {
-                    removeItem(productId);
-                } else if (item.qty > item.stock) {
-                    alert('Stok tidak mencukupi');
-                    item.qty = item.stock;
-                }
-                renderCart();
-            }
-        }
-
-        function renderCart() {
-            const cartItemsDiv = document.getElementById('cartItems');
-            const cartDataDiv = document.getElementById('cartData');
-            
-            if (cart.length === 0) {
-                cartItemsDiv.innerHTML = '<p class="text-sm text-gray-500">Belum ada item</p>';
-                cartDataDiv.innerHTML = '';
-                document.getElementById('totalAmount').textContent = 'Rp 0';
-                return;
-            }
-
-            let html = '';
-            let total = 0;
-            let hiddenInputs = '';
-
-            cart.forEach((item, index) => {
-                const subtotal = item.price * item.qty;
-                total += subtotal;
-
-                html += `
-                    <div class="p-2 border rounded">
-                        <div class="flex justify-between">
-                            <div class="text-sm font-semibold">${item.name}</div>
-                            <button type="button" onclick="removeItem('${item.id}')" class="text-red-600">×</button>
-                        </div>
-                        <div class="flex items-center justify-between mt-1">
-                            <div class="flex items-center gap-2">
-                                <button type="button" onclick="updateQty('${item.id}', -1)" class="px-2 border rounded">-</button>
-                                <span class="text-sm">${item.qty}</span>
-                                <button type="button" onclick="updateQty('${item.id}', 1)" class="px-2 border rounded">+</button>
-                            </div>
-                            <div class="text-sm">Rp ${subtotal.toLocaleString('id-ID')}</div>
-                        </div>
-                    </div>
-                `;
-
-                hiddenInputs += `
-                    <input type="hidden" name="items[${index}][product_id]" value="${item.id}">
-                    <input type="hidden" name="items[${index}][jumlah]" value="${item.qty}">
-                `;
-            });
-
-            cartItemsDiv.innerHTML = html;
-            cartDataDiv.innerHTML = hiddenInputs;
-            document.getElementById('totalAmount').textContent = 'Rp ' + total.toLocaleString('id-ID');
-
-            // Update kembalian calculation
-            const jumlahBayar = parseFloat(document.getElementById('jumlahBayar').value) || 0;
-            const kembalian = jumlahBayar - total;
-            document.getElementById('kembalian').textContent = 'Rp ' + (kembalian > 0 ? kembalian : 0).toLocaleString('id-ID');
-        }
-
-        function clearCart() {
-            if (confirm('Kosongkan keranjang?')) {
-                cart = [];
-                renderCart();
-            }
-        }
-
-        function filterCategory(categoryId) {
-            const items = document.querySelectorAll('.product-item');
-            items.forEach(item => {
-                if (categoryId === 'all' || item.dataset.category == categoryId) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
-
-        // Search product
-        document.getElementById('searchProduct').addEventListener('input', function(e) {
-            const search = e.target.value.toLowerCase();
-            const items = document.querySelectorAll('.product-item');
-            items.forEach(item => {
-                const name = item.dataset.name.toLowerCase();
-                if (name.includes(search)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        });
-
-        // Update kembalian on jumlah bayar change
-        document.getElementById('jumlahBayar').addEventListener('input', function() {
-            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const jumlahBayar = parseFloat(this.value) || 0;
-            const kembalian = jumlahBayar - total;
-            document.getElementById('kembalian').textContent = 'Rp ' + (kembalian > 0 ? kembalian : 0).toLocaleString('id-ID');
-        });
-    </script>
 </x-app-layout>
