@@ -11,7 +11,7 @@
     
     <!-- Tailwind CSS -->
     @vite('resources/css/app.css')  
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -28,7 +28,7 @@
                 }
             }
         }
-    </link>
+    </script>
     
     <style>
         /* Custom scrollbar */

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTransaksiRequest;
 use App\Models\Transaksi;
+use App\Models\DetailTransaksi;
+use App\Models\Pembayaran;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -16,15 +19,15 @@ class TransaksiController extends Controller
      */
     public function index(): View
     {
-        $transaksis = Transaksi::with('product', 'user')
-            ->latest()
+        $transaksis = Transaksi::with(['details.product', 'user', 'pembayaran'])
+            ->latest('tanggal_transaksi')
             ->paginate(15);
 
         return view('kasir-view.transaction.index', compact('transaksis'));
     }
 
     /**
-     * Simpan transaksi baru ke database.
+     * Simpan transaksi baru ke database (MULTI-ITEM).
      */
     public function store(StoreTransaksiRequest $request): RedirectResponse
     {
@@ -32,21 +35,81 @@ class TransaksiController extends Controller
 
         try {
             $validated = $request->validated();
-            $validated['user_id'] = auth()->id();
-            $validated['status'] = 'diproses';
-            $validated['tanggal_transaksi'] = now();
+            
+            // Calculate total harga dari semua items
+            $totalHarga = 0;
+            $itemsData = [];
+            
+            foreach ($validated['items'] as $item) {
+                $product = Product::findOrFail($item['product_id']);
+                
+                // Check stock availability
+                if ($product->stok < $item['jumlah']) {
+                    DB::rollback();
+                    return back()
+                        ->with('error', "Stok {$product->nama_produk} tidak mencukupi. Tersedia: {$product->stok}")
+                        ->withInput();
+                }
+                
+                $subtotal = $product->harga * $item['jumlah'];
+                $totalHarga += $subtotal;
+                
+                $itemsData[] = [
+                    'product' => $product,
+                    'jumlah' => $item['jumlah'],
+                    'subtotal' => $subtotal
+                ];
+            }
 
-            Transaksi::create($validated);
+            // Validasi jumlah bayar
+            if ($validated['jumlah_bayar'] < $totalHarga) {
+                DB::rollback();
+                return back()
+                    ->with('error', 'Jumlah bayar kurang dari total harga')
+                    ->withInput();
+            }
+
+            // Create Transaksi
+            $transaksi = Transaksi::create([
+                'user_id' => auth()->id(),
+                'total_harga' => $totalHarga,
+                'status' => 'selesai', // Langsung selesai karena sudah dibayar
+                'tanggal_transaksi' => now(),
+            ]);
+
+            // Create DetailTransaksi & Update Stock
+            foreach ($itemsData as $itemData) {
+                DetailTransaksi::create([
+                    'transaksi_id' => $transaksi->id,
+                    'product_id' => $itemData['product']->id,
+                    'jumlah' => $itemData['jumlah'],
+                    'subtotal' => $itemData['subtotal'],
+                ]);
+
+                // Kurangi stok
+                $itemData['product']->decrement('stok', $itemData['jumlah']);
+            }
+
+            // Create Pembayaran
+            $kembalian = $validated['jumlah_bayar'] - $totalHarga;
+            
+            Pembayaran::create([
+                'transaksi_id' => $transaksi->id,
+                'metode_pembayaran' => $validated['metode_pembayaran'],
+                'jumlah_bayar' => $validated['jumlah_bayar'],
+                'kembalian' => $kembalian,
+            ]);
 
             DB::commit();
 
             return redirect()
-                ->back()
-                ->with('success', 'Transaksi berhasil ditambahkan');
+                ->route('kasir.pos')
+                ->with('success', "Transaksi berhasil! Invoice: {$transaksi->no_invoice}. Kembalian: Rp " . number_format($kembalian, 0, ',', '.'));
+
         } catch (\Exception $e) {
             DB::rollback();
             return back()
-                ->with('error', 'Gagal menambahkan transaksi: ' . $e->getMessage())
+                ->with('error', 'Gagal memproses transaksi: ' . $e->getMessage())
                 ->withInput();
         }
     }
@@ -58,6 +121,11 @@ class TransaksiController extends Controller
     {
         try {
             $transaksi = Transaksi::findOrFail($id);
+
+            // Check if already has payment
+            if (!$transaksi->pembayaran) {
+                return back()->with('error', 'Transaksi belum dibayar');
+            }
 
             $transaksi->update([
                 'status' => 'selesai'
@@ -77,19 +145,40 @@ class TransaksiController extends Controller
      */
     public function batalkan($id): RedirectResponse
     {
+        DB::beginTransaction();
+        
         try {
-            $transaksi = Transaksi::findOrFail($id);
+            $transaksi = Transaksi::with('details.product')->findOrFail($id);
+
+            // Kembalikan stok
+            foreach ($transaksi->details as $detail) {
+                $detail->product->increment('stok', $detail->jumlah);
+            }
 
             $transaksi->update([
                 'status' => 'dibatalkan'
             ]);
 
+            DB::commit();
+
             return redirect()
                 ->back()
-                ->with('success', 'Transaksi berhasil dibatalkan');
+                ->with('success', 'Transaksi berhasil dibatalkan dan stok dikembalikan');
         } catch (\Exception $e) {
+            DB::rollback();
             return back()
                 ->with('error', 'Gagal membatalkan transaksi: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Tampilkan detail transaksi
+     */
+    public function show($id): View
+    {
+        $transaksi = Transaksi::with(['details.product', 'user', 'pembayaran'])
+            ->findOrFail($id);
+
+        return view('kasir-view.transaction.show', compact('transaksi'));
     }
 }

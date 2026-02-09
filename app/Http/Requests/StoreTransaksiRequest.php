@@ -7,43 +7,56 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreTransaksiRequest extends FormRequest
 {
     /**
-     * Tentukan apakah pengguna diizinkan untuk membuat permintaan ini.
+     * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     /**
-     * Dapatkan aturan validasi yang berlaku untuk permintaan.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * Get the validation rules that apply to the request.
      */
     public function rules(): array
     {
         return [
-            'product_id' => ['required', 'exists:products,id'],
-            'jumlah' => ['required', 'integer', 'min:1'],
-            'total_harga' => ['required', 'numeric', 'min:0'],
+            'items' => ['required', 'array', 'min:1'],
+            'items.*.product_id' => ['required', 'exists:products,id'],
+            'items.*.jumlah' => ['required', 'integer', 'min:1'],
+            'metode_pembayaran' => ['required', 'in:cash,qris'],
+            'jumlah_bayar' => ['required', 'numeric', 'min:0'],
         ];
     }
 
     /**
-     * Dapatkan pesan validasi kustom untuk penentu kesalahan.
-     *
-     * @return array<string, string>
+     * Get custom messages for validator errors.
      */
     public function messages(): array
     {
         return [
-            'product_id.required' => 'Produk harus dipilih',
-            'product_id.exists' => 'Produk tidak ditemukan',
-            'jumlah.required' => 'Jumlah harus diisi',
-            'jumlah.integer' => 'Jumlah harus berupa angka bulat',
-            'jumlah.min' => 'Jumlah minimal 1',
-            'total_harga.required' => 'Total harga harus diisi',
-            'total_harga.numeric' => 'Total harga harus berupa angka',
-            'total_harga.min' => 'Total harga tidak boleh kurang dari 0',
+            'items.required' => 'Minimal harus ada 1 produk',
+            'items.min' => 'Minimal harus ada 1 produk',
+            'items.*.product_id.required' => 'Produk wajib dipilih',
+            'items.*.product_id.exists' => 'Produk tidak valid',
+            'items.*.jumlah.required' => 'Jumlah wajib diisi',
+            'items.*.jumlah.min' => 'Jumlah minimal 1',
+            'metode_pembayaran.required' => 'Metode pembayaran wajib dipilih',
+            'metode_pembayaran.in' => 'Metode pembayaran tidak valid',
+            'jumlah_bayar.required' => 'Jumlah bayar wajib diisi',
+            'jumlah_bayar.min' => 'Jumlah bayar tidak valid',
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation()
+    {
+        // Convert jumlah_bayar to numeric if it's a string
+        if ($this->has('jumlah_bayar')) {
+            $this->merge([
+                'jumlah_bayar' => (float) str_replace(',', '', $this->jumlah_bayar)
+            ]);
+        }
     }
 }

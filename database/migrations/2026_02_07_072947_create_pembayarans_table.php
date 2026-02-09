@@ -8,19 +8,25 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * 
+     * Fix: Rename id_transaksi to transaksi_id for consistency
      */
     public function up(): void
     {
-        Schema::create('pembayarans', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_transaksi')
-                ->constrained('transaksis')
+        Schema::table('pembayarans', function (Blueprint $table) {
+            // Drop old foreign key
+            $table->dropForeign(['id_transaksi']);
+            
+            // Rename column
+            $table->renameColumn('id_transaksi', 'transaksi_id');
+        });
+        
+        // Add foreign key with new name
+        Schema::table('pembayarans', function (Blueprint $table) {
+            $table->foreign('transaksi_id')
+                ->references('id')
+                ->on('transaksis')
                 ->cascadeOnDelete();
-            $table->enum('metode_pembayaran', ['cash', 'qris']);
-            $table->decimal('jumlah_bayar', 12, 2);
-            $table->decimal('kembalian', 12, 2)
-                ->default(0);
-            $table->timestamps();
         });
     }
 
@@ -29,6 +35,16 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembayarans');
+        Schema::table('pembayarans', function (Blueprint $table) {
+            $table->dropForeign(['transaksi_id']);
+            $table->renameColumn('transaksi_id', 'id_transaksi');
+        });
+        
+        Schema::table('pembayarans', function (Blueprint $table) {
+            $table->foreign('id_transaksi')
+                ->references('id')
+                ->on('transaksis')
+                ->cascadeOnDelete();
+        });
     }
 };

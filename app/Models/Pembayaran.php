@@ -10,14 +10,22 @@ class Pembayaran extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_transaksi',
+        'transaksi_id',  // FIXED: was id_transaksi
         'metode_pembayaran',
         'jumlah_bayar',
         'kembalian',
     ];
-    
+
+    protected $casts = [
+        'jumlah_bayar' => 'decimal:2',
+        'kembalian' => 'decimal:2',
+    ];
+
+    /**
+     * Relasi ke Transaksi
+     */
     public function transaksi()
     {
-        return $this->belongsTo(Transaksi::class, 'id_transaksi');
+        return $this->belongsTo(Transaksi::class, 'transaksi_id');
     }
 }
