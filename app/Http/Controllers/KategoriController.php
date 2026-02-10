@@ -10,7 +10,7 @@ class KategoriController extends Controller
     public function index()
     {
         $kategoris = Kategori::withCount('products')->get();
-        return view('admin.kategoris.index', compact('kategoris'));
+        return view('admin.kategori.index', compact('kategoris'));
     }
 
     public function store(Request $request)

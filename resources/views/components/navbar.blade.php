@@ -1,24 +1,24 @@
 @props([])
 
-<nav class="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 sticky top-0 z-30">
+<nav class="flex items-center justify-between px-4 py-3 lg:px-6 lg:py-4 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 sticky top-0 z-30 w-full">
     <!-- Left: Sidebar Toggle & Page Title -->
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center space-x-2 lg:space-x-4 min-w-0 flex-1">
         <!-- Sidebar Toggle Button -->
         <button @click="sidebarOpen = !sidebarOpen" 
-                class="p-2 transition-colors bg-gray-100 rounded-lg dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+                class="p-2 transition-colors bg-gray-100 rounded-lg dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex-shrink-0"
                 title="Toggle Sidebar">
             <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
         </button>
         
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Yellow Drink POS</h1>
+        <h1 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white truncate">Yellow Drink POS</h1>
     </div>
 
     <!-- Right: User Menu and Theme Toggle -->
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center space-x-2 lg:space-x-4 flex-shrink-0">
         <!-- Theme Toggle Button -->
-        <button @click="theme = theme === 'dark' ? 'light' : 'dark'" class="p-2 transition-colors bg-gray-100 rounded-lg dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
+        <button @click="theme = theme === 'dark' ? 'light' : 'dark'" class="p-2 transition-colors bg-gray-100 rounded-lg dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex-shrink-0">
             <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" x-show="theme === 'light'" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
             </svg>
@@ -27,18 +27,18 @@
             </svg>
         </button>
 
-        <!-- Divider -->
-        <div class="w-px h-6 bg-gray-200 dark:bg-gray-600"></div>
+        <!-- Divider - Hidden on mobile -->
+        <div class="hidden sm:block w-px h-6 bg-gray-200 dark:bg-gray-600"></div>
 
         <!-- User Dropdown Menu -->
         <div class="relative" x-data="{ open: false }">
             <button @click="open = !open" class="flex items-center p-2 space-x-2 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                <div class="flex items-center justify-center w-8 h-8 text-sm font-bold text-white bg-yellow-500 rounded-full">
+                <div class="flex items-center justify-center w-8 h-8 text-sm font-bold text-white bg-yellow-500 rounded-full flex-shrink-0">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 </div>
-                <span class="hidden text-sm font-medium text-gray-900 sm:inline dark:text-white">{{ auth()->user()->name }}</span>
-                <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                <span class="hidden sm:inline text-sm font-medium text-gray-900 dark:text-white truncate max-w-[100px] lg:max-w-none">{{ auth()->user()->name }}</span>
+                <svg class="hidden sm:block w-4 h-4 text-gray-600 dark:text-gray-400 flex-shrink-0" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
             </button>
 

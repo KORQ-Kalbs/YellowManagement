@@ -19,11 +19,23 @@ class TransaksiController extends Controller
      */
     public function index(): View
     {
-        $transaksis = Transaksi::with(['details.product', 'user', 'pembayaran'])
-            ->latest('tanggal_transaksi')
-            ->paginate(15);
-
-        return view('kasir.transaksi.index', compact('transaksis'));
+        // Check if user is admin or kasir
+        if (auth()->user()->role === 'admin') {
+            // Admin can see all transactions
+            $transaksis = Transaksi::with(['details.product', 'user', 'pembayaran'])
+                ->latest('tanggal_transaksi')
+                ->paginate(15);
+            
+            return view('admin.transaksi.index', compact('transaksis'));
+        } else {
+            // Kasir can only see their own transactions
+            $transaksis = Transaksi::with(['details.product', 'user', 'pembayaran'])
+                ->where('user_id', auth()->id())
+                ->latest('tanggal_transaksi')
+                ->paginate(15);
+            
+            return view('kasir.transaksi.index', compact('transaksis'));
+        }
     }
 
     /**
@@ -62,6 +74,8 @@ class TransaksiController extends Controller
             }
 
             // Validasi jumlah bayar
+            $kembalian = $validated['jumlah_bayar'] - $totalHarga;
+            
             if ($validated['jumlah_bayar'] < $totalHarga) {
                 DB::rollback();
                 return back()
@@ -73,7 +87,7 @@ class TransaksiController extends Controller
             $transaksi = Transaksi::create([
                 'user_id' => auth()->id(),
                 'total_harga' => $totalHarga,
-                'status' => 'selesai', // Langsung selesai karena sudah dibayar
+                'status' => 'completed', // Changed from 'selesai' to match enum
                 'tanggal_transaksi' => now(),
             ]);
 
@@ -91,13 +105,11 @@ class TransaksiController extends Controller
             }
 
             // Create Pembayaran
-            $kembalian = $validated['jumlah_bayar'] - $totalHarga;
-            
             Pembayaran::create([
                 'transaksi_id' => $transaksi->id,
                 'metode_pembayaran' => $validated['metode_pembayaran'],
-                'jumlah_bayar' => $validated['jumlah_bayar'],
-                'kembalian' => $kembalian,
+                'jumlah_pembayaran' => $validated['jumlah_bayar'],
+                'tanggal_pembayaran' => now(),
             ]);
 
             DB::commit();
@@ -128,7 +140,7 @@ class TransaksiController extends Controller
             }
 
             $transaksi->update([
-                'status' => 'selesai'
+                'status' => 'completed'
             ]);
 
             return redirect()
@@ -156,7 +168,7 @@ class TransaksiController extends Controller
             }
 
             $transaksi->update([
-                'status' => 'dibatalkan'
+                'status' => 'cancelled'
             ]);
 
             DB::commit();
@@ -179,6 +191,16 @@ class TransaksiController extends Controller
         $transaksi = Transaksi::with(['details.product', 'user', 'pembayaran'])
             ->findOrFail($id);
 
-        return view('kasir.transaksi.show', compact('transaksi'));
+        // Check if user is admin or kasir viewing their own transaction
+        if (auth()->user()->role !== 'admin' && $transaksi->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized access to this transaction');
+        }
+
+        // Return appropriate view based on role
+        if (auth()->user()->role === 'admin') {
+            return view('admin.transaksi.show', compact('transaksi'));
+        } else {
+            return view('kasir.transaksi.show', compact('transaksi'));
+        }
     }
 }

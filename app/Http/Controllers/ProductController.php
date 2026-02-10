@@ -12,16 +12,15 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    /**
-     * Tampilkan daftar produk.
-     */
     public function index(): View
     {
         $products = Product::with('kategori')
             ->latest()
             ->paginate(10);
+        
+        $kategoris = Kategori::all();
 
-        return view('admin.products.index', compact('products'));
+        return view('admin.produk.index', compact('products', 'kategoris'));
     }
 
     /**
@@ -42,7 +41,7 @@ class ProductController extends Controller
             Product::create($request->validated());
 
             return redirect()
-                ->route('products.index')
+                ->route('admin.products.index')
                 ->with('success', 'Produk berhasil ditambahkan');
         } catch (\Exception $e) {
             return back()
@@ -77,7 +76,7 @@ class ProductController extends Controller
             $product->update($request->validated());
 
             return redirect()
-                ->route('products.index')
+                ->route('admin.products.index')
                 ->with('success', 'Produk berhasil diperbarui');
         } catch (\Exception $e) {
             return back()
@@ -95,7 +94,7 @@ class ProductController extends Controller
             $product->delete();
 
             return redirect()
-                ->route('products.index')
+                ->route('admin.products.index')
                 ->with('success', 'Produk berhasil dihapus');
         } catch (\Exception $e) {
             return back()

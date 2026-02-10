@@ -25,7 +25,7 @@
             })();
         </script>
     </head>
-    <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900" 
+    <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 overflow-x-hidden" 
           x-data="{ 
               sidebarOpen: window.innerWidth >= 1024,
               theme: localStorage.getItem('theme') || 'light' 
@@ -46,27 +46,27 @@
               });
           ">
         
-        <div class="flex min-h-screen">
+        <div class="flex min-h-screen max-w-full overflow-x-hidden">
             <!-- Sidebar -->
             <x-sidebar />
 
             <!-- Main Content Area -->
-            <div class="flex flex-col w-full min-h-screen transition-all duration-300"
-                 :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'">
+            <div class="flex flex-col w-full min-h-screen transition-all duration-300 lg:ml-0"
+                 :class="sidebarOpen && window.innerWidth >= 1024 ? 'lg:ml-64' : 'lg:ml-20'">
                 <!-- Navbar -->
                 <x-navbar />
 
                 <!-- Page Content -->
-                <main class="flex-1 bg-gray-50 dark:bg-gray-900">
+                <main class="flex-1 bg-gray-50 dark:bg-gray-900 w-full overflow-x-hidden">
                     @isset($header)
                         <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                            <div class="px-6 py-8 sm:px-8">
+                            <div class="px-4 py-6 sm:px-6 lg:px-8">
                                 {{ $header }}
                             </div>
                         </div>
                     @endisset
 
-                    <div class="px-6 py-8 sm:px-8">
+                    <div class="px-4 py-6 sm:px-6 lg:px-8 w-full">
                         {{ $slot }}
                     </div>
                 </main>

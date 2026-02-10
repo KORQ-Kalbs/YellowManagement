@@ -39,21 +39,26 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         return view('dashboard');
     })->name('dashboard');
     
-    // Product Management
-    Route::resource('products', ProductController::class);
+    // Product Management (Produk)
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::resource('products', ProductController::class)->except(['index']);
     
     // Kategori Management
-    Route::resource('kategoris', KategoriController::class);
+    Route::get('/kategoris', [KategoriController::class, 'index'])->name('kategoris.index');
+    Route::resource('kategoris', KategoriController::class)->except(['index']);
     
-    // Units Management
+    // Kasir Management
+    Route::prefix('kasir')->name('kasir.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\UserController::class, 'index'])->name('index');
+        Route::post('/', [\App\Http\Controllers\UserController::class, 'store'])->name('store');
+        Route::put('/{kasir}', [\App\Http\Controllers\UserController::class, 'update'])->name('update');
+        Route::delete('/{kasir}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('destroy');
+    });
+    
+    // Units Management (Satuan Produk)
     Route::get('/units', function () {
-        return view('admin.units.index');
+        return view('admin.satuan_produk.index');
     })->name('units.index');
-    
-    // Transactions Management
-    Route::get('/transactions', function () {
-        return view('admin.transactions.index');
-    })->name('transactions.index');
     
     // Settings
     Route::get('/settings', function () {
@@ -65,12 +70,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');
     Route::patch('/transaksi/{id}/batalkan', [TransaksiController::class, 'batalkan'])->name('transaksi.batalkan');
     
-    // Reports
+    // Reports (Laporan)
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
-        Route::get('/daily', [ReportController::class, 'daily'])->name('daily');
-        Route::get('/monthly', [ReportController::class, 'monthly'])->name('monthly');
-        Route::get('/products', [ReportController::class, 'products'])->name('products');
     });
 });
 

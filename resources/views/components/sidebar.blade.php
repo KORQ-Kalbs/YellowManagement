@@ -1,25 +1,25 @@
 <aside 
     :class="sidebarOpen ? 'w-64' : 'w-20'"
-    class="fixed left-0 top-0 h-full bg-gradient-to-b from-yellow-400 via-yellow-500 to-orange-500 shadow-xl z-50 transition-all duration-300 lg:translate-x-0"
+    class="fixed left-0 top-0 h-full bg-gradient-to-b from-yellow-400 via-yellow-500 to-orange-500 shadow-xl z-50 transition-all duration-300"
     :style="window.innerWidth < 1024 && !sidebarOpen ? 'transform: translateX(-100%)' : ''">
     
     <!-- Logo Section -->
-    <div class="p-6 border-b border-yellow-600 flex items-center justify-between">
-        <div class="flex items-center space-x-3 overflow-hidden">
-            <div class="flex items-center justify-center w-10 h-10 bg-white rounded-lg shadow-md flex-shrink-0">
-                <svg class="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+    <div class="p-4 lg:p-6 border-b border-yellow-600 flex items-center justify-between">
+        <div class="flex items-center space-x-3 overflow-hidden min-w-0">
+            <div class="flex items-center justify-center w-8 h-8 lg:w-10 lg:h-10 bg-white rounded-lg shadow-md flex-shrink-0">
+                <svg class="w-5 h-5 lg:w-6 lg:h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
                 </svg>
             </div>
-            <div x-show="sidebarOpen" x-transition class="whitespace-nowrap">
-                <h1 class="text-lg font-bold text-white">Yellow Drink</h1>
+            <div x-show="sidebarOpen" x-transition class="whitespace-nowrap overflow-hidden">
+                <h1 class="text-base lg:text-lg font-bold text-white truncate">Yellow Drink</h1>
                 <p class="text-xs text-yellow-100">POS System</p>
             </div>
         </div>
     </div>
 
     <!-- Navigation Menu -->
-    <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto h-[calc(100vh-200px)]">
+    <nav class="flex-1 px-2 lg:px-4 py-4 lg:py-6 space-y-1 lg:space-y-2 overflow-y-auto h-[calc(100vh-200px)]">
         <!-- Dashboard -->
         <a href="{{ route('dashboard') }}" 
            @class([
@@ -68,18 +68,18 @@
                 <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Categories</span>
             </a>
 
-            <!-- Transactions -->
-            <a href="{{ route('admin.transaksi.index') }}" 
+            <!-- Kasir Management -->
+            <a href="{{ route('admin.kasir.index') }}" 
                @class([
                    'flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-200 space-x-3 text-white group',
-                   'bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.transaksi.*'),
-                   'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.transaksi.*')
+                   'bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.kasir.*'),
+                   'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.kasir.*')
                ])
-               :title="!sidebarOpen ? 'Transactions' : ''">
+               :title="!sidebarOpen ? 'Kasir Management' : ''">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Transactions</span>
+                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Kasir Management</span>
             </a>
 
             <!-- Reports -->

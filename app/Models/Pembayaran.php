@@ -10,15 +10,16 @@ class Pembayaran extends Model
     use HasFactory;
 
     protected $fillable = [
-        'transaksi_id',  // FIXED: was id_transaksi
+        'transaksi_id',
         'metode_pembayaran',
-        'jumlah_bayar',
-        'kembalian',
+        'jumlah_pembayaran',
+        'tanggal_pembayaran',
+        'referensi',
     ];
 
     protected $casts = [
-        'jumlah_bayar' => 'decimal:2',
-        'kembalian' => 'decimal:2',
+        'jumlah_pembayaran' => 'decimal:2',
+        'tanggal_pembayaran' => 'datetime',
     ];
 
     /**

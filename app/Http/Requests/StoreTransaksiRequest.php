@@ -23,7 +23,7 @@ class StoreTransaksiRequest extends FormRequest
             'items' => ['required', 'array', 'min:1'],
             'items.*.product_id' => ['required', 'exists:products,id'],
             'items.*.jumlah' => ['required', 'integer', 'min:1'],
-            'metode_pembayaran' => ['required', 'in:cash,qris'],
+            'metode_pembayaran' => ['required', 'in:cash,qris,debit,credit,transfer'],
             'jumlah_bayar' => ['required', 'numeric', 'min:0'],
         ];
     }

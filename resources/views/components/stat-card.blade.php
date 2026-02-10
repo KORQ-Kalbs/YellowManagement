@@ -1,4 +1,4 @@
-@props(['icon' => null, 'label' => '', 'value' => '', 'trend' => null, 'trendUp' => true, 'color' => 'blue'])
+@props(['icon' => null, 'label' => '', 'value' => '', 'trend' => null, 'trendUp' => true, 'color' => 'blue', 'title' => null])
 
 @php
 $colorClasses = [
@@ -8,12 +8,15 @@ $colorClasses = [
     'red' => 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800',
     'purple' => 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800',
 ];
+
+// If color is a custom class string (not in predefined colors), use it directly
+$colorClass = isset($colorClasses[$color]) ? $colorClasses[$color] : $color;
 @endphp
 
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6">
     <div class="flex items-center justify-between">
         <div class="flex-1">
-            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ $label }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ $title ?? $label }}</p>
             <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">{{ $value }}</p>
             
             @if($trend)
@@ -34,7 +37,7 @@ $colorClasses = [
         </div>
         
         @if($icon)
-            <div class="rounded-lg p-3 {{ $colorClasses[$color] }}">
+            <div class="rounded-lg p-3 {{ $colorClass }}">
                 {{ $icon }}
             </div>
         @endif

@@ -17,6 +17,18 @@ class KasirController extends Controller
         $today = today();
         $userId = auth()->id();
 
+        // Get last 7 days sales data for chart
+        $salesData = [];
+        $labels = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = today()->subDays($i);
+            $labels[] = $date->format('D');
+            $salesData[] = Transaksi::where('user_id', $userId)
+                ->whereDate('tanggal_transaksi', $date)
+                ->where('status', 'completed')
+                ->sum('total_harga');
+        }
+
         $data = [
             'transaksi_hari_ini' => Transaksi::where('user_id', $userId)
                 ->whereDate('tanggal_transaksi', $today)
@@ -24,6 +36,7 @@ class KasirController extends Controller
                 
             'pendapatan_hari_ini' => Transaksi::where('user_id', $userId)
                 ->whereDate('tanggal_transaksi', $today)
+                ->where('status', 'completed')
                 ->sum('total_harga'),
                 
             'transaksi_terbaru' => Transaksi::where('user_id', $userId)
@@ -31,6 +44,9 @@ class KasirController extends Controller
                 ->latest('tanggal_transaksi')
                 ->take(5)
                 ->get(),
+            
+            'salesData' => $salesData,
+            'labels' => $labels,
         ];
 
         return view('kasir.dashboard', $data);
