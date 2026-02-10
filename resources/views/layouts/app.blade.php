@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-cloak>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,25 +14,45 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    </head>
-    <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900" x-data="{ theme: localStorage.getItem('theme') || 'light' }" x-init="$watch('theme', val => { localStorage.setItem('theme', val); val === 'dark' ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark'); })" :class="theme === 'dark' && 'dark'">
+        
+        <!-- Theme initialization script (prevents flash) -->
         <script>
             (function() {
                 const theme = localStorage.getItem('theme') || 'light';
                 if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
                 }
             })();
         </script>
-
+    </head>
+    <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900" 
+          x-data="{ 
+              sidebarOpen: window.innerWidth >= 1024,
+              theme: localStorage.getItem('theme') || 'light' 
+          }" 
+          x-init="
+              $watch('theme', val => { 
+                  localStorage.setItem('theme', val); 
+                  if (val === 'dark') {
+                      document.documentElement.classList.add('dark');
+                  } else {
+                      document.documentElement.classList.remove('dark');
+                  }
+              });
+              window.addEventListener('resize', () => {
+                  if (window.innerWidth >= 1024) {
+                      sidebarOpen = true;
+                  }
+              });
+          ">
+        
         <div class="flex min-h-screen">
             <!-- Sidebar -->
             <x-sidebar />
 
             <!-- Main Content Area -->
-            <div class="flex flex-col ml-64 w-full min-h-screen">
+            <div class="flex flex-col w-full min-h-screen transition-all duration-300"
+                 :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'">
                 <!-- Navbar -->
                 <x-navbar />
 
@@ -51,6 +71,19 @@
                     </div>
                 </main>
             </div>
+        </div>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div x-show="sidebarOpen && window.innerWidth < 1024" 
+             @click="sidebarOpen = false"
+             x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+             style="display: none;">
         </div>
     </body>
 </html>

@@ -1,8 +1,17 @@
 @props([])
 
-<nav class="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-    <!-- Left: Page Title -->
-    <div>
+<nav class="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 sticky top-0 z-30">
+    <!-- Left: Sidebar Toggle & Page Title -->
+    <div class="flex items-center space-x-4">
+        <!-- Sidebar Toggle Button -->
+        <button @click="sidebarOpen = !sidebarOpen" 
+                class="p-2 transition-colors bg-gray-100 rounded-lg dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+                title="Toggle Sidebar">
+            <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+        
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Yellow Drink POS</h1>
     </div>
 

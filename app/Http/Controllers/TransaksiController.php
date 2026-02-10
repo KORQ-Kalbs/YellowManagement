@@ -23,7 +23,7 @@ class TransaksiController extends Controller
             ->latest('tanggal_transaksi')
             ->paginate(15);
 
-        return view('kasir-view.transaction.index', compact('transaksis'));
+        return view('kasir.transaksi.index', compact('transaksis'));
     }
 
     /**
@@ -179,6 +179,6 @@ class TransaksiController extends Controller
         $transaksi = Transaksi::with(['details.product', 'user', 'pembayaran'])
             ->findOrFail($id);
 
-        return view('kasir-view.transaction.show', compact('transaksi'));
+        return view('kasir.transaksi.show', compact('transaksi'));
     }
 }

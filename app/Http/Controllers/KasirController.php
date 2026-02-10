@@ -33,7 +33,7 @@ class KasirController extends Controller
                 ->get(),
         ];
 
-        return view('kasir-view.dashboard', $data);
+        return view('kasir.dashboard', $data);
     }
 
     /**
@@ -48,6 +48,6 @@ class KasirController extends Controller
 
         $kategoris = Kategori::withCount('products')->get();
 
-        return view('kasir-view.pos', compact('products', 'kategoris'));
+        return view('kasir.POS', compact('products', 'kategoris'));
     }
 }
