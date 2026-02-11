@@ -1,178 +1,248 @@
 <x-app-layout>
     <x-slot name="header">
-        <div>
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-                Laporan & Analitik
-            </h2>
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Pantau penjualan dan performa sistem
-            </p>
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Laporan Saya</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Analisis penjualan dan performa Anda</p>
+            </div>
         </div>
     </x-slot>
 
-    <div class="space-y-8">
-        <!-- Date Range Filter -->
-        <x-card>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                    <x-input-label for="start-date" value="Tanggal Mulai" />
-                    <input type="date" id="start-date" class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
-                </div>
-                <div>
-                    <x-input-label for="end-date" value="Tanggal Akhir" />
-                    <input type="date" id="end-date" class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
-                </div>
-                <div class="flex items-end">
-                    <button onclick="filterReport()" class="w-full px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg transition-colors">
-                        Filter
-                    </button>
-                </div>
-                <div class="flex items-end">
-                    <button onclick="exportReport()" class="w-full px-4 py-2 bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-800 text-white font-medium rounded-lg transition-colors flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
-                        Export
-                    </button>
-                </div>
-            </div>
-        </x-card>
+    <div class="space-y-6">
+        <!-- Period Selector Tabs -->
+        <div class="flex flex-wrap gap-2 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <a href="{{ route('kasir.reports.index', ['period' => 'day', 'date' => $selectedDate->format('Y-m-d')]) }}" 
+               class="px-6 py-2 rounded-lg font-medium transition-colors {{ $period === 'day' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}">
+                Per Hari
+            </a>
+            <a href="{{ route('kasir.reports.index', ['period' => 'week', 'date' => $selectedDate->format('Y-m-d')]) }}" 
+               class="px-6 py-2 rounded-lg font-medium transition-colors {{ $period === 'week' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}">
+                Per Minggu
+            </a>
+            <a href="{{ route('kasir.reports.index', ['period' => 'month', 'date' => $selectedDate->format('Y-m-d')]) }}" 
+               class="px-6 py-2 rounded-lg font-medium transition-colors {{ $period === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}">
+                Per Bulan
+            </a>
+        </div>
 
         <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <x-stat-card
-                label="Total Penjualan"
-                :value="'Rp ' . number_format(\App\Models\Transaksi::sum('total_harga'), 0, ',', '.')"
-                color="yellow"
-            >
-                <x-slot name="icon">
-                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                    </svg>
-                </x-slot>
-            </x-stat-card>
-
-            <x-stat-card
-                label="Total Transaksi"
-                :value="\App\Models\Transaksi::count()"
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <x-stat-card 
+                title="Total Pendapatan" 
+                :value="'Rp ' . number_format($stats['totalRevenue'] ?? 0, 0, ',', '.')" 
                 color="blue"
             >
                 <x-slot name="icon">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                     </svg>
                 </x-slot>
             </x-stat-card>
 
-            <x-stat-card
-                label="Rata-rata per Transaksi"
-                :value="$transaksi_count = \App\Models\Transaksi::count() > 0 ? 'Rp ' . number_format(\App\Models\Transaksi::sum('total_harga') / \App\Models\Transaksi::count(), 0, ',', '.') : 'Rp 0'"
+            <x-stat-card 
+                title="Pendapatan Hari Ini" 
+                :value="'Rp ' . number_format($stats['dailyRevenue'] ?? 0, 0, ',', '.')" 
                 color="green"
             >
                 <x-slot name="icon">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h.01a1 1 0 110 2H12zm-2.763 5a2 2 0 00-.894 3.756 3.972 3.972 0 01.891-1.631A.5.5 0 1010.5 13h-.5zm1.753-2.908a4 4 0 00-7.671 0H3a2 2 0 100 4h.276a2 2 0 100-4h.724zM10 9a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
                     </svg>
                 </x-slot>
             </x-stat-card>
 
-            <x-stat-card
-                label="Produk Terjual"
-                :value="\App\Models\DetailTransaksi::sum('jumlah')"
-                color="purple"
+            <x-stat-card 
+                title="Total Transaksi" 
+                :value="$stats['totalTransactions'] ?? 0" 
+                color="yellow"
             >
                 <x-slot name="icon">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 6H6.28l-.31-1.243A1 1 0 005 4H3z" />
+                        <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
                     </svg>
                 </x-slot>
             </x-stat-card>
         </div>
 
-        <!-- Top Selling Products -->
-        <x-card title="Produk Terlaris">
-            @php
-                $topProducts = \App\Models\DetailTransaksi::with('product')
-                    ->select('product_id', \DB::raw('SUM(jumlah) as total_jumlah'), \DB::raw('SUM(subtotal) as total_pendapatan'))
-                    ->groupBy('product_id')
-                    ->orderByDesc('total_jumlah')
-                    ->take(5)
-                    ->get();
-            @endphp
-
-            @if($topProducts->count() > 0)
-                <div class="space-y-3">
-                    @foreach($topProducts as $item)
-                        <div class="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
-                            <div class="flex-1">
-                                <p class="font-semibold text-gray-900 dark:text-white">{{ $item->product?->nama ?? 'N/A' }}</p>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ $item->total_jumlah }} unit terjual</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-bold text-gray-900 dark:text-white">Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</p>
-                            </div>
-                        </div>
-                    @endforeach
+        <!-- Sales Chart -->
+        <x-card>
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                        @if($period === 'day') Penjualan Per Hari
+                        @elseif($period === 'week') Penjualan Per Minggu
+                        @else Penjualan Per Bulan
+                        @endif
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Grafik performa penjualan Anda</p>
                 </div>
-            @else
-                <p class="text-gray-600 dark:text-gray-400 text-center py-8">Tidak ada data penjualan</p>
-            @endif
+                
+                <!-- Date Picker and Actions -->
+                <div class="flex flex-wrap gap-2">
+                    <input type="date" 
+                           id="datePicker" 
+                           value="{{ $selectedDate->format('Y-m-d') }}"
+                           class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                           onchange="window.location.href='{{ route('kasir.reports.index') }}?period={{ $period }}&date=' + this.value">
+                    
+                    <button onclick="window.location.reload()" 
+                            class="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Refresh
+                    </button>
+                    
+                    <button onclick="exportExcel()" 
+                            class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export Excel
+                    </button>
+                    
+                    <button onclick="window.print()" 
+                            class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        Export PDF
+                    </button>
+                </div>
+            </div>
+            <div class="h-80">
+                <canvas id="salesChart"></canvas>
+            </div>
         </x-card>
 
-        <!-- Transactions by Status -->
-        <x-card title="Status Transaksi">
-            @php
-                $completedCount = \App\Models\Transaksi::where('status', 'completed')->count();
-                $pendingCount = \App\Models\Transaksi::where('status', 'pending')->count();
-                $cancelledCount = \App\Models\Transaksi::where('status', 'cancelled')->count();
-                $total = $completedCount + $pendingCount + $cancelledCount;
-            @endphp
+        <!-- Top Products -->
+        <x-card>
+            <div class="mb-4">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Produk Terlaris</h3>
+            </div>
 
-            <div class="space-y-4">
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Selesai</span>
-                        <span class="text-sm font-bold text-gray-900 dark:text-white">{{ $completedCount }} ({{ $total > 0 ? round(($completedCount / $total) * 100) : 0 }}%)</span>
-                    </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div class="bg-green-500 h-2 rounded-full" style="width: {{ $total > 0 ? ($completedCount / $total) * 100 : 0 }}%"></div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Menunggu</span>
-                        <span class="text-sm font-bold text-gray-900 dark:text-white">{{ $pendingCount }} ({{ $total > 0 ? round(($pendingCount / $total) * 100) : 0 }}%)</span>
-                    </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div class="bg-yellow-500 h-2 rounded-full" style="width: {{ $total > 0 ? ($pendingCount / $total) * 100 : 0 }}%"></div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Dibatalkan</span>
-                        <span class="text-sm font-bold text-gray-900 dark:text-white">{{ $cancelledCount }} ({{ $total > 0 ? round(($cancelledCount / $total) * 100) : 0 }}%)</span>
-                    </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div class="bg-red-500 h-2 rounded-full" style="width: {{ $total > 0 ? ($cancelledCount / $total) * 100 : 0 }}%"></div>
-                    </div>
-                </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400" id="productsTable">
+                    <thead class="bg-gray-100 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold">
+                        <tr>
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">Nama Produk</th>
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">Kategori</th>
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">Harga</th>
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">Terjual</th>
+                            <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">Pendapatan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+                        @forelse($topProducts ?? [] as $product)
+                            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <p class="font-semibold text-gray-900 dark:text-white">{{ $product->nama_produk }}</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <x-badge type="info">
+                                        {{ $product->kategori->nama_kategori ?? 'N/A' }}
+                                    </x-badge>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="text-gray-600 dark:text-gray-400">Rp {{ number_format($product->harga, 0, ',', '.') }}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="font-semibold text-gray-900 dark:text-white">{{ $product->sold_count ?? 0 }}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="font-bold text-green-600 dark:text-green-400">Rp {{ number_format(($product->harga * ($product->sold_count ?? 0)), 0, ',', '.') }}</span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr class="bg-white dark:bg-gray-800">
+                                <td colspan="5" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                                    <p>Belum ada data penjualan</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </x-card>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
-        function filterReport() {
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
-            // Implement filter logic here
-            alert('Filter by dates: ' + startDate + ' to ' + endDate);
-        }
-
-        function exportReport() {
-            // Implement export logic here
-            alert('Exporting report...');
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const isDark = document.documentElement.classList.contains('dark');
+        
+        new Chart(ctx, {
+            type: '{{ $period === "month" ? "line" : "bar" }}',
+            data: {
+                labels: @json($labels),
+                datasets: [{
+                    label: 'Penjualan (Rp)',
+                    data: @json($salesData),
+                    backgroundColor: '{{ $period === "month" ? "rgba(234, 179, 8, 0.1)" : "rgba(234, 179, 8, 0.8)" }}',
+                    borderColor: 'rgb(234, 179, 8)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: {{ $period === 'month' ? 'true' : 'false' }}
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDark ? '#9CA3AF' : '#374151'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: isDark ? '#9CA3AF' : '#374151',
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#E5E7EB'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: isDark ? '#9CA3AF' : '#374151'
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#E5E7EB'
+                        }
+                    }
+                }
+            }
+        });
+        
+        function exportExcel() {
+            // Prepare data
+            const data = [
+                ['Nama Produk', 'Kategori', 'Harga', 'Terjual', 'Pendapatan'],
+                @foreach($topProducts ?? [] as $product)
+                [
+                    '{{ $product->nama_produk }}',
+                    '{{ $product->kategori->nama_kategori ?? "N/A" }}',
+                    {{ $product->harga }},
+                    {{ $product->sold_count ?? 0 }},
+                    {{ $product->harga * ($product->sold_count ?? 0) }}
+                ],
+                @endforeach
+            ];
+            
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'Laporan Penjualan');
+            
+            // Download
+            XLSX.writeFile(wb, 'laporan_penjualan_{{ $selectedDate->format("Y-m-d") }}.xlsx');
         }
     </script>
 </x-app-layout>

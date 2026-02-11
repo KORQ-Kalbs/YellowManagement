@@ -9,11 +9,27 @@
     </x-slot>
 
     <div class="space-y-6">
+        <!-- Period Selector Tabs -->
+        <div class="flex flex-wrap gap-2 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <a href="{{ route('admin.reports.index', ['period' => 'day', 'date' => $selectedDate->format('Y-m-d')]) }}" 
+               class="px-6 py-2 rounded-lg font-medium transition-colors {{ $period === 'day' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}">
+                Per Hari
+            </a>
+            <a href="{{ route('admin.reports.index', ['period' => 'week', 'date' => $selectedDate->format('Y-m-d')]) }}" 
+               class="px-6 py-2 rounded-lg font-medium transition-colors {{ $period === 'week' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}">
+                Per Minggu
+            </a>
+            <a href="{{ route('admin.reports.index', ['period' => 'month', 'date' => $selectedDate->format('Y-m-d')]) }}" 
+               class="px-6 py-2 rounded-lg font-medium transition-colors {{ $period === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}">
+                Per Bulan
+            </a>
+        </div>
+
         <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <x-stat-card 
                 title="Total Revenue" 
-                :value="'Rp ' . number_format($totalRevenue ?? 0, 0, ',', '.')" 
+                :value="'Rp ' . number_format($stats['totalRevenue'] ?? 0, 0, ',', '.')" 
                 color="blue"
             >
                 <x-slot name="icon">
@@ -25,7 +41,7 @@
 
             <x-stat-card 
                 title="Today's Revenue" 
-                :value="'Rp ' . number_format($dailyRevenue ?? 0, 0, ',', '.')" 
+                :value="'Rp ' . number_format($stats['dailyRevenue'] ?? 0, 0, ',', '.')" 
                 color="green"
             >
                 <x-slot name="icon">
@@ -37,7 +53,7 @@
 
             <x-stat-card 
                 title="Total Transactions" 
-                :value="$totalTransactions ?? 0" 
+                :value="$stats['totalTransactions'] ?? 0" 
                 color="yellow"
             >
                 <x-slot name="icon">
@@ -46,27 +62,55 @@
                     </svg>
                 </x-slot>
             </x-stat-card>
-
-            <x-stat-card 
-                title="Top Products" 
-                :value="count($topProducts ?? [])" 
-                color="purple"
-            >
-                <x-slot name="icon">
-                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                </x-slot>
-            </x-stat-card>
         </div>
 
         <!-- Sales Chart -->
         <x-card>
-            <div class="mb-4">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Sales Trend (Last 7 Days)</h3>
-                <p class="text-sm text-gray-600 dark:text-gray-400">Daily sales performance overview</p>
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                        @if($period === 'day') Penjualan Per Hari
+                        @elseif($period === 'week') Penjualan Per Minggu
+                        @else Penjualan Per Bulan
+                        @endif
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Sales performance overview</p>
+                </div>
+                
+                <!-- Date Picker and Actions -->
+                <div class="flex flex-wrap gap-2">
+                    <input type="date" 
+                           id="datePicker" 
+                           value="{{ $selectedDate->format('Y-m-d') }}"
+                           class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                           onchange="window.location.href='{{ route('admin.reports.index') }}?period={{ $period }}&date=' + this.value">
+                    
+                    <button onclick="window.location.reload()" 
+                            class="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Refresh
+                    </button>
+                    
+                    <button onclick="exportExcel()" 
+                            class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export Excel
+                    </button>
+                    
+                    <button onclick="window.print()" 
+                            class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        Export PDF
+                    </button>
+                </div>
             </div>
-            <div class="h-64">
+            <div class="h-80">
                 <canvas id="salesChart"></canvas>
             </div>
         </x-card>
@@ -78,7 +122,7 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
+                <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400" id="productsTable">
                     <thead class="bg-gray-100 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold">
                         <tr>
                             <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider">Product Name</th>
@@ -123,20 +167,23 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         const ctx = document.getElementById('salesChart').getContext('2d');
         const isDark = document.documentElement.classList.contains('dark');
         
         new Chart(ctx, {
-            type: 'bar',
+            type: '{{ $period === "month" ? "line" : "bar" }}',
             data: {
                 labels: @json($labels),
                 datasets: [{
                     label: 'Sales (Rp)',
                     data: @json($salesData),
-                    backgroundColor: 'rgba(234, 179, 8, 0.8)',
+                    backgroundColor: '{{ $period === "month" ? "rgba(234, 179, 8, 0.1)" : "rgba(234, 179, 8, 0.8)" }}',
                     borderColor: 'rgb(234, 179, 8)',
-                    borderWidth: 1
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: {{ $period === 'month' ? 'true' : 'false' }}
                 }]
             },
             options: {
@@ -173,5 +220,29 @@
                 }
             }
         });
+        
+        function exportExcel() {
+            // Prepare data
+            const data = [
+                ['Product Name', 'Category', 'Price', 'Sold Units', 'Revenue'],
+                @foreach($topProducts ?? [] as $product)
+                [
+                    '{{ $product->nama_produk }}',
+                    '{{ $product->kategori->nama_kategori ?? "N/A" }}',
+                    {{ $product->harga }},
+                    {{ $product->sold_count ?? 0 }},
+                    {{ $product->harga * ($product->sold_count ?? 0) }}
+                ],
+                @endforeach
+            ];
+            
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'Sales Report');
+            
+            // Download
+            XLSX.writeFile(wb, 'sales_report_{{ $selectedDate->format("Y-m-d") }}.xlsx');
+        }
     </script>
 </x-app-layout>

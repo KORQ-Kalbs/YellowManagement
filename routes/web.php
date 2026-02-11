@@ -36,7 +36,18 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // Admin Dashboard
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        // Get last 7 days sales data for chart
+        $salesData = [];
+        $labels = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = today()->subDays($i);
+            $labels[] = $date->format('D');
+            $salesData[] = \App\Models\Transaksi::whereDate('tanggal_transaksi', $date)
+                ->where('status', 'completed')
+                ->sum('total_harga');
+        }
+        
+        return view('dashboard', compact('salesData', 'labels'));
     })->name('dashboard');
     
     // Product Management (Produk)
@@ -74,6 +85,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
     });
+    
+    // POS for Admin (Testing)
+    Route::get('/pos', [KasirController::class, 'pos'])->name('pos');
+    Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
 });
 
 // ==============================================

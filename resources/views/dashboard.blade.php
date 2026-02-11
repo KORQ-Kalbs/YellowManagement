@@ -72,6 +72,17 @@
             </x-stat-card>
         </div>
 
+        <!-- Sales Chart -->
+        <x-card>
+            <div class="mb-4">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Penjualan 7 Hari Terakhir</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Grafik penjualan harian seluruh sistem</p>
+            </div>
+            <div class="h-64">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </x-card>
+
         <!-- Management Sections -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Quick Access -->
@@ -214,4 +225,58 @@
             @endif
         </x-card>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const isDark = document.documentElement.classList.contains('dark');
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @json($labels ?? []),
+                datasets: [{
+                    label: 'Penjualan (Rp)',
+                    data: @json($salesData ?? []),
+                    borderColor: 'rgb(234, 179, 8)',
+                    backgroundColor: 'rgba(234, 179, 8, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDark ? '#9CA3AF' : '#374151'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: isDark ? '#9CA3AF' : '#374151',
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#E5E7EB'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: isDark ? '#9CA3AF' : '#374151'
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#E5E7EB'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </x-app-layout>
