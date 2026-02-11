@@ -89,6 +89,12 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->grou
     
     // Create Transaction
     Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
+
+    // Reports (Laporan)
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/kasir', [ReportController::class, 'kasirReport'])->name('kasir');
+    });
     
     // View Own Transactions
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
