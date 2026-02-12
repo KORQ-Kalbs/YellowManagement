@@ -14,7 +14,7 @@
         </div>
     </x-slot>
 
-    <div class="space-y-6">
+    <div class="space-y-6" x-data="{ reportTitle: '', reportContent: '', reportFile: '' }">
         @if(session('success'))
             <div class="p-4 text-green-800 bg-green-100 rounded-lg dark:bg-green-900/30 dark:text-green-400">
                 {{ session('success') }}
@@ -67,17 +67,17 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center space-x-2">
-                                    <button class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50" title="View Report">
+                                    <button @click="reportTitle = 'Sales Report'; reportContent = 'Sales Report for Today\nTotal Sales: $1,250.00\nTransactions: 45\nAverage: $27.78'; $dispatch('open-modal', 'view-report-modal')" class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50" title="View Report">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
                                     </button>
-                                    <button class="inline-flex items-center px-3 py-1 text-sm font-medium text-green-600 transition-colors rounded-lg bg-green-50 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50" title="Download Report">
+                                    <a href="#" @click.prevent="reportFile = 'sales-report-today.pdf'; $dispatch('open-modal', 'download-report-modal')" class="inline-flex items-center px-3 py-1 text-sm font-medium text-green-600 transition-colors rounded-lg bg-green-50 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50" title="Download Report">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                         </svg>
-                                    </button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -106,29 +106,58 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center space-x-2">
-                                    <button class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50" title="View Report">
+                                    <button @click="$dispatch('open-modal', 'view-report-modal'); reportTitle = 'Transactions Report'; reportContent = 'Transactions Report for This Week\\nTotal Transactions: 156\\nTotal Amount: $4,890.50\\nAverage: $31.35'" class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50" title="View Report">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
                                     </button>
-                                    <button class="inline-flex items-center px-3 py-1 text-sm font-medium text-green-600 transition-colors rounded-lg bg-green-50 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50" title="Download Report">
+                                    <a href="#" @click.prevent="$dispatch('open-modal', 'download-report-modal'); reportFile = 'transactions-report-week.pdf'" class="inline-flex items-center px-3 py-1 text-sm font-medium text-green-600 transition-colors rounded-lg bg-green-50 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50" title="Download Report">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                         </svg>
-                                    </button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
-            <!-- Empty State -->
-            <div class="px-6 py-12 text-center">
-                <p class="text-lg text-gray-600 dark:text-gray-400">Sample report history data</p>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-500">Reports will appear here as you generate them</p>
-            </div>
         </x-card>
     </div>
+
+    <!-- View Report Modal -->
+    <x-modal name="view-report-modal" :show="false">
+        <div class="p-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4" x-text="reportTitle"></h3>
+            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6 max-h-96 overflow-y-auto">
+                <pre class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap" x-text="reportContent"></pre>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <x-secondary-button type="button" @click="$dispatch('close')">Close</x-secondary-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <!-- Download Report Modal -->
+    <x-modal name="download-report-modal" :show="false">
+        <div class="p-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Download Report</h3>
+            <p class="text-gray-700 dark:text-gray-300 mb-4">Ready to download: <span class="font-semibold" x-text="reportFile"></span></p>
+            <div class="flex justify-end space-x-3">
+                <x-secondary-button type="button" @click="$dispatch('close')">Cancel</x-secondary-button>
+                <x-primary-button type="button" @click="window.location.href='/download/' + reportFile; $dispatch('close')">Download PDF</x-primary-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('reportData', () => ({
+                reportTitle: '',
+                reportContent: '',
+                reportFile: ''
+            }));
+        });
+    </script>
 </x-app-layout>

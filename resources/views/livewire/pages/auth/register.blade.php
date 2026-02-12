@@ -42,11 +42,11 @@ new #[Layout('layouts.guest', ['title' => 'Create your account'])] class extends
     <form wire:submit="register" class="space-y-5">
         <!-- Name -->
         <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+            <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Full Name</label>
             <x-text-input 
                 wire:model="name" 
                 id="name" 
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-gray-50 placeholder-gray-400"
+                class="w-full px-4 py-3 placeholder-gray-400 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-gray-50"
                 type="text" 
                 name="name" 
                 placeholder="John Doe"
@@ -59,11 +59,11 @@ new #[Layout('layouts.guest', ['title' => 'Create your account'])] class extends
 
         <!-- Email Address -->
         <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Email</label>
             <x-text-input 
                 wire:model="email" 
                 id="email" 
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-gray-50 placeholder-gray-400"
+                class="w-full px-4 py-3 placeholder-gray-400 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-gray-50"
                 type="email" 
                 name="email" 
                 placeholder="you@email.com"
@@ -75,7 +75,7 @@ new #[Layout('layouts.guest', ['title' => 'Create your account'])] class extends
 
         <!-- Role Selection -->
         <div>
-            <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+            <label for="role" class="block mb-2 text-sm font-medium text-gray-700">Role</label>
             <select 
                 wire:model="role" 
                 id="role"
@@ -83,19 +83,19 @@ new #[Layout('layouts.guest', ['title' => 'Create your account'])] class extends
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-gray-50"
                 required
             >
-                <option value="kasir" selected>Cashier</option>
-                <option value="admin">Administrator</option>
+                <option value="kasir" selected>Kasir</option>
+                <option value="admin">Admin</option>
             </select>
             <x-input-error :messages="$errors->get('role')" class="mt-1" />
         </div>
 
         <!-- Password -->
         <div>
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-700">Password</label>
             <x-text-input 
                 wire:model="password" 
                 id="password" 
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-gray-50 placeholder-gray-400"
+                class="w-full px-4 py-3 placeholder-gray-400 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-gray-50"
                 type="password"
                 name="password"
                 placeholder="••••••••"
@@ -107,11 +107,11 @@ new #[Layout('layouts.guest', ['title' => 'Create your account'])] class extends
 
         <!-- Confirm Password -->
         <div>
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+            <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-700">Confirm Password</label>
             <x-text-input 
                 wire:model="password_confirmation" 
                 id="password_confirmation" 
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-gray-50 placeholder-gray-400"
+                class="w-full px-4 py-3 placeholder-gray-400 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-gray-50"
                 type="password"
                 name="password_confirmation"
                 placeholder="••••••••"
@@ -124,16 +124,16 @@ new #[Layout('layouts.guest', ['title' => 'Create your account'])] class extends
         <!-- Register Button -->
         <button 
             type="submit"
-            class="w-full py-3 px-4 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md"
+            class="w-full px-4 py-3 font-semibold text-white transition-colors duration-200 bg-yellow-400 rounded-lg shadow-md hover:bg-yellow-500"
         >
             Create Account
         </button>
 
         <!-- Login Link -->
-        <div class="text-center text-sm">
+        <div class="text-sm text-center">
             <span class="text-gray-600">Already have an account?</span>
             <a 
-                class="text-yellow-500 hover:text-yellow-600 font-medium ml-1" 
+                class="ml-1 font-medium text-yellow-500 hover:text-yellow-600" 
                 href="{{ route('login') }}" 
                 wire:navigate
             >

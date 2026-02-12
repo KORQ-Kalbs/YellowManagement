@@ -128,8 +128,8 @@
                     <a href="{{ route('admin.reports.index') }}" 
                        @class([
                            'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 space-x-3 text-white',
-                           'bg-white bg-opacity-20' => Request::routeIs('admin.reports.*'),
-                           'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.reports.*')
+                           'bg-white bg-opacity-20' => Request::routeIs('admin.reports.index'),
+                           'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.reports.index')
                        ])>
                         <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
