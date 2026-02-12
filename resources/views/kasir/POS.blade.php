@@ -80,9 +80,6 @@
                                 <select name="metode_pembayaran" required class="w-full p-2 border rounded">
                                     <option value="cash">Cash</option>
                                     <option value="qris">QRIS</option>
-                                    <option value="debit">Debit Card</option>
-                                    <option value="credit">Credit Card</option>
-                                    <option value="transfer">Transfer</option>
                                 </select>
                             </div>
 
