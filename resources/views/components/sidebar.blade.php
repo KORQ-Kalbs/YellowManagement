@@ -136,6 +136,17 @@
                         </svg>
                         <span x-show="sidebarOpen" x-transition>Reports</span>
                     </a>
+                    <a href="{{ route('admin.reports.history') }}" 
+                       @class([
+                           'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 space-x-3 text-white',
+                           'bg-white bg-opacity-20' => Request::routeIs('admin.reports.history'),
+                           'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.reports.history')
+                       ])>
+                        <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+                        </svg>
+                        <span x-show="sidebarOpen" x-transition>History</span>
+                    </a>
                 </div>
             </div>
 
@@ -223,7 +234,7 @@
 
     <!-- User Profile Section (Bottom) -->
     <div class="p-4 bg-white border-t border-yellow-600 bg-opacity-10">
-        <div class="flex items-center" :class="sidebarOpen ? 'space-x-3' : 'justify-center'">
+        <a href="{{ route('profile') }}" wire:navigate class="flex items-center w-full" :class="sidebarOpen ? 'space-x-3' : 'justify-center'">
             <div class="flex items-center justify-center flex-shrink-0 w-10 h-10 text-sm font-bold text-yellow-500 bg-white rounded-full">
                 {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 1)) }}
             </div>
@@ -231,6 +242,6 @@
                 <p class="text-sm font-semibold text-white truncate">{{ auth()->user()?->name ?? 'User' }}</p>
                 <p class="text-xs text-yellow-100 truncate">{{ ucfirst(auth()->user()?->role ?? 'guest') }}</p>
             </div>
-        </div>
+        </a>
     </div>
 </aside>

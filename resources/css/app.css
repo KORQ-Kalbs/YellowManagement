@@ -28,7 +28,71 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
-/* Smooth scrolling */
+/* Responsive Table Styles for Mobile */
+@media (max-width: 768px) {
+    /* Hide table headers on mobile */
+    table thead {
+        display: none;
+    }
+
+    /* Convert table rows to cards on mobile */
+    table tbody tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(229, 231, 235, 1);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        background-color: white;
+    }
+
+    table tbody tr:hover {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style each cell as a row within the card */
+    table tbody td {
+        display: block;
+        text-align: left;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(229, 231, 235, 1);
+    }
+
+    table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    /* Make action buttons full width on mobile */
+    table tbody td a,
+    table tbody td button {
+        display: inline-block;
+        width: auto;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+        table tbody tr {
+            background-color: rgba(31, 41, 55, 1);
+            border-color: rgba(75, 85, 99, 1);
+        }
+
+        table tbody td {
+            border-bottom-color: rgba(75, 85, 99, 1);
+        }
+    }
+}
+
+/* Scrollable table container on mobile - allow horizontal scroll only if needed */
+@media (max-width: 768px) {
+    .overflow-x-auto {
+        -webkit-overflow-scrolling: touch;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    table {
+        min-width: 100%;
+    }
+} /* Smooth scrolling */
 html {
     scroll-behavior: smooth;
 }

@@ -84,6 +84,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Reports (Laporan)
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/history', function () {
+            return view('admin.laporan.history');
+        })->name('history');
     });
     
     // POS for Admin (Testing)

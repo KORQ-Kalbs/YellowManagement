@@ -3,10 +3,10 @@
 <nav class="flex items-center justify-between px-4 py-3 lg:px-6 lg:py-4 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 sticky top-0 z-30 w-full">
     <!-- Left: Sidebar Toggle & Page Title -->
     <div class="flex items-center space-x-2 lg:space-x-4 min-w-0 flex-1">
-        <!-- Sidebar Toggle Button -->
+        <!-- Sidebar Toggle Button (hidden on mobile) -->
         <button @click="sidebarOpen = !sidebarOpen" 
-                class="p-2 transition-colors bg-gray-100 rounded-lg dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex-shrink-0"
-                title="Toggle Sidebar">
+            class="hidden lg:inline-flex p-2 transition-colors bg-gray-100 rounded-lg dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex-shrink-0"
+            title="Toggle Sidebar">
             <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>

@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Kasir Management</h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Manage cashier accounts and permissions</p>
+        <div class="flex items-center justify-between flex-wrap gap-4">
+            <div class="min-w-0">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white truncate">Kasir Management</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate">Manage cashier accounts and permissions</p>
             </div>
-            <button @click="$dispatch('open-modal', 'kasir-modal'); resetKasirForm()" class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-yellow-500 rounded-lg hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700">
+            <button @click="$dispatch('open-modal', 'kasir-modal'); resetKasirForm()" class="flex-shrink-0 w-full sm:w-auto inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-yellow-500 rounded-lg hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>

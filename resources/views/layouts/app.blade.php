@@ -48,8 +48,10 @@
           ">
         
         <div class="flex min-h-screen max-w-full overflow-x-hidden">
-            <!-- Sidebar -->
-            <x-sidebar />
+            <!-- Sidebar - Hidden on Mobile -->
+            <div class="hidden lg:block fixed top-0 left-0 z-50 h-full">
+                <x-sidebar />
+            </div>
 
             <!-- Main Content Area -->
             <div class="flex flex-col w-full min-h-screen transition-all duration-300 lg:ml-0"
