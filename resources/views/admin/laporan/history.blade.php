@@ -5,12 +5,6 @@
                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white truncate">Reports History</h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate">View all reports generated</p>
             </div>
-            <a href="{{ route('admin.reports.index') }}" class="flex-shrink-0 inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-yellow-500 rounded-lg hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Generate Report
-            </a>
         </div>
     </x-slot>
 

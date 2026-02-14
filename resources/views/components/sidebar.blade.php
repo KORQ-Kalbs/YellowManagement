@@ -99,8 +99,8 @@
                 <button @click="posOpen = !posOpen"
                    @class([
                        'w-full flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-200 space-x-3 text-white group',
-                       'bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.pos', 'admin.reports.*'),
-                       'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.pos', 'admin.reports.*')
+                       'bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.pos', 'admin.transaksi.*'),
+                       'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.pos', 'admin.transaksi.*')
                    ])
                    :title="!sidebarOpen ? 'POS' : ''">
                     <svg class="flex-shrink-0 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -123,8 +123,43 @@
                         <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
                         </svg>
-                        <span x-show="sidebarOpen" x-transition>POS</span>
+                        <span x-show="sidebarOpen" x-transition>Point of Sale</span>
                     </a>
+                    
+                    <a href="{{ route('admin.transaksi.index') }}" 
+                       @class([
+                           'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 space-x-3 text-white',
+                           'bg-white bg-opacity-20' => Request::routeIs('admin.transaksi.*'),
+                           'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.transaksi.*')
+                       ])>
+                        <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+                        </svg>
+                        <span x-show="sidebarOpen" x-transition>Transaction History</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Reports Dropdown -->
+            <div>
+                <button @click="adminReportsOpen = !adminReportsOpen"
+                   @class([
+                       'w-full flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-200 space-x-3 text-white group',
+                       'bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.reports.*'),
+                       'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.reports.*')
+                   ])
+                   :title="!sidebarOpen ? 'Reports' : ''">
+                    <svg class="flex-shrink-0 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    <span x-show="sidebarOpen" x-transition class="flex-1 text-left whitespace-nowrap">Reports</span>
+                    <svg x-show="sidebarOpen" :class="adminReportsOpen && 'rotate-180'" class="flex-shrink-0 w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                </button>
+                
+                <!-- Dropdown Items -->
+                <div x-show="adminReportsOpen" x-transition class="mt-1 ml-4 space-y-1">
                     <a href="{{ route('admin.reports.index') }}" 
                        @class([
                            'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 space-x-3 text-white',
@@ -134,18 +169,7 @@
                         <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
                         </svg>
-                        <span x-show="sidebarOpen" x-transition>Reports</span>
-                    </a>
-                    <a href="{{ route('admin.reports.history') }}" 
-                       @class([
-                           'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 space-x-3 text-white',
-                           'bg-white bg-opacity-20' => Request::routeIs('admin.reports.history'),
-                           'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.reports.history')
-                       ])>
-                        <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
-                        </svg>
-                        <span x-show="sidebarOpen" x-transition>History</span>
+                        <span x-show="sidebarOpen" x-transition>Sales Reports</span>
                     </a>
                 </div>
             </div>
@@ -175,8 +199,8 @@
                 <button @click="posOpen = !posOpen"
                    @class([
                        'w-full flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-200 space-x-3 text-white group',
-                       'bg-white bg-opacity-20 shadow-lg' => Request::routeIs('kasir.pos', 'kasir.transaksi.*', 'kasir.reports.*'),
-                       'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('kasir.pos', 'kasir.transaksi.*', 'kasir.reports.*')
+                       'bg-white bg-opacity-20 shadow-lg' => Request::routeIs('kasir.pos', 'kasir.transaksi.*'),
+                       'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('kasir.pos', 'kasir.transaksi.*')
                    ])
                    :title="!sidebarOpen ? 'POS' : ''">
                     <svg class="flex-shrink-0 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -214,7 +238,29 @@
                         </svg>
                         <span x-show="sidebarOpen" x-transition>Transaction History</span>
                     </a>
+                </div>
+            </div>
 
+            <!-- Reports Dropdown -->
+            <div>
+                <button @click="kasirReportsOpen = !kasirReportsOpen"
+                   @class([
+                       'w-full flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-200 space-x-3 text-white group',
+                       'bg-white bg-opacity-20 shadow-lg' => Request::routeIs('kasir.reports.*'),
+                       'hover:bg-white hover:bg-opacity-10' => !Request::routeIs('kasir.reports.*')
+                   ])
+                   :title="!sidebarOpen ? 'Reports' : ''">
+                    <svg class="flex-shrink-0 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    <span x-show="sidebarOpen" x-transition class="flex-1 text-left whitespace-nowrap">Reports</span>
+                    <svg x-show="sidebarOpen" :class="kasirReportsOpen && 'rotate-180'" class="flex-shrink-0 w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                </button>
+                
+                <!-- Dropdown Items -->
+                <div x-show="kasirReportsOpen" x-transition class="mt-1 ml-4 space-y-1">
                     <!-- Reports -->
                     <a href="{{ route('kasir.reports.index') }}" 
                        @class([
@@ -225,7 +271,7 @@
                         <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
                         </svg>
-                        <span x-show="sidebarOpen" x-transition>Reports</span>
+                        <span x-show="sidebarOpen" x-transition>Sales Reports</span>
                     </a>
                 </div>
             </div>
