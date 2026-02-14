@@ -114,9 +114,15 @@ class TransaksiController extends Controller
 
             DB::commit();
 
-            return redirect()
-                ->route('kasir.pos')
-                ->with('success', "Transaksi berhasil! Invoice: {$transaksi->no_invoice}. Kembalian: Rp " . number_format($kembalian, 0, ',', '.'));
+            // Store transaction ID in session to show receipt popup
+            session(['show_receipt' => $transaksi->id]);
+
+            // Redirect based on user role
+            if (auth()->user()->role === 'admin') {
+                return redirect()->route('admin.pos');
+            }
+            
+            return redirect()->route('kasir.pos');
 
         } catch (\Exception $e) {
             DB::rollback();
