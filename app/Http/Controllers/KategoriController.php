@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use App\Services\CacheService;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
     public function index()
     {
-        $kategoris = Kategori::withCount('products')->get();
+        // Optimize: Use cache for categories (rarely change)
+        $kategoris = CacheService::getKategorisWithCount();
+        
         return view('admin.kategori.index', compact('kategoris'));
     }
 
@@ -20,6 +23,9 @@ class KategoriController extends Controller
         ]);
 
         Kategori::create($validated);
+
+        // Clear category cache
+        CacheService::clearKategoriCache();
 
         return redirect()->route('admin.kategoris.index')->with('success', 'Category created successfully');
     }
@@ -32,12 +38,18 @@ class KategoriController extends Controller
 
         $kategori->update($validated);
 
+        // Clear category cache
+        CacheService::clearKategoriCache();
+
         return redirect()->route('admin.kategoris.index')->with('success', 'Category updated successfully');
     }
 
     public function destroy(Kategori $kategori)
     {
         $kategori->delete();
+
+        // Clear category cache
+        CacheService::clearKategoriCache();
 
         return redirect()->route('admin.kategoris.index')->with('success', 'Category deleted successfully');
     }

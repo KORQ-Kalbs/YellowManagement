@@ -17,32 +17,46 @@ class KasirController extends Controller
         $today = today();
         $userId = auth()->id();
 
-        // Get last 7 days sales data for chart
+        // Optimize: Single query for last 7 days sales data using GROUP BY
+        $salesDataRaw = Transaksi::selectRaw('DATE(tanggal_transaksi) as date, SUM(total_harga) as total')
+            ->where('user_id', $userId)
+            ->where('status', 'completed')
+            ->whereBetween('tanggal_transaksi', [today()->subDays(6)->startOfDay(), today()->endOfDay()])
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('total', 'date');
+
+        // Build chart data
         $salesData = [];
         $labels = [];
         for ($i = 6; $i >= 0; $i--) {
             $date = today()->subDays($i);
             $labels[] = $date->format('D');
-            $salesData[] = Transaksi::where('user_id', $userId)
-                ->whereDate('tanggal_transaksi', $date)
-                ->where('status', 'completed')
-                ->sum('total_harga');
+            $salesData[] = $salesDataRaw[$date->format('Y-m-d')] ?? 0;
         }
 
+        // Optimize: Combine today's stats in single query
+        $todayStats = Transaksi::selectRaw('
+                COUNT(*) as transaksi_count,
+                SUM(CASE WHEN status = "completed" THEN total_harga ELSE 0 END) as pendapatan
+            ')
+            ->where('user_id', $userId)
+            ->whereDate('tanggal_transaksi', $today)
+            ->first();
+
         $data = [
-            'transaksi_hari_ini' => Transaksi::where('user_id', $userId)
-                ->whereDate('tanggal_transaksi', $today)
-                ->count(),
+            'transaksi_hari_ini' => $todayStats->transaksi_count ?? 0,
+            'pendapatan_hari_ini' => $todayStats->pendapatan ?? 0,
                 
-            'pendapatan_hari_ini' => Transaksi::where('user_id', $userId)
-                ->whereDate('tanggal_transaksi', $today)
-                ->where('status', 'completed')
-                ->sum('total_harga'),
-                
-            'transaksi_terbaru' => Transaksi::where('user_id', $userId)
-                ->with(['details.product', 'pembayaran'])
+            'transaksi_terbaru' => Transaksi::select('id', 'no_invoice', 'tanggal_transaksi', 'total_harga', 'status', 'user_id')
+                ->where('user_id', $userId)
+                ->with([
+                    'details:id,transaksi_id,product_id,jumlah,subtotal',
+                    'details.product:id,nama_produk,harga',
+                    'pembayaran:id,transaksi_id,metode_pembayaran,jumlah_pembayaran'
+                ])
                 ->latest('tanggal_transaksi')
-                ->take(5)
+                ->limit(5)
                 ->get(),
             
             'salesData' => $salesData,
@@ -57,12 +71,21 @@ class KasirController extends Controller
      */
     public function pos(): View
     {
-        $products = Product::with('kategori')
+        // Optimize: Select only needed columns and use cache for categories
+        $products = Product::select('id', 'nama_produk', 'kategori_id', 'harga', 'stok', 'status')
+            ->with('kategori:id,nama_kategori')
             ->where('status', 'active')
             ->where('stok', '>', 0)
+            ->orderBy('nama_produk')
             ->get();
 
-        $kategoris = Kategori::withCount('products')->get();
+        // Use cached categories from AppServiceProvider
+        $kategoris = cache()->remember('kategoris_with_count', 3600, function () {
+            return Kategori::select('id', 'nama_kategori')
+                ->withCount('products')
+                ->orderBy('nama_kategori')
+                ->get();
+        });
 
         return view('kasir.POS', compact('products', 'kategoris'));
     }

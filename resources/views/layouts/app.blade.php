@@ -29,7 +29,9 @@
     <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 overflow-x-hidden" 
           x-data="{ 
               sidebarOpen: window.innerWidth >= 1024,
-              theme: localStorage.getItem('theme') || 'light' 
+              theme: localStorage.getItem('theme') || 'light',
+              sidebarWidth: localStorage.getItem('sidebarWidth') || 224,
+              isResizing: false
           }" 
           x-init="
               $watch('theme', val => { 
@@ -45,6 +47,24 @@
                       sidebarOpen = true;
                   }
               });
+              
+              // Handle sidebar resizing
+              document.addEventListener('mousemove', (e) => {
+                  if (isResizing) {
+                      let newWidth = e.clientX;
+                      if (newWidth >= 180 && newWidth <= 400) {
+                          sidebarWidth = newWidth;
+                      }
+                  }
+              });
+              
+              document.addEventListener('mouseup', () => {
+                  if (isResizing) {
+                      isResizing = false;
+                      document.body.style.cursor = '';
+                      document.body.style.userSelect = '';
+                  }
+              });
           ">
         
         <div class="flex min-h-screen max-w-full overflow-x-hidden">
@@ -55,7 +75,7 @@
 
             <!-- Main Content Area -->
             <div class="flex flex-col w-full min-h-screen transition-all duration-300 lg:ml-0"
-                 :class="sidebarOpen && window.innerWidth >= 1024 ? 'lg:ml-64' : 'lg:ml-20'">
+                 :style="sidebarOpen && window.innerWidth >= 1024 ? `margin-left: ${sidebarWidth}px` : (window.innerWidth >= 1024 ? 'margin-left: 80px' : '')">
                 <!-- Navbar -->
                 <x-navbar />
 

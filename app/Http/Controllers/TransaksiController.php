@@ -19,23 +19,25 @@ class TransaksiController extends Controller
      */
     public function index(): View
     {
+        // Optimize: Select only needed columns to reduce memory
+        $query = Transaksi::select('id', 'no_invoice', 'user_id', 'tanggal_transaksi', 'total_harga', 'status')
+            ->with([
+                'details:id,transaksi_id,product_id,jumlah,subtotal',
+                'details.product:id,nama_produk',
+                'user:id,name',
+                'pembayaran:id,transaksi_id,metode_pembayaran,jumlah_pembayaran'
+            ])
+            ->latest('tanggal_transaksi');
+
         // Check if user is admin or kasir
-        if (auth()->user()->role === 'admin') {
-            // Admin can see all transactions
-            $transaksis = Transaksi::with(['details.product', 'user', 'pembayaran'])
-                ->latest('tanggal_transaksi')
-                ->paginate(15);
-            
-            return view('admin.transaksi.index', compact('transaksis'));
-        } else {
-            // Kasir can only see their own transactions
-            $transaksis = Transaksi::with(['details.product', 'user', 'pembayaran'])
-                ->where('user_id', auth()->id())
-                ->latest('tanggal_transaksi')
-                ->paginate(15);
-            
-            return view('kasir.transaksi.index', compact('transaksis'));
+        if (auth()->user()->role !== 'admin') {
+            $query->where('user_id', auth()->id());
         }
+
+        $transaksis = $query->paginate(20);
+        
+        $view = auth()->user()->role === 'admin' ? 'admin.transaksi.index' : 'kasir.transaksi.index';
+        return view($view, compact('transaksis'));
     }
 
     /**

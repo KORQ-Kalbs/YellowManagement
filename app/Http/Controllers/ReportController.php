@@ -156,20 +156,22 @@ class ReportController extends Controller
                 $endDate = $selectedDate->copy();
         }
         
-        return Product::with('kategori')
-            ->withCount(['detailTransaksis as sold_count' => function($query) use ($isKasir, $userId, $startDate, $endDate) {
-                $query->select(DB::raw('SUM(jumlah)'))
-                    ->whereHas('transaksi', function($q) use ($isKasir, $userId, $startDate, $endDate) {
-                        $q->whereBetween('tanggal_transaksi', [$startDate, $endDate])
-                          ->where('status', 'completed');
-                        if ($isKasir) {
-                            $q->where('user_id', $userId);
-                        }
-                    });
-            }])
-            ->having('sold_count', '>', 0)
+        // Optimize: Use direct join instead of subquery for better performance
+        $query = Product::select('products.id', 'products.nama_produk', 'products.kategori_id', 'products.harga')
+            ->selectRaw('SUM(detail_transaksis.jumlah) as sold_count')
+            ->join('detail_transaksis', 'products.id', '=', 'detail_transaksis.product_id')
+            ->join('transaksis', 'detail_transaksis.transaksi_id', '=', 'transaksis.id')
+            ->whereBetween('transaksis.tanggal_transaksi', [$startDate, $endDate])
+            ->where('transaksis.status', 'completed');
+        
+        if ($isKasir) {
+            $query->where('transaksis.user_id', $userId);
+        }
+        
+        return $query->with('kategori:id,nama_kategori')
+            ->groupBy('products.id', 'products.nama_produk', 'products.kategori_id', 'products.harga')
             ->orderBy('sold_count', 'desc')
-            ->take(5)
+            ->limit(5)
             ->get();
     }
 

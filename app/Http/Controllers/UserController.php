@@ -16,10 +16,12 @@ class UserController extends Controller
      */
     public function index(): View
     {
-        $kasirs = User::where('role', 'kasir')
+        // Optimize: Select only needed columns and paginate
+        $kasirs = User::select('id', 'name', 'email', 'role', 'created_at')
+            ->where('role', 'kasir')
             ->withCount('transaksis')
             ->latest()
-            ->get();
+            ->paginate(20);
 
         return view('admin.kelola_kasir.index', compact('kasirs'));
     }

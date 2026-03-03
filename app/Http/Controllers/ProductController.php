@@ -14,11 +14,16 @@ class ProductController extends Controller
 {
     public function index(): View
     {
-        $products = Product::with('kategori')
+        // Optimize: Select only needed columns
+        $products = Product::select('id', 'nama_produk', 'kategori_id', 'harga', 'stok', 'status', 'created_at')
+            ->with('kategori:id,nama_kategori')
             ->latest()
-            ->paginate(10);
+            ->paginate(15);
         
-        $kategoris = Kategori::all();
+        // Use cached categories
+        $kategoris = cache()->remember('kategoris_all', 3600, function () {
+            return Kategori::select('id', 'nama_kategori')->orderBy('nama_kategori')->get();
+        });
 
         return view('admin.produk.index', compact('products', 'kategoris'));
     }
@@ -28,7 +33,10 @@ class ProductController extends Controller
      */
     public function create(): View
     {
-        $kategoris = Kategori::all();
+        // Use cached categories
+        $kategoris = cache()->remember('kategoris_all', 3600, function () {
+            return Kategori::select('id', 'nama_kategori')->orderBy('nama_kategori')->get();
+        });
         return view('products.create', compact('kategoris'));
     }
 
@@ -63,7 +71,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product): View
     {
-        $kategoris = Kategori::all();
+        // Use cached categories
+        $kategoris = cache()->remember('kategoris_all', 3600, function () {
+            return Kategori::select('id', 'nama_kategori')->orderBy('nama_kategori')->get();
+        });
         return view('products.edit', compact('product', 'kategoris'));
     }
 
