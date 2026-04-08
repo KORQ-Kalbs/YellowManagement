@@ -150,55 +150,54 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const ctx = document.getElementById('salesChart').getContext('2d');
-        const isDark = document.documentElement.classList.contains('dark');
-        
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: @json($labels),
-                datasets: [{
-                    label: 'Penjualan (Rp)',
-                    data: @json($salesData),
-                    borderColor: 'rgb(234, 179, 8)',
-                    backgroundColor: 'rgba(234, 179, 8, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: isDark ? '#9CA3AF' : '#374151'
-                        }
-                    }
+        function initDashboardChart() {
+            const canvas = document.getElementById('salesChart');
+            if (!canvas || typeof Chart === 'undefined') return;
+
+            if (canvas._chartInstance) {
+                canvas._chartInstance.destroy();
+            }
+
+            const isDark = document.documentElement.classList.contains('dark');
+
+            canvas._chartInstance = new Chart(canvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: @json($labels ?? []),
+                    datasets: [{
+                        label: 'Penjualan (Rp)',
+                        data: @json($salesData ?? []),
+                        borderColor: 'rgb(234, 179, 8)',
+                        backgroundColor: 'rgba(234, 179, 8, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: isDark ? '#9CA3AF' : '#374151',
-                            callback: function(value) {
-                                return 'Rp ' + value.toLocaleString('id-ID');
-                            }
-                        },
-                        grid: {
-                            color: isDark ? '#374151' : '#E5E7EB'
-                        }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: isDark ? '#9CA3AF' : '#374151' } }
                     },
-                    x: {
-                        ticks: {
-                            color: isDark ? '#9CA3AF' : '#374151'
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: isDark ? '#9CA3AF' : '#374151',
+                                callback: value => 'Rp ' + value.toLocaleString('id-ID')
+                            },
+                            grid: { color: isDark ? '#374151' : '#E5E7EB' }
                         },
-                        grid: {
-                            color: isDark ? '#374151' : '#E5E7EB'
+                        x: {
+                            ticks: { color: isDark ? '#9CA3AF' : '#374151' },
+                            grid: { color: isDark ? '#374151' : '#E5E7EB' }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
+
+        window.addEventListener('load', initDashboardChart);
+        document.addEventListener('livewire:navigated', initDashboardChart);
     </script>
 </x-app-layout>
