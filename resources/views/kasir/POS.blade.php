@@ -205,6 +205,14 @@
                                 Batalkan Transaksi
                             </button>
                         </form>
+
+                        <form action="{{ route(auth()->user()->role === 'admin' ? 'admin.transaksi.suspend' : 'kasir.transaksi.suspend', $pendingTx->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="w-full px-4 py-2 text-sm font-semibold text-yellow-700 bg-yellow-100 border border-yellow-300 rounded hover:bg-yellow-200">
+                                🕐 Simpan Draft (Tunda)
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -375,7 +383,7 @@
 
     @if(session('show_receipt'))
         @php
-            $transaksi = \App\Models\Transaksi::with(['details.product.kategori', 'pembayaran', 'user'])->find(session('show_receipt'));
+            $transaksi = \App\Models\Transaksi::with(['details.product.kategori', 'pembayaran', 'user', 'discountEvent'])->find(session('show_receipt'));
             session()->forget('show_receipt');
         @endphp
         
@@ -442,7 +450,22 @@
 
                         <!-- Totals -->
                         <div class="">
-                            <div class="flex justify-between text-base font-bold mb-2">
+                            @php
+                                $subtotalBruto = $transaksi->details->sum('subtotal');
+                                $discountPct = $transaksi->discountEvent ? floatval($transaksi->discountEvent->discount_percentage) : 0;
+                                $discountAmount = $subtotalBruto - $transaksi->total_harga;
+                            @endphp
+                            <div class="flex justify-between text-xs text-gray-700 mb-1">
+                                <span>SUBTOTAL</span>
+                                <span>Rp {{ number_format($subtotalBruto, 0, ',', '.') }}</span>
+                            </div>
+                            @if($discountPct > 0)
+                            <div class="flex justify-between text-xs text-red-600 mb-2">
+                                <span>DISKON ({{ number_format($discountPct, 0) }}%{{ $transaksi->discountEvent ? ' - '.$transaksi->discountEvent->name : '' }})</span>
+                                <span>- Rp {{ number_format($discountAmount, 0, ',', '.') }}</span>
+                            </div>
+                            @endif
+                            <div class="flex justify-between text-base font-bold mb-2 border-t border-gray-300 pt-2">
                                 <span>TOTAL</span>
                                 <span>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</span>
                             </div>

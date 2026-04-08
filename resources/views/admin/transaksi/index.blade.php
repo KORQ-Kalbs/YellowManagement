@@ -106,11 +106,11 @@
                                 </x-table-cell>
                                 <x-table-cell>
                                     @if($transaksi->status === 'completed')
-                                        <x-badge type="completed">✓ Completed</x-badge>
+                                        <x-badge type="completed">✓ Selesai</x-badge>
                                     @elseif($transaksi->status === 'pending')
-                                        <x-badge type="pending">⏳ Pending</x-badge>
+                                        <x-badge type="pending">⏳ Menunggu</x-badge>
                                     @else
-                                        <x-badge type="cancelled">✕ Cancelled</x-badge>
+                                        <x-badge type="cancelled">✕ Dibatalkan</x-badge>
                                     @endif
                                 </x-table-cell>
                                 <x-table-cell>

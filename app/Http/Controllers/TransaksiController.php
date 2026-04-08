@@ -20,12 +20,13 @@ class TransaksiController extends Controller
     public function index(): View
     {
         // Optimize: Select only needed columns to reduce memory
-        $query = Transaksi::select('id', 'no_invoice', 'user_id', 'tanggal_transaksi', 'total_harga', 'status')
+        $query = Transaksi::select('id', 'no_invoice', 'user_id', 'tanggal_transaksi', 'total_harga', 'status', 'discount_event_id')
             ->with([
                 'details:id,transaksi_id,product_id,jumlah,subtotal',
                 'details.product:id,nama_produk',
                 'user:id,name',
-                'pembayaran:id,transaksi_id,metode_pembayaran,jumlah_pembayaran'
+                'pembayaran:id,transaksi_id,metode_pembayaran,jumlah_pembayaran',
+                'discountEvent:id,name,discount_percentage',
             ])
             ->latest('tanggal_transaksi');
 
@@ -184,6 +185,28 @@ class TransaksiController extends Controller
     }
 
     /**
+     * Suspend (park) transaksi - keep as pending, just dismiss the modal.
+     */
+    public function suspend($id): RedirectResponse
+    {
+        try {
+            $transaksi = Transaksi::findOrFail($id);
+
+            // Transaction stays 'pending' — just clear the popup session
+            session()->forget('pending_transaksi');
+
+            $route = auth()->user()->role === 'admin' ? 'admin.pos' : 'kasir.pos';
+
+            return redirect()
+                ->route($route)
+                ->with('success', 'Transaksi ditunda. Dapat dilanjutkan dari riwayat transaksi.');
+        } catch (\Exception $e) {
+            $route = auth()->user()->role === 'admin' ? 'admin.pos' : 'kasir.pos';
+            return redirect()->route($route)->with('error', 'Gagal menunda transaksi: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Batalkan transaksi.
      */
     public function batalkan($id): RedirectResponse
@@ -220,7 +243,7 @@ class TransaksiController extends Controller
      */
     public function show($id): View
     {
-        $transaksi = Transaksi::with(['details.product', 'user', 'pembayaran'])
+        $transaksi = Transaksi::with(['details.product', 'user', 'pembayaran', 'discountEvent'])
             ->findOrFail($id);
 
         // Check if user is admin or kasir viewing their own transaction

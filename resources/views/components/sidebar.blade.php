@@ -37,7 +37,7 @@
             </div>
             <div x-show="sidebarOpen" x-transition class="overflow-hidden whitespace-nowrap">
                 <h1 class="text-[14px] font-semibold leading-[1.5] text-white truncate">Yellow Drink</h1>
-                <p class="text-[12px] font-medium leading-[1.5] text-yellow-100">POS System</p>
+                <p class="text-[12px] font-medium leading-[1.5] text-yellow-100">Money Manage</p>
             </div>
         </div>
     </div>

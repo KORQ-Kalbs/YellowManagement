@@ -209,7 +209,22 @@
 
                     <!-- Totals -->
                     <div class="">
-                        <div class="flex justify-between text-base font-bold mb-2">
+                        @php
+                            $subtotalBruto = $transaksi->details->sum('subtotal');
+                            $discountPct = $transaksi->discountEvent ? floatval($transaksi->discountEvent->discount_percentage) : 0;
+                            $discountAmount = $subtotalBruto - $transaksi->total_harga;
+                        @endphp
+                        <div class="flex justify-between text-xs text-gray-700 mb-1">
+                            <span>SUBTOTAL</span>
+                            <span>Rp {{ number_format($subtotalBruto, 0, ',', '.') }}</span>
+                        </div>
+                        @if($discountPct > 0)
+                        <div class="flex justify-between text-xs text-red-600 mb-2">
+                            <span>DISKON ({{ number_format($discountPct, 0) }}%{{ $transaksi->discountEvent ? ' - '.$transaksi->discountEvent->name : '' }})</span>
+                            <span>- Rp {{ number_format($discountAmount, 0, ',', '.') }}</span>
+                        </div>
+                        @endif
+                        <div class="flex justify-between text-base font-bold mb-2 border-t border-gray-300 pt-2">
                             <span>TOTAL</span>
                             <span>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</span>
                         </div>

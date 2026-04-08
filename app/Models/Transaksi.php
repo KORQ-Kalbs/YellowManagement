@@ -67,6 +67,14 @@ class Transaksi extends Model
     }
 
     /**
+     * Relasi ke DiscountEvent.
+     */
+    public function discountEvent()
+    {
+        return $this->belongsTo(DiscountEvent::class, 'discount_event_id');
+    }
+
+    /**
      * Hitung total dari detail transaksi
      */
     public function hitungTotal()
