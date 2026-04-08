@@ -18,7 +18,7 @@
 
     <div class="space-y-8">
         <!-- Key Metrics -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Total Products -->
             <x-stat-card
                 label="Total Produk"
@@ -48,7 +48,7 @@
             <!-- Total Transactions -->
             <x-stat-card
                 label="Total Transaksi"
-                :value="\App\Models\Transaksi::count()"
+                :value="\App\Models\Transaksi::where('status', 'completed')->count()"
                 color="yellow"
             >
                 <x-slot name="icon">
@@ -58,15 +58,59 @@
                 </x-slot>
             </x-stat-card>
 
-            <!-- Total Revenue -->
+            <!-- Total Produk Terjual -->
             <x-stat-card
-                label="Total Pendapatan"
-                :value="'Rp ' . number_format(\App\Models\Transaksi::sum('total_harga'), 0, ',', '.')"
+                label="Produk Terjual"
+                :value="number_format($totalProdukTerjual ?? 0, 0, ',', '.')"
                 color="purple"
             >
                 <x-slot name="icon">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                    </svg>
+                </x-slot>
+            </x-stat-card>
+        </div>
+
+        <!-- Financial Metrics -->
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mt-8 mb-4">Ringkasan Keuangan</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Pendapatan Kotor -->
+            <x-stat-card
+                label="Pendapatan Kotor"
+                :value="'Rp ' . number_format($totalPendapatan ?? 0, 0, ',', '.')"
+                color="blue"
+            >
+                <x-slot name="icon">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" />
+                    </svg>
+                </x-slot>
+            </x-stat-card>
+
+            <!-- Pengeluaran -->
+            <x-stat-card
+                label="Pengeluaran"
+                :value="'Rp ' . number_format($pengeluaran ?? 0, 0, ',', '.')"
+                color="red"
+            >
+                <x-slot name="icon">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd" />
+                    </svg>
+                </x-slot>
+            </x-stat-card>
+
+            <!-- Pendapatan Bersih -->
+            <x-stat-card
+                label="Pendapatan Bersih"
+                :value="'Rp ' . number_format($pendapatanBersih ?? 0, 0, ',', '.')"
+                color="green"
+            >
+                <x-slot name="icon">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
+                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
                     </svg>
                 </x-slot>
             </x-stat-card>

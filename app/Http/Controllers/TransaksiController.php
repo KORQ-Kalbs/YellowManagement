@@ -75,21 +75,34 @@ class TransaksiController extends Controller
                 ];
             }
 
-            // Validasi jumlah bayar
-            $kembalian = $validated['jumlah_bayar'] - $totalHarga;
-            
-            if ($validated['jumlah_bayar'] < $totalHarga) {
-                DB::rollback();
-                return back()
-                    ->with('error', 'Jumlah bayar kurang dari total harga')
-                    ->withInput();
+            // Apply discount if provided
+            if (!empty($validated['discount_event_id'])) {
+                $discountEvent = \App\Models\DiscountEvent::active()->find($validated['discount_event_id']);
+                if ($discountEvent) {
+                    $discountAmount = ($totalHarga * $discountEvent->discount_percentage) / 100;
+                    $totalHarga -= $discountAmount;
+                }
+            }
+
+            // Validasi jumlah bayar hanya untuk cash
+            if ($validated['metode_pembayaran'] === 'cash') {
+                $jumlahBayarInput = $validated['jumlah_bayar'] ?? 0;
+                if ($jumlahBayarInput < $totalHarga) {
+                    DB::rollback();
+                    return back()
+                        ->with('error', 'Jumlah bayar kurang dari total harga')
+                        ->withInput();
+                }
+            } else {
+                $validated['jumlah_bayar'] = $totalHarga; // Automatically set full payment for non-cash methods
             }
 
             // Create Transaksi
             $transaksi = Transaksi::create([
                 'user_id' => auth()->id(),
+                'discount_event_id' => $validated['discount_event_id'] ?? null,
                 'total_harga' => $totalHarga,
-                'status' => 'completed', // Changed from 'selesai' to match enum
+                'status' => 'pending', 
                 'tanggal_transaksi' => now(),
             ]);
 
@@ -106,18 +119,18 @@ class TransaksiController extends Controller
                 $itemData['product']->decrement('stok', $itemData['jumlah']);
             }
 
-            // Create Pembayaran
+            // Create Pembayaran (Default to input for cash, full price otherwise)
             Pembayaran::create([
                 'transaksi_id' => $transaksi->id,
                 'metode_pembayaran' => $validated['metode_pembayaran'],
-                'jumlah_pembayaran' => $validated['jumlah_bayar'],
+                'jumlah_pembayaran' => $validated['metode_pembayaran'] === 'cash' ? $validated['jumlah_bayar'] : $transaksi->total_harga,
                 'tanggal_pembayaran' => now(),
             ]);
 
             DB::commit();
 
-            // Store transaction ID in session to show receipt popup
-            session(['show_receipt' => $transaksi->id]);
+            // Store transaction ID in session to show pending popup
+            session(['pending_transaksi' => $transaksi->id]);
 
             // Redirect based on user role
             if (auth()->user()->role === 'admin') {
@@ -137,7 +150,7 @@ class TransaksiController extends Controller
     /**
      * Ubah status transaksi menjadi selesai.
      */
-    public function selesai($id): RedirectResponse
+    public function selesai(Request $request, $id): RedirectResponse
     {
         try {
             $transaksi = Transaksi::findOrFail($id);
@@ -146,10 +159,20 @@ class TransaksiController extends Controller
             if (!$transaksi->pembayaran) {
                 return back()->with('error', 'Transaksi belum dibayar');
             }
+            
+            // Allow dynamic cash amount tracking if passed from POS popup
+            if ($request->has('jumlah_bayar_diterima') && $transaksi->pembayaran->metode_pembayaran == 'cash') {
+                 $transaksi->pembayaran->update([
+                      'jumlah_pembayaran' => $request->jumlah_bayar_diterima
+                 ]);
+            }
 
             $transaksi->update([
                 'status' => 'completed'
             ]);
+            
+            session()->forget('pending_transaksi');
+            session(['show_receipt' => $transaksi->id]);
 
             return redirect()
                 ->back()
@@ -180,6 +203,7 @@ class TransaksiController extends Controller
             ]);
 
             DB::commit();
+            session()->forget('pending_transaksi');
 
             return redirect()
                 ->back()

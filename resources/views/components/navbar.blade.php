@@ -25,16 +25,20 @@
             <span class="font-bold text-gray-900 dark:text-white truncate" style="font-size: 14px;">
                 @if(Request::routeIs('dashboard', 'admin.dashboard', 'kasir.dashboard'))
                     Dashboard
-                @elseif(Request::routeIs('admin.products.*'))
-                    Data Produk
-                @elseif(Request::routeIs('admin.kategoris.*'))
-                    Data Kategori
+
+                <!-- Sales -->
                 @elseif(Request::routeIs('admin.pos', 'kasir.pos'))
                     Penjualan
                 @elseif(Request::routeIs('admin.transaksi.*', 'kasir.transaksi.*'))
                     Histori Transaksi
                 @elseif(Request::routeIs('admin.reports.*', 'kasir.reports.*'))
                     Laporan
+
+                <!-- Data -->
+                @elseif(Request::routeIs('admin.products.*'))
+                    Data Produk
+                @elseif(Request::routeIs('admin.kategoris.*'))
+                    Data Kategori
                 @elseif(Request::routeIs('admin.kasir.*'))
                     Data Karyawan
                 @elseif(Request::routeIs('profile'))

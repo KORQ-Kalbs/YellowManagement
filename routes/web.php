@@ -47,7 +47,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
                 ->sum('total_harga');
         }
         
-        return view('dashboard', compact('salesData', 'labels'));
+        $totalProdukTerjual = \App\Models\DetailTransaksi::whereHas('transaksi', function($q) {
+            $q->where('status', 'completed');
+        })->sum('jumlah');
+
+        $totalPendapatan = \App\Models\Transaksi::where('status', 'completed')->sum('total_harga');
+        $pengeluaran = 0; // TODO: Implement pengeluaran calculation
+        $pendapatanBersih = $totalPendapatan - $pengeluaran;
+        
+        return view('admin.dashboard', compact('salesData', 'labels', 'totalProdukTerjual', 'totalPendapatan', 'pengeluaran', 'pendapatanBersih'));
     })->name('dashboard');
     
     // Product Management (Produk)
@@ -57,6 +65,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Kategori Management
     Route::get('/kategoris', [KategoriController::class, 'index'])->name('kategoris.index');
     Route::resource('kategoris', KategoriController::class)->except(['index']);
+    
+    // Discount Event Management
+    Route::resource('event-diskon', \App\Http\Controllers\DiscountEventController::class);
     
     // Kasir Management
     Route::prefix('kasir')->name('kasir.')->group(function () {
@@ -80,6 +91,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');
     Route::patch('/transaksi/{id}/batalkan', [TransaksiController::class, 'batalkan'])->name('transaksi.batalkan');
+    Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'selesai'])->name('transaksi.selesai');
     
     // Reports (Laporan)
     Route::prefix('reports')->name('reports.')->group(function () {
@@ -117,4 +129,6 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->grou
     // View Own Transactions
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');
+    Route::patch('/transaksi/{id}/batalkan', [TransaksiController::class, 'batalkan'])->name('transaksi.batalkan');
+    Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'selesai'])->name('transaksi.selesai');
 });

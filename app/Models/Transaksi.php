@@ -12,6 +12,7 @@ class Transaksi extends Model
     protected $fillable = [
         'no_invoice',
         'user_id',
+        'discount_event_id',
         'total_harga',
         'status',
         'tanggal_transaksi',

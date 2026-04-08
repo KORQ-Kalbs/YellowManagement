@@ -72,7 +72,7 @@
 
 <body class="min-h-screen antialiased bg-gradient-to-br from-yellow-50 via-white to-orange-50">
     
-    <!-- Floating Login Button -->
+    <!-- Floating Login Button
     @if (Route::has('login'))
         <div class="fixed z-50 top-4 right-4">
             @auth
@@ -85,7 +85,7 @@
                 </a>
             @endauth
         </div>
-    @endif
+    @endif -->
 
     <!-- Hero Section -->
     <section class="relative flex items-center justify-center min-h-screen px-4 py-20 overflow-hidden">
@@ -475,7 +475,22 @@
                 <div class="md:col-span-2">
                     <h3 class="mb-4 text-3xl font-bold text-yellow-400">Yellow Drink</h3>
                     <p class="mb-4 text-gray-400">
-                        UMKM minuman kekinian dengan komitmen menyajikan minuman berkualitas untuk semua kalangan.
+                        UMKM minuman kekinian dengan komitmen menyajikan minuman 
+                        
+                            <!-- Floating Login Button -->
+                             @if (Route::has('login'))
+                              <div class="text-gray-400 hover:text-yellow-400">
+                               @auth
+                              <a href="{{ url('/dashboard') }}">
+                                            BERKUALITAS UNTUK SEMUA KALANGAN.
+                               </a>
+                                 @else
+                              <a href="{{ route('login') }}">
+                                            berkualitas untuk semua kalangan.
+                                 </a>
+                              @endauth
+                            </div>
+                            @endif
                     </p>
                 </div>
                 

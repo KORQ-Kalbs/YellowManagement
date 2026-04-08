@@ -87,6 +87,9 @@ class KasirController extends Controller
                 ->get();
         });
 
-        return view('kasir.POS', compact('products', 'kategoris'));
+        // Get currently active discount events
+        $discountEvents = \App\Models\DiscountEvent::active()->get();
+
+        return view('kasir.POS', compact('products', 'kategoris', 'discountEvents'));
     }
 }

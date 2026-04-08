@@ -27,46 +27,67 @@
             </div>
         @endif
 
-        <!-- Categories Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @forelse($kategoris as $kategori)
-                <x-card>
-                    <div class="flex items-start justify-between mb-4">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $kategori->nama_kategori }}</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">{{ $kategori->products_count }} products</p>
-                        </div>
-                        <button @click="editCategory({{ $kategori->id }}, '{{ $kategori->nama_kategori }}')" class="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                        </button>
+        <!-- Categories Table -->
+        <x-card noPadding="true">
+            @if(isset($kategoris) && $kategoris->count() > 0)
+                <x-table>
+                    <x-table-head>
+                        <x-table-heading>Category Name</x-table-heading>
+                        <x-table-heading>Products Count</x-table-heading>
+                        <x-table-heading>Actions</x-table-heading>
+                    </x-table-head>
+                    <x-table-body>
+                        @foreach($kategoris as $kategori)
+                            <x-table-row>
+                                <x-table-cell>
+                                    <span class="font-semibold text-gray-900 dark:text-white">{{ $kategori->nama_kategori }}</span>
+                                </x-table-cell>
+                                <x-table-cell>
+                                    <span class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-200">
+                                        {{ $kategori->products_count }} products
+                                    </span>
+                                </x-table-cell>
+                                <x-table-cell>
+                                    <div class="flex items-center space-x-2">
+                                        <button @click="editCategory({{ $kategori->id }}, '{{ addslashes($kategori->nama_kategori) }}')" class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            Edit
+                                        </button>
+                                        
+                                        <form action="{{ route('admin.kategoris.destroy', $kategori->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete this category?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="inline-flex items-center px-3 py-1 text-sm font-medium text-red-600 transition-colors rounded-lg bg-red-50 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </x-table-cell>
+                            </x-table-row>
+                        @endforeach
+                    </x-table-body>
+                </x-table>
+                
+                @if(method_exists($kategoris, 'links'))
+                    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+                        {{ $kategoris->links() }}
                     </div>
-                    <form action="{{ route('admin.kategoris.destroy', $kategori->id) }}" method="POST" class="mt-4 inline-block" onsubmit="return confirm('Delete this category?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="inline-flex items-center px-3 py-2 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors text-sm font-medium">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                            Delete
-                        </button>
-                    </form>
-                </x-card>
-            @empty
-                <div class="col-span-full">
-                    <x-card>
-                        <div class="text-center py-16">
-                            <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                            </svg>
-                            <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">No categories found</h3>
-                            <p class="mt-2 text-gray-600 dark:text-gray-400">Create your first category to get started</p>
-                        </div>
-                    </x-card>
+                @endif
+            @else
+                <div class="py-16 text-center">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">No categories found</h3>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Create your first category to get started</p>
                 </div>
-            @endforelse
-        </div>
+            @endif
+        </x-card>
     </div>
 
     <!-- Category Modal -->

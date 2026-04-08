@@ -24,7 +24,8 @@ class StoreTransaksiRequest extends FormRequest
             'items.*.product_id' => ['required', 'exists:products,id'],
             'items.*.jumlah' => ['required', 'integer', 'min:1'],
             'metode_pembayaran' => ['required', 'in:cash,qris,debit,credit,transfer'],
-            'jumlah_bayar' => ['required', 'numeric', 'min:0'],
+            'jumlah_bayar' => ['required_if:metode_pembayaran,cash', 'nullable', 'numeric', 'min:0'],
+            'discount_event_id' => ['nullable', 'exists:discount_events,id'],
         ];
     }
 
