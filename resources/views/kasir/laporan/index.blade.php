@@ -93,21 +93,21 @@
                         Refresh
                     </button>
                     
-                    <button onclick="exportExcel()" 
+                    <a href="{{ route('kasir.reports.export.excel', ['period' => $period, 'date' => $selectedDate->format('Y-m-d')]) }}"
                             class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         Export Excel
-                    </button>
+                    </a>
                     
-                    <button onclick="window.print()" 
+                    <a href="{{ route('kasir.reports.export.pdf', ['period' => $period, 'date' => $selectedDate->format('Y-m-d')]) }}"
                             class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
                         Export PDF
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="h-80">
@@ -167,7 +167,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         const ctx = document.getElementById('salesChart').getContext('2d');
         const isDark = document.documentElement.classList.contains('dark');
@@ -221,28 +220,6 @@
             }
         });
         
-        function exportExcel() {
-            // Prepare data
-            const data = [
-                ['Nama Produk', 'Kategori', 'Harga', 'Terjual', 'Pendapatan'],
-                @foreach($topProducts ?? [] as $product)
-                [
-                    '{{ $product->nama_produk }}',
-                    '{{ $product->kategori->nama_kategori ?? "N/A" }}',
-                    {{ $product->harga }},
-                    {{ $product->sold_count ?? 0 }},
-                    {{ $product->harga * ($product->sold_count ?? 0) }}
-                ],
-                @endforeach
-            ];
-            
-            // Create workbook
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(data);
-            XLSX.utils.book_append_sheet(wb, ws, 'Laporan Penjualan');
-            
-            // Download
-            XLSX.writeFile(wb, 'laporan_penjualan_{{ $selectedDate->format("Y-m-d") }}.xlsx');
-        }
+        function exportExcel() { /* handled by backend route */ }
     </script>
 </x-app-layout>

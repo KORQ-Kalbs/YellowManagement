@@ -97,6 +97,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Reports (Laporan)
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/export-excel', [ReportController::class, 'exportExcel'])->name('export.excel');
+        Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('export.pdf');
         Route::get('/history', function () {
             return view('admin.laporan.history');
         })->name('history');
@@ -124,6 +126,8 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->grou
     // Reports (Laporan)
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/export-excel', [ReportController::class, 'exportExcel'])->name('export.excel');
+        Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('export.pdf');
         Route::get('/kasir', [ReportController::class, 'kasirReport'])->name('kasir');
     });
     

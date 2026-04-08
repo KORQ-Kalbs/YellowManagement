@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransaksiExport;
 use App\Models\Transaksi;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -188,5 +191,51 @@ class ReportController extends Controller
     public function products()
     {
         return $this->index();
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $period       = $request->get('period', 'day');
+        $date         = $request->get('date', now()->format('Y-m-d'));
+        $selectedDate = Carbon::parse($date);
+        $isKasir      = auth()->user()->role === 'kasir';
+        $userId       = auth()->id();
+
+        $filename = 'laporan-transaksi-' . $period . '-' . $selectedDate->format('Y-m-d') . '.xlsx';
+
+        return Excel::download(
+            new TransaksiExport($period, $selectedDate, $isKasir, $userId),
+            $filename
+        );
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $period       = $request->get('period', 'day');
+        $date         = $request->get('date', now()->format('Y-m-d'));
+        $selectedDate = Carbon::parse($date);
+        $isKasir      = auth()->user()->role === 'kasir';
+        $userId       = auth()->id();
+
+        [$startDate, $endDate] = match ($period) {
+            'week'  => [$selectedDate->copy()->startOfWeek(), $selectedDate->copy()->endOfWeek()],
+            'month' => [$selectedDate->copy()->startOfMonth(), $selectedDate->copy()->endOfMonth()],
+            default => [$selectedDate->copy()->startOfDay(), $selectedDate->copy()->endOfDay()],
+        };
+
+        $transaksis = Transaksi::with(['details.product', 'user', 'pembayaran', 'discountEvent'])
+            ->whereBetween('tanggal_transaksi', [$startDate, $endDate])
+            ->where('status', 'completed')
+            ->when($isKasir, fn($q) => $q->where('user_id', $userId))
+            ->orderBy('tanggal_transaksi')
+            ->get();
+
+        $pdf = Pdf::loadView('exports.laporan-pdf', compact(
+            'transaksis', 'period', 'selectedDate', 'isKasir'
+        ))->setPaper('a4', 'landscape');
+
+        $filename = 'laporan-transaksi-' . $period . '-' . $selectedDate->format('Y-m-d') . '.pdf';
+
+        return $pdf->download($filename);
     }
 }
