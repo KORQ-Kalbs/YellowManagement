@@ -114,7 +114,7 @@
     <!-- Product Modal -->
     <x-modal name="product-modal" :show="false">
         <div class="p-6">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4" id="product-modal-title">Add Product</h3>
+            <h3 class="mb-4 text-lg font-bold text-gray-900 dark:text-white" id="product-modal-title">Add Product</h3>
             
             <form id="product-form" method="POST" action="{{ route('admin.products.store') }}">
                 @csrf
@@ -123,13 +123,13 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Product Name</label>
-                        <input type="text" id="product-nama" name="nama_produk" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white" required>
+                        <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Product Name</label>
+                        <input type="text" id="product-nama" name="nama_produk" class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white" required>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
-                        <select id="product-kategori" name="kategori_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white" required>
+                        <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+                        <select id="product-kategori" name="kategori_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white" required>
                             <option value="">Select Category</option>
                             @foreach($kategoris as $kategori)
                                 <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
@@ -138,25 +138,30 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price</label>
-                        <input type="number" id="product-harga" name="harga" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white" required min="0">
+                        <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
+                        <input type="file" id="product-gambar" name="gambar" class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Stock</label>
-                        <input type="number" id="product-stok" name="stok" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white" required min="0">
+                        <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Price</label>
+                        <input type="number" id="product-harga" name="harga" class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white" required min="0">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                        <select id="product-status" name="status" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white" required>
+                        <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Stock</label>
+                        <input type="number" id="product-stok" name="stok" class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white" required min="0">
+                    </div>
+
+                    <div>
+                        <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                        <select id="product-status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white" required>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="mt-6 flex justify-end space-x-3">
+                <div class="flex justify-end mt-6 space-x-3">
                     <x-secondary-button type="button" @click="$dispatch('close')">Cancel</x-secondary-button>
                     <x-primary-button type="submit">Save</x-primary-button>
                 </div>

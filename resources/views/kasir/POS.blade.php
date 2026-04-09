@@ -175,7 +175,7 @@
                             @method('PATCH')
                             
                             @if($pendingTx->pembayaran->metode_pembayaran === 'cash')
-                                <div class="mb-4 text-left box-border p-3 border rounded-lg bg-gray-50 dark:bg-gray-700/50">
+                                <div class="box-border p-3 mb-4 text-left border rounded-lg bg-gray-50 dark:bg-gray-700/50">
                                     <label class="block mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300">Pembayaran Diterima (Rp)</label>
                                     <input type="number" id="jumlah_bayar_diterima" name="jumlah_bayar_diterima" required value="{{ $pendingTx->pembayaran->jumlah_pembayaran }}" min="{{ $pendingTx->total_harga }}" class="w-full px-3 py-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring focus:border-blue-300" oninput="calculateKembalian(this.value, {{ $pendingTx->total_harga }})">
                                     
@@ -397,7 +397,7 @@
                 <!-- Modal panel -->
                 <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-sm sm:w-full">
                     <!-- Receipt Content (Thermal Receipt Style) -->
-                    <div id="receiptContent" class="p-6 bg-white text-gray-900 font-mono text-sm border-t-8 border-gray-100 border-b-8 border-gray-100">
+                    <div id="receiptContent" class="p-6 font-mono text-sm text-gray-900 bg-white border-t-8 border-b-8 border-gray-100">
                         <!-- Success Checkmark -->
                         <div class="flex justify-center mb-3">
                             <div class="flex items-center justify-center bg-green-500 rounded-full print-bg-black" style="width: 40px; height: 40px;">
@@ -408,17 +408,17 @@
                         </div>
 
                         <!-- Shop Info -->
-                        <div class="text-center mb-4">
-                            <h2 class="text-2xl font-bold uppercase tracking-wider mb-1">Yellow Drink</h2>
+                        <div class="mb-4 text-center">
+                            <h2 class="mb-1 text-2xl font-bold tracking-wider uppercase">Yellow Drink</h2>
                             <p class="text-xs text-gray-600">Jl. Kasir Yellow No. 1, City</p>
                             <p class="text-xs text-gray-600">Telp: 0812-3456-7890</p>
                         </div>
 
                         <!-- Divider -->
-                        <div class="border-t-2 border-dashed border-gray-300 my-4"></div>
+                        <div class="my-4 border-t-2 border-gray-300 border-dashed"></div>
 
                         <!-- Transaction Info -->
-                        <div class="text-xs text-gray-700 mb-4 space-y-1">
+                        <div class="mb-4 space-y-1 text-xs text-gray-700">
                             <div class="flex justify-between">
                                 <span>No: {{ $transaksi->no_invoice }}</span>
                                 <span>{{ $transaksi->tanggal_transaksi->format('d/m/Y H:i') }}</span>
@@ -430,14 +430,14 @@
                         </div>
 
                         <!-- Divider -->
-                        <div class="border-t-2 border-dashed border-gray-300 my-4"></div>
+                        <div class="my-4 border-t-2 border-gray-300 border-dashed"></div>
 
                         <!-- Items -->
                         <div class="mb-4">
                             @foreach($transaksi->details as $detail)
                             <div class="mb-3">
-                                <div class="font-bold text-sm">{{ $detail->product->nama_produk }}</div>
-                                <div class="flex justify-between text-xs text-gray-700 mt-1">
+                                <div class="text-sm font-bold">{{ $detail->product->nama_produk }}</div>
+                                <div class="flex justify-between mt-1 text-xs text-gray-700">
                                     <span>{{ $detail->jumlah }} x {{ number_format($detail->product->harga, 0, ',', '.') }}</span>
                                     <span class="font-medium text-gray-900">{{ number_format($detail->subtotal, 0, ',', '.') }}</span>
                                 </div>
@@ -446,7 +446,7 @@
                         </div>
 
                         <!-- Divider -->
-                        <div class="border-t-2 border-dashed border-gray-300 my-4"></div>
+                        <div class="my-4 border-t-2 border-gray-300 border-dashed"></div>
 
                         <!-- Totals -->
                         <div class="">
@@ -455,26 +455,26 @@
                                 $discountPct = $transaksi->discountEvent ? floatval($transaksi->discountEvent->discount_percentage) : 0;
                                 $discountAmount = $subtotalBruto - $transaksi->total_harga;
                             @endphp
-                            <div class="flex justify-between text-xs text-gray-700 mb-1">
+                            <div class="flex justify-between mb-1 text-xs text-gray-700">
                                 <span>SUBTOTAL</span>
                                 <span>Rp {{ number_format($subtotalBruto, 0, ',', '.') }}</span>
                             </div>
                             @if($discountPct > 0)
-                            <div class="flex justify-between text-xs text-red-600 mb-2">
+                            <div class="flex justify-between mb-2 text-xs text-red-600">
                                 <span>DISKON ({{ number_format($discountPct, 0) }}%{{ $transaksi->discountEvent ? ' - '.$transaksi->discountEvent->name : '' }})</span>
                                 <span>- Rp {{ number_format($discountAmount, 0, ',', '.') }}</span>
                             </div>
                             @endif
-                            <div class="flex justify-between text-base font-bold mb-2 border-t border-gray-300 pt-2">
+                            <div class="flex justify-between pt-2 mb-2 text-base font-bold border-t border-gray-300">
                                 <span>TOTAL</span>
                                 <span>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</span>
                             </div>
                             @if($transaksi->pembayaran)
-                            <div class="flex justify-between text-sm text-gray-700 mb-2">
+                            <div class="flex justify-between mb-2 text-sm text-gray-700">
                                 <span>TUNAI/BAYAR</span>
                                 <span>Rp {{ number_format((float)$transaksi->pembayaran->jumlah_pembayaran, 0, ',', '.') }}</span>
                             </div>
-                            <div class="flex justify-between text-sm font-bold border-t border-gray-300 pt-2">
+                            <div class="flex justify-between pt-2 text-sm font-bold border-t border-gray-300">
                                 <span>KEMBALI</span>
                                 <span>Rp {{ number_format((float)($transaksi->pembayaran->jumlah_pembayaran - $transaksi->total_harga), 0, ',', '.') }}</span>
                             </div>
@@ -482,17 +482,17 @@
                         </div>
 
                         <!-- Divider -->
-                        <div class="border-t-2 border-dashed border-gray-300 my-4"></div>
+                        <div class="my-4 border-t-2 border-gray-300 border-dashed"></div>
 
                         <!-- Footer -->
-                        <div class="text-center mt-6 text-xs text-gray-600">
-                            <p class="font-bold mb-1">Terima Kasih Atas Kunjungan Anda!</p>
+                        <div class="mt-6 text-xs text-center text-gray-600">
+                            <p class="mb-1 font-bold">Terima Kasih Atas Kunjungan Anda!</p>
                             <p class="italic text-[10px]">Layanan Konsumen: @yellowdrink.id</p>
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="grid grid-cols-3 gap-2 px-6 py-4 bg-gray-50 border-t">
+                    <div class="grid grid-cols-3 gap-2 px-6 py-4 border-t bg-gray-50">
                         <button onclick="printReceipt()" class="flex items-center justify-center px-4 py-3 text-sm font-semibold text-gray-700 transition-colors bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-100">
                             🖨️ Cetak
                         </button>
