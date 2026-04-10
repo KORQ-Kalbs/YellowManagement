@@ -47,4 +47,28 @@ class Product extends Model
     {
         return $this->hasMany(DetailTransaksi::class, 'product_id');
     }
+
+    /**
+     * Relasi ke ProductVariant (active only — used in POS).
+     */
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class)->where('is_active', true)->orderBy('urutan');
+    }
+
+    /**
+     * Semua variant termasuk inactive — used for admin CRUD.
+     */
+    public function allVariants()
+    {
+        return $this->hasMany(ProductVariant::class)->orderBy('urutan');
+    }
+
+    /**
+     * Cek apakah produk punya variant aktif.
+     */
+    public function hasVariants(): bool
+    {
+        return $this->variants()->exists();
+    }
 }

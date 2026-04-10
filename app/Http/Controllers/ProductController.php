@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +17,7 @@ class ProductController extends Controller
     {
         // Optimize: Select only needed columns
         $products = Product::select('id', 'nama_produk', 'kategori_id', 'harga', 'stok', 'status', 'created_at')
-            ->with('kategori:id,nama_kategori')
+            ->with(['kategori:id,nama_kategori', 'allVariants'])
             ->latest()
             ->paginate(15);
         
@@ -46,7 +47,10 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request): RedirectResponse
     {
         try {
-            Product::create($request->validated());
+            $product = Product::create($request->validated());
+
+            // Sync variants
+            $this->syncVariants($product, $request->input('variants', []));
 
             return redirect()
                 ->route('admin.products.index')
@@ -86,6 +90,9 @@ class ProductController extends Controller
         try {
             $product->update($request->validated());
 
+            // Sync variants
+            $this->syncVariants($product, $request->input('variants', []));
+
             return redirect()
                 ->route('admin.products.index')
                 ->with('success', 'Produk berhasil diperbarui');
@@ -111,5 +118,51 @@ class ProductController extends Controller
             return back()
                 ->with('error', 'Gagal menghapus produk: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Sync product variants: create new, update existing, delete removed.
+     */
+    private function syncVariants(Product $product, array $variantsData): void
+    {
+        if (empty($variantsData)) {
+            // No variants submitted - delete all existing
+            $product->allVariants()->delete();
+            return;
+        }
+
+        $submittedIds = [];
+        $urutan = 0;
+
+        foreach ($variantsData as $vData) {
+            $urutan++;
+            $payload = [
+                'nama_variant'   => $vData['nama_variant'],
+                'kode_variant'   => $vData['kode_variant'],
+                'harga_tambahan' => $vData['harga_tambahan'] ?? 0,
+                'is_active'      => isset($vData['is_active']) ? true : false,
+                'urutan'         => $urutan,
+            ];
+
+            if (!empty($vData['id'])) {
+                // Update existing variant
+                $variant = ProductVariant::where('id', $vData['id'])
+                    ->where('product_id', $product->id)
+                    ->first();
+                if ($variant) {
+                    $variant->update($payload);
+                    $submittedIds[] = $variant->id;
+                }
+            } else {
+                // Create new variant
+                $variant = $product->allVariants()->create($payload);
+                $submittedIds[] = $variant->id;
+            }
+        }
+
+        // Delete variants that were removed from the form
+        ProductVariant::where('product_id', $product->id)
+            ->whereNotIn('id', $submittedIds)
+            ->delete();
     }
 }

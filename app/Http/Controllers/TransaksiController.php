@@ -65,14 +65,29 @@ class TransaksiController extends Controller
                         ->with('error', "Stok {$product->nama_produk} tidak mencukupi. Tersedia: {$product->stok}")
                         ->withInput();
                 }
-                
-                $subtotal = $product->harga * $item['jumlah'];
+
+                // Base price + variant price modifier
+                $hargaSatuan = floatval($product->harga);
+                $variantId   = $item['variant_id'] ?? null;
+
+                if ($variantId) {
+                    $variant = \App\Models\ProductVariant::find($variantId);
+                    if ($variant && $variant->product_id == $product->id) {
+                        $hargaSatuan += floatval($variant->harga_tambahan);
+                    } else {
+                        $variantId = null; // invalid variant, ignore
+                    }
+                }
+
+                $subtotal    = $hargaSatuan * $item['jumlah'];
                 $totalHarga += $subtotal;
                 
                 $itemsData[] = [
-                    'product' => $product,
-                    'jumlah' => $item['jumlah'],
-                    'subtotal' => $subtotal
+                    'product'    => $product,
+                    'variant_id' => $variantId,
+                    'jumlah'     => $item['jumlah'],
+                    'subtotal'   => $subtotal,
+                    'catatan'    => $item['catatan'] ?? null,
                 ];
             }
 
@@ -111,9 +126,11 @@ class TransaksiController extends Controller
             foreach ($itemsData as $itemData) {
                 DetailTransaksi::create([
                     'transaksi_id' => $transaksi->id,
-                    'product_id' => $itemData['product']->id,
-                    'jumlah' => $itemData['jumlah'],
-                    'subtotal' => $itemData['subtotal'],
+                    'product_id'   => $itemData['product']->id,
+                    'variant_id'   => $itemData['variant_id'],
+                    'jumlah'       => $itemData['jumlah'],
+                    'subtotal'     => $itemData['subtotal'],
+                    'catatan'      => $itemData['catatan'],
                 ]);
 
                 // Kurangi stok
@@ -243,7 +260,7 @@ class TransaksiController extends Controller
      */
     public function show($id): View
     {
-        $transaksi = Transaksi::with(['details.product', 'user', 'pembayaran', 'discountEvent'])
+        $transaksi = Transaksi::with(['details.product', 'details.variant', 'user', 'pembayaran', 'discountEvent'])
             ->findOrFail($id);
 
         // Check if user is admin or kasir viewing their own transaction

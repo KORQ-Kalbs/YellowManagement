@@ -14,8 +14,14 @@ class DetailTransaksi extends Model
     protected $fillable = [
         'transaksi_id',
         'product_id',
+        'variant_id',
         'jumlah',
         'subtotal',
+        'catatan',
+    ];
+
+    protected $casts = [
+        'subtotal' => 'decimal:2',
     ];
 
     /**
@@ -32,5 +38,13 @@ class DetailTransaksi extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    /**
+     * Relasi ke ProductVariant.
+     */
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 }

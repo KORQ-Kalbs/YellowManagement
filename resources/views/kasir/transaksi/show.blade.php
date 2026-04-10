@@ -102,12 +102,19 @@
                         <x-table-row>
                             <x-table-cell>
                                 <div>
-                                    <p class="font-semibold text-gray-900 dark:text-white">{{ $detail->product->nama_produk }}</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white">{{ $detail->product->nama_produk }}
+                                        @if($detail->variant)
+                                            <span class="text-xs font-normal text-yellow-600 dark:text-yellow-400">({{ $detail->variant->kode_variant }})</span>
+                                        @endif
+                                    </p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">{{ $detail->product->kategori->nama_kategori }}</p>
+                                    @if($detail->catatan)
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 italic mt-0.5">{{ $detail->catatan }}</p>
+                                    @endif
                                 </div>
                             </x-table-cell>
                             <x-table-cell>
-                                <span class="text-gray-900 dark:text-white">Rp {{ number_format($detail->product->harga, 0, ',', '.') }}</span>
+                                <span class="text-gray-900 dark:text-white">Rp {{ number_format($detail->subtotal / $detail->jumlah, 0, ',', '.') }}</span>
                             </x-table-cell>
                             <x-table-cell>
                                 <span class="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-200">
@@ -195,9 +202,12 @@
                     <div class="mb-4">
                         @foreach($transaksi->details as $detail)
                         <div class="mb-3">
-                            <div class="font-bold text-sm">{{ $detail->product->nama_produk }}</div>
+                            <div class="font-bold text-sm">{{ $detail->product->nama_produk }}@if($detail->variant) <span class="font-normal">({{ $detail->variant->kode_variant }})</span>@endif</div>
+                            @if($detail->catatan)
+                                <div class="text-xs text-gray-500 italic">{{ $detail->catatan }}</div>
+                            @endif
                             <div class="flex justify-between text-xs text-gray-700 mt-1">
-                                <span>{{ $detail->jumlah }} x {{ number_format($detail->product->harga, 0, ',', '.') }}</span>
+                                <span>{{ $detail->jumlah }} x {{ number_format($detail->subtotal / $detail->jumlah, 0, ',', '.') }}</span>
                                 <span class="font-medium text-gray-900">{{ number_format($detail->subtotal, 0, ',', '.') }}</span>
                             </div>
                         </div>

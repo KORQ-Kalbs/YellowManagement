@@ -73,7 +73,7 @@ class KasirController extends Controller
     {
         // Optimize: Select only needed columns and use cache for categories
         $products = Product::select('id', 'nama_produk', 'kategori_id', 'harga', 'stok', 'status')
-            ->with('kategori:id,nama_kategori')
+            ->with(['kategori:id,nama_kategori', 'variants'])
             ->where('status', 'active')
             ->where('stok', '>', 0)
             ->orderBy('nama_produk')
