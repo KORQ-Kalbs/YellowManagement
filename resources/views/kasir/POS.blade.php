@@ -126,10 +126,36 @@
             <div class="flex items-center justify-center min-h-screen px-4 text-center">
                 <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
                 <div class="relative inline-block w-full max-w-sm px-6 pt-5 pb-6 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle dark:bg-gray-800">
-                    <h3 class="mb-4 text-xl font-bold text-center text-gray-900 dark:text-white">
-                        {{ $pendingTx->pembayaran->metode_pembayaran === 'qris' ? 'QRIS Payment' : 'Menunggu Pembayaran' }}
+                    <h3 id="pendingModalTitle" class="mb-4 text-xl font-bold text-center text-gray-900 dark:text-white">
+                        Menunggu Pembayaran
                     </h3>
-                    @if($pendingTx->pembayaran->metode_pembayaran === 'qris')
+
+                    <!-- Payment Method Switcher -->
+                    <div class="mb-4">
+                        <label class="block mb-1.5 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Metode Pembayaran</label>
+                        <select id="pendingMetodePembayaran" onchange="switchPendingPaymentMethod(this.value)"
+                            class="w-full px-3 py-2.5 text-sm font-medium border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors">
+                            <option value="cash" {{ $pendingTx->pembayaran->metode_pembayaran === 'cash' ? 'selected' : '' }}>Cash</option>
+                            <option value="qris" {{ $pendingTx->pembayaran->metode_pembayaran === 'qris' ? 'selected' : '' }}>QRIS</option>
+                            <option value="debit" {{ $pendingTx->pembayaran->metode_pembayaran === 'debit' ? 'selected' : '' }}>Debit Card</option>
+                            <option value="credit" {{ $pendingTx->pembayaran->metode_pembayaran === 'credit' ? 'selected' : '' }}>Credit Card</option>
+                            <option value="transfer" {{ $pendingTx->pembayaran->metode_pembayaran === 'transfer' ? 'selected' : '' }}>Bank Transfer</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic Payment Content -->
+                    <!-- CASH view -->
+                    <div id="pendingView-cash" class="pending-payment-view hidden">
+                        <div class="text-center">
+                            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-3 bg-green-100 rounded-full dark:bg-green-900/30">
+                                <span class="text-3xl">💵</span>
+                            </div>
+                            <p class="mt-2 text-lg font-bold text-gray-900 dark:text-white">Total: <span>Rp {{ number_format($pendingTx->total_harga, 0, ',', '.') }}</span></p>
+                        </div>
+                    </div>
+
+                    <!-- QRIS view -->
+                    <div id="pendingView-qris" class="pending-payment-view hidden">
                         <div class="text-center">
                             <div class="flex items-center justify-center p-4 mx-auto mb-3 bg-gray-100 border-2 border-gray-300 rounded shadow-sm w-52 h-52">
                                 <svg class="w-40 h-40 text-gray-800" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm-3 3h3v5h-3v-5zm3 3h3v2h-3v-2zm-3-8h5v2h-5v-2zM13 13h3v3h-3v-3zm0 5h3v3h-3v-3z"/></svg>
@@ -137,23 +163,31 @@
                             <p class="text-sm font-semibold text-blue-600">Scan QR Code ini untuk membayar</p>
                             <p class="mt-2 text-sm text-gray-800 dark:text-gray-300">Total Tagihan: <span class="text-lg font-bold text-gray-900 dark:text-white">Rp {{ number_format($pendingTx->total_harga, 0, ',', '.') }}</span></p>
                         </div>
-                    @else
+                    </div>
+
+                    <!-- DEBIT / CREDIT / TRANSFER view -->
+                    <div id="pendingView-other" class="pending-payment-view hidden">
                         <div class="text-center">
-                            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-3 bg-yellow-100 rounded-full">
-                                <span class="text-2xl">&#x23F3;</span>
+                            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-3 bg-blue-100 rounded-full dark:bg-blue-900/30">
+                                <span class="text-3xl" id="pendingOtherIcon">💳</span>
                             </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Menunggu penyelesaian transaksi oleh Kasir...</p>
-                            <p class="mt-4 mb-2 text-lg font-bold text-gray-900 dark:text-white">Total Tagihan: <span>Rp {{ number_format($pendingTx->total_harga, 0, ',', '.') }}</span></p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400" id="pendingOtherLabel">Menunggu pembayaran via kartu...</p>
+                            <p class="mt-4 mb-2 text-lg font-bold text-gray-900 dark:text-white">Total: <span>Rp {{ number_format($pendingTx->total_harga, 0, ',', '.') }}</span></p>
                         </div>
-                    @endif
+                    </div>
+
+                    <!-- Action buttons -->
                     <div class="mt-6 space-y-3">
-                        <form action="{{ route(auth()->user()->role === 'admin' ? 'admin.transaksi.selesai' : 'kasir.transaksi.selesai', $pendingTx->id) }}" method="POST">
+                        <form action="{{ route(auth()->user()->role === 'admin' ? 'admin.transaksi.selesai' : 'kasir.transaksi.selesai', $pendingTx->id) }}" method="POST" id="pendingSelesaiForm">
                             @csrf
                             @method('PATCH')
-                            @if($pendingTx->pembayaran->metode_pembayaran === 'cash')
+                            <input type="hidden" name="metode_pembayaran_baru" id="inputMetodeBaru" value="{{ $pendingTx->pembayaran->metode_pembayaran }}">
+
+                            <!-- Cash-specific fields -->
+                            <div id="pendingCashFields" class="hidden">
                                 <div class="box-border p-3 mb-4 text-left border rounded-lg bg-gray-50 dark:bg-gray-700/50">
                                     <label class="block mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300">Pembayaran Diterima (Rp)</label>
-                                    <input type="number" id="jumlah_bayar_diterima" name="jumlah_bayar_diterima" required
+                                    <input type="number" id="jumlah_bayar_diterima" name="jumlah_bayar_diterima"
                                         value="{{ $pendingTx->pembayaran->jumlah_pembayaran }}"
                                         min="{{ $pendingTx->total_harga }}"
                                         class="w-full px-3 py-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring focus:border-blue-300"
@@ -163,14 +197,8 @@
                                         <span id="labelKembalian" class="font-bold text-green-600 dark:text-green-400">Rp {{ number_format(max(0, $pendingTx->pembayaran->jumlah_pembayaran - $pendingTx->total_harga), 0, ',', '.') }}</span>
                                     </div>
                                 </div>
-                                <script>
-                                    function calculateKembalian(diterima, total) {
-                                        let diff = diterima - total;
-                                        if (diff < 0) diff = 0;
-                                        document.getElementById('labelKembalian').textContent = 'Rp ' + diff.toLocaleString('id-ID');
-                                    }
-                                </script>
-                            @endif
+                            </div>
+
                             <button type="submit" class="w-full px-4 py-3 font-bold text-white bg-blue-600 rounded hover:bg-blue-700">
                                 Selesaikan Transaksi
                             </button>
@@ -193,6 +221,56 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function switchPendingPaymentMethod(method) {
+                // Update hidden input
+                document.getElementById('inputMetodeBaru').value = method;
+
+                // Hide all views
+                document.querySelectorAll('.pending-payment-view').forEach(el => el.classList.add('hidden'));
+
+                // Show relevant view
+                if (method === 'cash') {
+                    document.getElementById('pendingView-cash').classList.remove('hidden');
+                    document.getElementById('pendingCashFields').classList.remove('hidden');
+                    document.getElementById('pendingModalTitle').textContent = 'Pembayaran Cash';
+                    const inp = document.getElementById('jumlah_bayar_diterima');
+                    inp.required = true;
+                } else if (method === 'qris') {
+                    document.getElementById('pendingView-qris').classList.remove('hidden');
+                    document.getElementById('pendingCashFields').classList.add('hidden');
+                    document.getElementById('pendingModalTitle').textContent = 'QRIS Payment';
+                    document.getElementById('jumlah_bayar_diterima').required = false;
+                } else {
+                    document.getElementById('pendingView-other').classList.remove('hidden');
+                    document.getElementById('pendingCashFields').classList.add('hidden');
+                    document.getElementById('jumlah_bayar_diterima').required = false;
+
+                    const labels = {
+                        debit:    { icon: '💳', text: 'Menunggu pembayaran via Debit Card...',    title: 'Debit Card Payment' },
+                        credit:   { icon: '💳', text: 'Menunggu pembayaran via Credit Card...',   title: 'Credit Card Payment' },
+                        transfer: { icon: '🏦', text: 'Menunggu konfirmasi Bank Transfer...',     title: 'Bank Transfer' },
+                    };
+                    const info = labels[method] || labels.debit;
+                    document.getElementById('pendingOtherIcon').textContent  = info.icon;
+                    document.getElementById('pendingOtherLabel').textContent = info.text;
+                    document.getElementById('pendingModalTitle').textContent = info.title;
+                }
+            }
+
+            function calculateKembalian(diterima, total) {
+                let diff = diterima - total;
+                if (diff < 0) diff = 0;
+                document.getElementById('labelKembalian').textContent = 'Rp ' + diff.toLocaleString('id-ID');
+            }
+
+            // Initialize on load
+            document.addEventListener('DOMContentLoaded', function() {
+                const currentMethod = document.getElementById('pendingMetodePembayaran').value;
+                switchPendingPaymentMethod(currentMethod);
+            });
+        </script>
         @endif
     @endif
 

@@ -177,12 +177,29 @@ class TransaksiController extends Controller
             if (!$transaksi->pembayaran) {
                 return back()->with('error', 'Transaksi belum dibayar');
             }
+
+            // Allow changing payment method from the pending modal
+            $finalMethod = $transaksi->pembayaran->metode_pembayaran;
+            if ($request->filled('metode_pembayaran_baru')) {
+                $newMethod = $request->metode_pembayaran_baru;
+                if (in_array($newMethod, ['cash', 'qris', 'debit', 'credit', 'transfer'])) {
+                    $finalMethod = $newMethod;
+                    $transaksi->pembayaran->update([
+                        'metode_pembayaran' => $newMethod,
+                    ]);
+                }
+            }
             
-            // Allow dynamic cash amount tracking if passed from POS popup
-            if ($request->has('jumlah_bayar_diterima') && $transaksi->pembayaran->metode_pembayaran == 'cash') {
+            // Allow dynamic cash amount tracking if payment is cash
+            if ($finalMethod === 'cash' && $request->has('jumlah_bayar_diterima')) {
                  $transaksi->pembayaran->update([
                       'jumlah_pembayaran' => $request->jumlah_bayar_diterima
                  ]);
+            } elseif ($finalMethod !== 'cash') {
+                // Non-cash: set jumlah_pembayaran = total_harga (exact amount)
+                $transaksi->pembayaran->update([
+                    'jumlah_pembayaran' => $transaksi->total_harga
+                ]);
             }
 
             $transaksi->update([
