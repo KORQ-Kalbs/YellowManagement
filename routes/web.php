@@ -52,7 +52,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         })->sum('jumlah');
 
         $totalPendapatan = \App\Models\Transaksi::where('status', 'completed')->sum('total_harga');
-        $pengeluaran = 0; // TODO: Implement pengeluaran calculation
+        $pengeluaran = \App\Models\Expense::sum('amount');
         $pendapatanBersih = $totalPendapatan - $pengeluaran;
         
         return view('admin.dashboard', compact('salesData', 'labels', 'totalProdukTerjual', 'totalPendapatan', 'pengeluaran', 'pendapatanBersih'));
@@ -69,6 +69,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Discount Event Management
     Route::resource('event-diskon', \App\Http\Controllers\DiscountEventController::class);
     
+    // Expense Management (Pengeluaran)
+    Route::resource('expenses', \App\Http\Controllers\ExpenseController::class)->except(['show']);
+    Route::post('/expense-categories', [\App\Http\Controllers\ExpenseController::class, 'storeCategory'])->name('expense-categories.store');
+    Route::delete('/expense-categories/{category}', [\App\Http\Controllers\ExpenseController::class, 'destroyCategory'])->name('expense-categories.destroy');
     // Kasir Management
     Route::prefix('kasir')->name('kasir.')->group(function () {
         Route::get('/', [\App\Http\Controllers\UserController::class, 'index'])->name('index');

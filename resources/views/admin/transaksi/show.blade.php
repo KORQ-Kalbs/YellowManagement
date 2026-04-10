@@ -142,7 +142,7 @@
                 </form>
             @endif
 
-            @if($transaksi->status !== 'cancelled')
+            @if($transaksi->status === 'pending')
                 <form action="{{ route('admin.transaksi.batalkan', $transaksi->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this transaction? Stock will be restored.')">
                     @csrf
                     @method('PATCH')
