@@ -22,21 +22,21 @@
 
             <form action="{{ route('kasir.transaksi.store') }}" method="POST" id="posForm">
                 @csrf
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
                     <!-- LEFT: Product Selection -->
-                    <div class="col-span-2 p-4 bg-white rounded shadow">
+                    <div class="lg:col-span-2 p-4 bg-white rounded shadow text-sm sm:text-base">
                         <h3 class="mb-4 text-lg font-bold">Pilih Produk</h3>
                         <div class="mb-4">
                             <input type="text" id="searchProduct" placeholder="Cari produk..." class="w-full p-2 border rounded">
                         </div>
-                        <div class="flex gap-2 mb-4">
-                            <button type="button" onclick="filterCategory('all')" class="px-3 py-1 text-sm bg-gray-200 rounded">Semua</button>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <button type="button" onclick="filterCategory('all')" class="px-3 py-1 text-xs sm:text-sm bg-gray-200 rounded">Semua</button>
                             @foreach($kategoris as $kat)
-                                <button type="button" onclick="filterCategory({{ $kat->id }})" class="px-3 py-1 text-sm bg-gray-200 rounded">{{ $kat->nama_kategori }}</button>
+                                <button type="button" onclick="filterCategory({{ $kat->id }})" class="px-3 py-1 text-xs sm:text-sm bg-gray-200 rounded">{{ $kat->nama_kategori }}</button>
                             @endforeach
                         </div>
-                        <div class="grid grid-cols-3 gap-3" id="productGrid">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" id="productGrid">
                             @foreach($products as $product)
                                 <div class="p-3 border rounded cursor-pointer product-item hover:bg-gray-50"
                                      data-id="{{ $product->id }}"
@@ -51,7 +51,7 @@
                                     <div class="text-sm font-bold text-green-600">Rp {{ number_format($product->harga, 0, ',', '.') }}</div>
                                     <div class="text-xs text-gray-400">Stok: {{ $product->stok }}</div>
                                     @if($product->variants->count())
-                                        <div class="flex gap-1 mt-1">
+                                        <div class="flex flex-wrap gap-1 mt-1">
                                             @foreach($product->variants as $v)
                                                 <span class="px-1.5 py-0.5 text-[10px] bg-yellow-100 text-yellow-700 rounded font-semibold">{{ $v->kode_variant }}</span>
                                             @endforeach

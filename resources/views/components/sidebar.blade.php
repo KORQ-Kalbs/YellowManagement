@@ -2,7 +2,7 @@
     :class="sidebarOpen ? '' : 'w-20'"
     :style="sidebarOpen ? `width: ${sidebarWidth}px` : ''"
     style="font-family: 'Montserrat', sans-serif;"
-    class="fixed top-0 left-0 z-50 h-full transition-all duration-200 ease-linear shadow-xl bg-gradient-to-b from-yellow-400 via-yellow-500 to-orange-500"
+    class="hidden lg:block fixed top-0 left-0 z-50 h-full transition-all duration-200 ease-linear shadow-xl bg-gradient-to-b from-yellow-400 via-yellow-500 to-orange-500"
     x-data="{
         /* Dropdown states commented out - restore if needed
         productsOpen: {{ Request::routeIs('admin.products.*', 'admin.kategoris.*') ? 'true' : 'false' }},

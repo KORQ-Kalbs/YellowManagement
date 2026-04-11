@@ -5,7 +5,7 @@
     <div class="flex items-center space-x-3 min-w-0 flex-1">
         <!-- Sidebar Toggle Button -->
         <button @click="sidebarOpen = !sidebarOpen" 
-            class="p-2 transition-colors bg-gray-100 rounded-lg dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex-shrink-0"
+            class="hidden lg:flex p-2 transition-colors bg-gray-100 rounded-lg dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex-shrink-0"
             title="Toggle Sidebar">
             <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
