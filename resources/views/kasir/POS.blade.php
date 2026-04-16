@@ -95,9 +95,6 @@
                                 <select name="metode_pembayaran" id="metodePembayaran" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white" onchange="toggleJumlahBayar()">
                                     <option value="cash">Cash</option>
                                     <option value="qris">QRIS</option>
-                                    <option value="debit">Debit Card</option>
-                                    <option value="credit">Credit Card</option>
-                                    <option value="transfer">Bank Transfer</option>
                                 </select>
                             </div>
                             <div class="mb-4" id="divJumlahBayar">
@@ -137,9 +134,6 @@
                             class="w-full px-3 py-2.5 text-sm font-medium border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors">
                             <option value="cash" {{ $pendingTx->pembayaran->metode_pembayaran === 'cash' ? 'selected' : '' }}>Cash</option>
                             <option value="qris" {{ $pendingTx->pembayaran->metode_pembayaran === 'qris' ? 'selected' : '' }}>QRIS</option>
-                            <option value="debit" {{ $pendingTx->pembayaran->metode_pembayaran === 'debit' ? 'selected' : '' }}>Debit Card</option>
-                            <option value="credit" {{ $pendingTx->pembayaran->metode_pembayaran === 'credit' ? 'selected' : '' }}>Credit Card</option>
-                            <option value="transfer" {{ $pendingTx->pembayaran->metode_pembayaran === 'transfer' ? 'selected' : '' }}>Bank Transfer</option>
                         </select>
                     </div>
 
