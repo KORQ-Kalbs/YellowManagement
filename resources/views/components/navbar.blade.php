@@ -5,8 +5,8 @@
     <div class="flex items-center flex-1 min-w-0 space-x-2 lg:space-x-3">
         <!-- Mobile Logo -->
         <div class="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-lg lg:hidden bg-gradient-to-br">
-            <img src="{{ asset('img/yellowlogosblack.png') }}" alt="Yellow Drink" class="object-contain w-15 h-15 dark:hidden">
-            <img src="{{ asset('img/yellowlogoswhite.png') }}" alt="Yellow Drink" class="hidden object-contain w-15 h-15 dark:block">
+            <img src="{{ asset('img/yellowlogosblack.png') }}" alt="Yellow Drink" width="60" height="60" class="object-contain w-15 h-15 dark:hidden">
+            <img src="{{ asset('img/yellowlogoswhite.png') }}" alt="Yellow Drink" width="60" height="60" class="hidden object-contain w-15 h-15 dark:block">
         </div>
 
         <!-- Sidebar Toggle Button -->

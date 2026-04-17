@@ -99,7 +99,7 @@
             <!-- Logo/Brand -->
             <div class="mb-8">
                 <div class="flex justify-center mb-6">
-                    <img src="{{ asset('img/logoyellow.png') }}" alt="Yellow Drink Logo" class="h-24 w-24 object-contain drop-shadow-lg">
+                    <img src="{{ asset('img/logoyellow.png') }}" alt="Yellow Drink Logo" width="96" height="96" class="h-24 w-24 object-contain drop-shadow-lg">
                 </div>
                 <h1 class="mb-4 text-6xl font-bold text-transparent md:text-8xl bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-400">
                     Yellow Drink
@@ -112,7 +112,7 @@
             <!-- Store Image -->
             <div class="max-w-4xl mx-auto mb-12">
                 <div class="relative rounded-3xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-transform duration-500">
-                    <img src="/api/placeholder/1200/600" alt="Yellow Drink Store" class="w-full h-auto">
+                    <img src="/api/placeholder/1200/600" alt="Yellow Drink Store" width="1200" height="600" class="w-full h-auto">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                 </div>
             </div>
@@ -300,7 +300,7 @@
                 <!-- Image Side -->
                 <div class="order-2 md:order-1">
                     <div class="relative overflow-hidden shadow-2xl rounded-3xl">
-                        <img src="/api/placeholder/600/700" alt="Tentang Yellow Drink" class="w-full h-auto">
+                        <img src="/api/placeholder/600/700" alt="Tentang Yellow Drink" width="600" height="700" class="w-full h-auto">
                     </div>
                 </div>
 

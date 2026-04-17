@@ -71,12 +71,12 @@
         
         <div class="flex min-h-screen max-w-full overflow-x-hidden">
             <!-- Sidebar - Hidden on Mobile -->
-            <div class="hidden lg:block fixed top-0 left-0 z-50 h-full">
+            <div class="hidden lg:block fixed top-0 left-0 z-50 h-full w-56">
                 <x-sidebar />
             </div>
 
             <!-- Main Content Area -->
-            <div class="flex flex-col w-full min-h-screen transition-all duration-300 lg:ml-0"
+            <div class="flex flex-col w-full min-h-screen lg:ml-56"
                  :style="sidebarOpen && window.innerWidth >= 1024 ? `margin-left: ${sidebarWidth}px` : (window.innerWidth >= 1024 ? 'margin-left: 80px' : '')">
                 <!-- Navbar -->
                 <x-navbar />

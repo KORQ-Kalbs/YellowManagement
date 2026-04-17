@@ -1,5 +1,5 @@
 <aside
-    class="fixed top-0 left-0 z-50 hidden h-full transition-all duration-200 ease-linear shadow-xl sidebar-shell lg:block"
+    class="fixed top-0 left-0 z-50 hidden h-full shadow-xl sidebar-shell lg:block lg:w-56"
     :style="sidebarOpen ? `width: ${sidebarWidth}px` : ''"
     style="font-family: 'Montserrat', sans-serif;"
     :class="sidebarOpen ? '' : 'w-20'"
@@ -12,7 +12,7 @@
         */
     }"
     x-init="
-        sidebarWidth = localStorage.getItem('sidebarWidth') || 256;
+        sidebarWidth = localStorage.getItem('sidebarWidth') || 224;
         $watch('sidebarWidth', value => localStorage.setItem('sidebarWidth', value));
     ">
 
@@ -98,8 +98,8 @@
     <div class="flex items-center justify-between" :class="sidebarOpen ? 'p-4' : 'py-4 px-2'">
         <div class="flex items-center min-w-0 space-x-3 overflow-hidden">
             <div class="flex items-center justify-center flex-shrink-0 h-20 rounded-lg">
-                <img src="{{ asset('img/yellowlogosblack.png') }}" alt="Yellow Drink Logo" class="object-contain h-20 w-25 dark:hidden">
-                <img src="{{ asset('img/yellowlogoswhite.png') }}" alt="Yellow Drink Logo" class="hidden object-contain h-20 w-25 dark:block">
+                <img src="{{ asset('img/yellowlogosblack.png') }}" alt="Yellow Drink Logo" width="100" height="80" class="object-contain h-20 w-25 dark:hidden">
+                <img src="{{ asset('img/yellowlogoswhite.png') }}" alt="Yellow Drink Logo" width="100" height="80" class="hidden object-contain h-20 w-25 dark:block">
             </div>
             <div x-show="sidebarOpen" x-transition class="overflow-hidden whitespace-nowrap">
                 <!-- <h1 class="text-[14px] font-semibold leading-[1.5] text-white truncate"></h1>

@@ -31,9 +31,9 @@
                             <input type="text" id="searchProduct" placeholder="Cari produk..." class="w-full p-2 border rounded">
                         </div>
                         <div class="flex flex-wrap gap-2 mb-4">
-                            <button type="button" onclick="filterCategory('all')" class="px-3 py-1 text-xs bg-gray-200 rounded sm:text-sm">Semua</button>
+                            <button type="button" onclick="filterCategory('all')" class="px-3 py-1 text-xs bg-gray-500 rounded sm:text-sm">Semua</button>
                             @foreach($kategoris as $kat)
-                                <button type="button" onclick="filterCategory({{ $kat->id }})" class="px-3 py-1 text-xs bg-gray-200 rounded sm:text-sm">{{ $kat->nama_kategori }}</button>
+                                <button type="button" onclick="filterCategory({{ $kat->id }})" class="px-3 py-1 text-xs bg-gray-500 rounded sm:text-sm">{{ $kat->nama_kategori }}</button>
                             @endforeach
                         </div>
                         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" id="productGrid">
