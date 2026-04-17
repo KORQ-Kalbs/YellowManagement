@@ -132,7 +132,7 @@
             <!-- Quick Access -->
             <x-card title="Akses Cepat">
                 <div class="space-y-3">
-                    <a href="{{ route('admin.products.index') }}" class="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors group">
+                    <a href="{{ route('admin.products.index') }}" class="flex items-center justify-between p-4 rounded-lg bg-[#fef3c7] dark:bg-[#3b3226] hover:bg-[#fde89a] dark:hover:bg-[#4a3e2f] transition-colors group">
                         <div class="flex items-center space-x-3">
                             <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,7 +149,7 @@
                         </svg>
                     </a>
 
-                    <a href="{{ route('admin.kategoris.index') }}" class="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors group">
+                    <a href="{{ route('admin.kategoris.index') }}" class="flex items-center justify-between p-4 rounded-lg bg-[#fef3c7] dark:bg-[#3b3226] hover:bg-[#fde89a] dark:hover:bg-[#4a3e2f] transition-colors group">
                         <div class="flex items-center space-x-3">
                             <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,7 +166,7 @@
                         </svg>
                     </a>
 
-                    <a href="{{ route('admin.transaksi.index') }}" class="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors group">
+                    <a href="{{ route('admin.transaksi.index') }}" class="flex items-center justify-between p-4 rounded-lg bg-[#fef3c7] dark:bg-[#3b3226] hover:bg-[#fde89a] dark:hover:bg-[#4a3e2f] transition-colors group">
                         <div class="flex items-center space-x-3">
                             <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 group-hover:scale-110 transition-transform">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

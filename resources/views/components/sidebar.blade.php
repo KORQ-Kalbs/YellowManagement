@@ -1,8 +1,8 @@
-<aside 
-    :class="sidebarOpen ? '' : 'w-20'"
+<aside
+    class="fixed top-0 left-0 z-50 hidden h-full transition-all duration-200 ease-linear shadow-xl sidebar-shell lg:block"
     :style="sidebarOpen ? `width: ${sidebarWidth}px` : ''"
     style="font-family: 'Montserrat', sans-serif;"
-    class="hidden lg:block fixed top-0 left-0 z-50 h-full transition-all duration-200 ease-linear shadow-xl bg-gradient-to-b from-yellow-400 via-yellow-500 to-orange-500"
+    :class="sidebarOpen ? '' : 'w-20'"
     x-data="{
         /* Dropdown states commented out - restore if needed
         productsOpen: {{ Request::routeIs('admin.products.*', 'admin.kategoris.*') ? 'true' : 'false' }},
@@ -15,6 +15,73 @@
         sidebarWidth = localStorage.getItem('sidebarWidth') || 256;
         $watch('sidebarWidth', value => localStorage.setItem('sidebarWidth', value));
     ">
+
+    <style>
+        .sidebar-shell {
+            --sidebar-fg: var(--color-foreground);
+            --sidebar-muted: var(--color-muted);
+            --sidebar-hover: color-mix(in oklab, var(--color-primary) 12%, transparent);
+            --sidebar-active: color-mix(in oklab, var(--color-primary) 22%, transparent);
+            --sidebar-surface: color-mix(in oklab, var(--color-foreground) 7%, transparent);
+            --sidebar-outline: color-mix(in oklab, var(--color-primary) 26%, transparent);
+            background: linear-gradient(to bottom, color-mix(in oklab, var(--color-background) 95%, white), var(--color-accent));
+        }
+
+        .dark .sidebar-shell {
+            background: linear-gradient(to bottom, color-mix(in oklab, var(--color-background) 88%, #1f2937), color-mix(in oklab, var(--color-accent) 92%, #111827));
+        }
+
+        .sidebar-shell a,
+        .sidebar-shell button {
+            color: var(--sidebar-fg) !important;
+        }
+
+        .sidebar-shell nav a {
+            background-color: transparent !important;
+        }
+
+        .sidebar-shell nav a:hover {
+            background-color: var(--sidebar-hover) !important;
+        }
+
+        .sidebar-shell nav a.font-semibold {
+            background-color: var(--sidebar-active) !important;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        .sidebar-shell .sidebar-section {
+            color: var(--sidebar-muted) !important;
+        }
+
+        .sidebar-shell .sidebar-resize {
+            background-color: var(--sidebar-surface) !important;
+        }
+
+        .sidebar-shell .sidebar-resize:hover {
+            background-color: var(--sidebar-outline) !important;
+        }
+
+        .sidebar-shell .sidebar-resize-handle {
+            background-color: var(--sidebar-outline) !important;
+        }
+
+        .sidebar-shell .sidebar-avatar {
+            color: var(--color-background) !important;
+            background-color: var(--color-primary) !important;
+        }
+
+        .sidebar-shell .text-white {
+            color: var(--sidebar-fg) !important;
+        }
+
+        .sidebar-shell .text-yellow-100 {
+            color: var(--sidebar-muted) !important;
+        }
+
+        .sidebar-shell .bg-white {
+            background-color: var(--color-accent) !important;
+        }
+    </style>
     
     <!-- Resize Handle -->
     <div x-show="sidebarOpen"
@@ -23,21 +90,20 @@
             document.body.style.cursor = 'ew-resize';
             document.body.style.userSelect = 'none';
          "
-         class="absolute top-0 right-0 w-1 h-full cursor-ew-resize hover:bg-yellow-600 transition-colors group">
-        <div class="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 w-3 h-12 bg-yellow-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+         class="absolute top-0 right-0 w-1 h-full transition-colors sidebar-resize cursor-ew-resize group">
+        <div class="absolute right-0 w-3 h-12 transition-opacity transform translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 sidebar-resize-handle top-1/2 group-hover:opacity-100"></div>
     </div>
     
     <!-- Logo Section -->
     <div class="flex items-center justify-between" :class="sidebarOpen ? 'p-4' : 'py-4 px-2'">
         <div class="flex items-center min-w-0 space-x-3 overflow-hidden">
-            <div class="flex items-center justify-center flex-shrink-0 w-9 h-9 bg-white rounded-lg shadow-md">
-                <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
-                </svg>
+            <div class="flex items-center justify-center flex-shrink-0 h-20 rounded-lg">
+                <img src="{{ asset('img/yellowlogosblack.png') }}" alt="Yellow Drink Logo" class="object-contain h-20 w-25 dark:hidden">
+                <img src="{{ asset('img/yellowlogoswhite.png') }}" alt="Yellow Drink Logo" class="hidden object-contain h-20 w-25 dark:block">
             </div>
             <div x-show="sidebarOpen" x-transition class="overflow-hidden whitespace-nowrap">
-                <h1 class="text-[14px] font-semibold leading-[1.5] text-white truncate">Yellow Drink</h1>
-                <p class="text-[12px] font-medium leading-[1.5] text-yellow-100">Money Manage</p>
+                <!-- <h1 class="text-[14px] font-semibold leading-[1.5] text-white truncate"></h1>
+                <p class="text-[12px] font-medium leading-[1.5] text-yellow-100">Money Manage</p> -->
             </div>
         </div>
     </div>
@@ -60,7 +126,7 @@
 
         @if(auth()->user()->role === 'admin')
             <!-- All Sales Section -->
-            <div x-show="sidebarOpen" x-transition class="px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider text-white/70 uppercase">
+            <div x-show="sidebarOpen" x-transition class="sidebar-section px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider uppercase">
                 All Sales
             </div>
 
@@ -121,7 +187,7 @@
             </a>
 
             <!-- All Data Section -->
-            <div x-show="sidebarOpen" x-transition class="px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider text-white/70 uppercase">
+            <div x-show="sidebarOpen" x-transition class="sidebar-section px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider uppercase">
                 All Data
             </div>
 
@@ -183,7 +249,7 @@
 
         @elseif(auth()->user()->role === 'kasir')
             <!-- All Sales Section -->
-            <div x-show="sidebarOpen" x-transition class="px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider text-white/70 uppercase">
+            <div x-show="sidebarOpen" x-transition class="sidebar-section px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider uppercase">
                 All Sales
             </div>
 
@@ -236,7 +302,7 @@
         <!-- Theme Toggle -->
         <div class="py-2" :class="sidebarOpen ? 'px-4' : 'px-2'">
             <button @click="theme = theme === 'dark' ? 'light' : 'dark'" 
-                    class="flex items-center w-full p-2 gap-2 text-[14px] leading-[1.5] font-medium text-white transition-all duration-200 rounded-md hover:bg-white hover:bg-opacity-10"
+                    class="sidebar-toggle-button flex items-center w-full p-2 gap-2 text-[14px] leading-[1.5] font-medium transition-all duration-200 rounded-md"
                     :title="!sidebarOpen ? 'Toggle Theme' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" x-show="theme === 'light'" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -251,9 +317,9 @@
         <!-- User Profile Button -->
         <div class="pb-4" :class="sidebarOpen ? 'px-4' : 'px-2'">
             <button @click="profileModalOpen = true" 
-                    class="flex items-center w-full p-2 gap-2 text-white transition-all duration-200 rounded-md hover:bg-white hover:bg-opacity-10"
+                    class="flex items-center w-full gap-2 p-2 transition-all duration-200 rounded-md sidebar-profile-button"
                     :class="sidebarOpen ? '' : 'justify-center'">
-                <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 text-[14px] font-bold text-yellow-500 bg-white rounded-full">
+                <div class="sidebar-avatar flex items-center justify-center flex-shrink-0 w-8 h-8 text-[14px] font-bold rounded-full shadow-sm">
                     {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 1)) }}
                 </div>
                 <div x-show="sidebarOpen" x-transition class="flex-1 min-w-0 text-left">
@@ -285,12 +351,12 @@
                  x-transition:leave="transition ease-in duration-200"
                  x-transition:leave-start="opacity-100 transform scale-100"
                  x-transition:leave-end="opacity-0 transform scale-95"
-                 class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-4 overflow-hidden">
+                 class="w-full max-w-md mx-4 overflow-hidden rounded-lg shadow-xl app-surface">
                 
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-yellow-400 to-orange-500">
                     <h3 class="text-lg font-semibold text-white">User Settings</h3>
-                    <button @click="profileModalOpen = false" class="text-white hover:text-gray-200 transition-colors">
+                    <button @click="profileModalOpen = false" class="text-white transition-colors hover:text-gray-200">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -300,14 +366,14 @@
                 <!-- Modal Body -->
                 <div class="p-6">
                     <!-- User Info -->
-                    <div class="flex items-center space-x-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                        <div class="flex items-center justify-center w-16 h-16 text-2xl font-bold text-white bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full">
+                    <div class="flex items-center pb-6 mb-6 space-x-4 border-b app-border">
+                        <div class="flex items-center justify-center w-16 h-16 text-2xl font-bold text-white rounded-full bg-gradient-to-br from-yellow-400 to-orange-500">
                             {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 1)) }}
                         </div>
                         <div>
-                            <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ auth()->user()?->name ?? 'User' }}</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ auth()->user()?->email ?? 'user@example.com' }}</p>
-                            <span class="inline-block mt-1 px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-100 rounded-full dark:bg-yellow-900 dark:text-yellow-200">
+                            <p class="text-lg font-semibold app-text">{{ auth()->user()?->name ?? 'User' }}</p>
+                            <p class="text-sm app-muted">{{ auth()->user()?->email ?? 'user@example.com' }}</p>
+                            <span class="inline-block px-2 py-1 mt-1 text-xs font-semibold text-yellow-800 bg-yellow-100 rounded-full dark:bg-yellow-900 dark:text-yellow-200">
                                 {{ ucfirst(auth()->user()?->role ?? 'guest') }}
                             </span>
                         </div>
@@ -317,7 +383,7 @@
                     <div class="space-y-2">
                         <a href="{{ route('profile') }}" 
                            @click="profileModalOpen = false"
-                           class="flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                           class="flex items-center px-4 py-3 transition-colors rounded-lg app-text app-hover">
                             <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
@@ -326,7 +392,7 @@
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="flex items-center w-full px-4 py-3 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                            <button type="submit" class="flex items-center w-full px-4 py-3 text-red-600 transition-colors rounded-lg dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20">
                                 <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                 </svg>

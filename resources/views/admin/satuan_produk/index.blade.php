@@ -28,7 +28,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
-                        <tr class="transition-colors bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <tr class="transition-colors bg-[#fef3c7] dark:bg-gray-800 hover:bg-[#fde89a] dark:hover:bg-gray-700/50">
                             <td class="px-6 py-4">
                                 <p class="font-semibold text-gray-900 dark:text-white">Kilogram</p>
                             </td>
@@ -53,7 +53,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr class="transition-colors bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <tr class="transition-colors bg-[#fef3c7] dark:bg-gray-800 hover:bg-[#fde89a] dark:hover:bg-gray-700/50">
                             <td class="px-6 py-4">
                                 <p class="font-semibold text-gray-900 dark:text-white">Liter</p>
                             </td>
@@ -78,7 +78,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr class="transition-colors bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <tr class="transition-colors bg-[#fef3c7] dark:bg-gray-800 hover:bg-[#fde89a] dark:hover:bg-gray-700/50">
                             <td class="px-6 py-4">
                                 <p class="font-semibold text-gray-900 dark:text-white">Piece</p>
                             </td>
@@ -120,7 +120,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
-                        <tr class="transition-colors bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <tr class="transition-colors bg-[#fef3c7] dark:bg-gray-800 hover:bg-[#fde89a] dark:hover:bg-gray-700/50">
                             <td class="px-6 py-4">
                                 <p class="font-semibold text-gray-900 dark:text-white">Kilogram</p>
                             </td>
@@ -145,7 +145,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr class="transition-colors bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <tr class="transition-colors bg-[#fef3c7] dark:bg-gray-800 hover:bg-[#fde89a] dark:hover:bg-gray-700/50">
                             <td class="px-6 py-4">
                                 <p class="font-semibold text-gray-900 dark:text-white">Liter</p>
                             </td>
@@ -170,7 +170,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr class="transition-colors bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <tr class="transition-colors bg-[#fef3c7] dark:bg-gray-800 hover:bg-[#fde89a] dark:hover:bg-gray-700/50">
                             <td class="px-6 py-4">
                                 <p class="font-semibold text-gray-900 dark:text-white">Piece</p>
                             </td>

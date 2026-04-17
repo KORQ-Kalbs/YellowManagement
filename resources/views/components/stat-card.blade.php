@@ -13,11 +13,11 @@ $colorClasses = [
 $colorClass = isset($colorClasses[$color]) ? $colorClasses[$color] : $color;
 @endphp
 
-<div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6">
+<div class="app-surface rounded-lg shadow border app-border p-6">
     <div class="flex items-center justify-between">
         <div class="flex-1">
-            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ $title ?? $label }}</p>
-            <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">{{ $value }}</p>
+            <p class="text-sm font-medium app-muted">{{ $title ?? $label }}</p>
+            <p class="mt-2 text-3xl font-bold app-text">{{ $value }}</p>
             
             @if($trend)
                 <div class="mt-2 flex items-center space-x-1">

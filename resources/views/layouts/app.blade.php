@@ -26,7 +26,7 @@
             })();
         </script>
     </head>
-    <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 overflow-x-hidden" 
+    <body class="font-sans antialiased app-shell-bg app-text overflow-x-hidden" 
           x-data="{ 
               sidebarOpen: window.innerWidth >= 1024,
               theme: localStorage.getItem('theme') || 'light',
@@ -82,9 +82,9 @@
                 <x-navbar />
 
                 <!-- Page Content -->
-                <main class="flex-1 bg-gray-50 dark:bg-gray-900 w-full overflow-x-hidden pb-16 lg:pb-0">
+                <main class="flex-1 app-shell-bg w-full overflow-x-hidden pb-16 lg:pb-0">
                     @isset($header)
-                        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                        <div class="app-surface border-b app-border">
                             <div class="px-4 py-6 sm:px-6 lg:px-8">
                                 {{ $header }}
                             </div>
@@ -99,7 +99,7 @@
         </div>
 
         <!-- Mobile Bottom Navigation -->
-        <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 lg:hidden"
+        <nav class="fixed bottom-0 left-0 right-0 z-50 app-surface border-t app-border lg:hidden"
              x-data="{ moreMenuOpen: false }">
             <div class="grid grid-cols-5 h-16">
                 @if(auth()->user()->role === 'admin')
@@ -201,7 +201,7 @@
                      x-transition:leave="transition ease-in duration-150"
                      x-transition:leave-start="opacity-100 translate-y-0"
                      x-transition:leave-end="opacity-0 translate-y-4"
-                     class="absolute bottom-16 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg"
+                     class="absolute bottom-16 left-0 right-0 app-surface border-t app-border shadow-lg"
                      style="display: none;">
                     <div class="grid grid-cols-2 gap-2 p-4">
                         <!-- Reports -->

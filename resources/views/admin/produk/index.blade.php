@@ -44,7 +44,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
                         @forelse($products as $product)
-                            <tr class="transition-colors bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                            <tr class="transition-colors bg-[#fef3c7] dark:bg-gray-800 hover:bg-[#fde89a] dark:hover:bg-gray-700/50">
                                 <td class="px-6 py-4">
                                     <div>
                                         <p class="font-semibold text-gray-900 dark:text-white">{{ $product->nama_produk }}</p>
@@ -107,7 +107,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr class="bg-white dark:bg-gray-800">
+                            <tr class="bg-[#fef3c7] dark:bg-gray-800">
                                 <td colspan="7" class="px-6 py-12 text-center">
                                     <svg class="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />

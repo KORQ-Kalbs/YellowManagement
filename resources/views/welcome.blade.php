@@ -88,7 +88,7 @@
     @endif -->
 
     <!-- Hero Section -->
-    <section class="relative flex items-center justify-center min-h-screen px-4 py-20 overflow-hidden">
+    <section class="relative flex items-center justify-center min-h-screen px-4 py-20 overflow-hidden ">
         <!-- Background decorative elements -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div class="absolute bg-yellow-200 rounded-full -top-40 -right-40 w-80 h-80 mix-blend-multiply filter blur-3xl opacity-30 float-animation"></div>
@@ -98,6 +98,9 @@
         <div class="relative max-w-6xl mx-auto text-center fade-in">
             <!-- Logo/Brand -->
             <div class="mb-8">
+                <div class="flex justify-center mb-6">
+                    <img src="{{ asset('img/logoyellow.png') }}" alt="Yellow Drink Logo" class="h-24 w-24 object-contain drop-shadow-lg">
+                </div>
                 <h1 class="mb-4 text-6xl font-bold text-transparent md:text-8xl bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-400">
                     Yellow Drink
                 </h1>

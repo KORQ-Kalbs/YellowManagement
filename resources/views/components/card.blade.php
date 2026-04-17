@@ -1,9 +1,9 @@
 @props(['title' => null, 'noPadding' => false, 'class' => ''])
 
-<div {{ $attributes->merge(['class' => 'bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 ' . $class]) }}>
+<div {{ $attributes->merge(['class' => 'app-surface rounded-lg shadow border app-border ' . $class]) }}>
     @if($title)
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $title }}</h3>
+        <div class="px-6 py-4 border-b app-border">
+            <h3 class="text-lg font-semibold app-text">{{ $title }}</h3>
         </div>
     @endif
     

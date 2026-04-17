@@ -10,7 +10,7 @@
 
     <div class="space-y-6">
         <!-- Period Selector Tabs -->
-        <div class="flex flex-wrap gap-2 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+        <div class="flex flex-wrap gap-2 bg-[#fef3c7] dark:bg-gray-800 p-4 rounded-lg shadow">
             <a href="{{ route('admin.reports.index', ['period' => 'day', 'date' => $selectedDate->format('Y-m-d')]) }}" 
                class="px-6 py-2 rounded-lg font-medium transition-colors {{ $period === 'day' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}">
                 Per Hari
@@ -134,7 +134,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
                         @forelse($topProducts ?? [] as $product)
-                            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                            <tr class="bg-[#fef3c7] dark:bg-gray-800 hover:bg-[#fde89a] dark:hover:bg-gray-700/50 transition-colors">
                                 <td class="px-6 py-4">
                                     <p class="font-semibold text-gray-900 dark:text-white">{{ $product->nama_produk }}</p>
                                 </td>
@@ -154,7 +154,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr class="bg-white dark:bg-gray-800">
+                            <tr class="app-surface">
                                 <td colspan="5" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                     <p>No sales data available yet</p>
                                 </td>

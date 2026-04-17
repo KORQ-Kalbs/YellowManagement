@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold text-white">Point of Sale (POS)</h2>
+        <h2 class="text-xl font-semibold app-text">Point of Sale (POS)</h2>
     </x-slot>
 
     <div class="py-6">
@@ -22,21 +22,21 @@
 
             <form action="{{ route('kasir.transaksi.store') }}" method="POST" id="posForm">
                 @csrf
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
 
                     <!-- LEFT: Product Selection -->
-                    <div class="lg:col-span-2 p-4 bg-white rounded shadow text-sm sm:text-base">
+                    <div class="p-4 text-sm bg-white rounded shadow lg:col-span-2 sm:text-base">
                         <h3 class="mb-4 text-lg font-bold">Pilih Produk</h3>
                         <div class="mb-4">
                             <input type="text" id="searchProduct" placeholder="Cari produk..." class="w-full p-2 border rounded">
                         </div>
                         <div class="flex flex-wrap gap-2 mb-4">
-                            <button type="button" onclick="filterCategory('all')" class="px-3 py-1 text-xs sm:text-sm bg-gray-200 rounded">Semua</button>
+                            <button type="button" onclick="filterCategory('all')" class="px-3 py-1 text-xs bg-gray-200 rounded sm:text-sm">Semua</button>
                             @foreach($kategoris as $kat)
-                                <button type="button" onclick="filterCategory({{ $kat->id }})" class="px-3 py-1 text-xs sm:text-sm bg-gray-200 rounded">{{ $kat->nama_kategori }}</button>
+                                <button type="button" onclick="filterCategory({{ $kat->id }})" class="px-3 py-1 text-xs bg-gray-200 rounded sm:text-sm">{{ $kat->nama_kategori }}</button>
                             @endforeach
                         </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" id="productGrid">
+                        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" id="productGrid">
                             @foreach($products as $product)
                                 <div class="p-3 border rounded cursor-pointer product-item hover:bg-gray-50"
                                      data-id="{{ $product->id }}"
@@ -46,7 +46,7 @@
                                      data-category="{{ $product->kategori_id }}"
                                      data-variants="{{ $product->variants->toJson() }}"
                                      onclick="addToCart(this)">
-                                    <div class="font-semibold text-sm">{{ $product->nama_produk }}</div>
+                                    <div class="text-sm font-semibold">{{ $product->nama_produk }}</div>
                                     <div class="text-xs text-gray-500">{{ $product->kategori->nama_kategori }}</div>
                                     <div class="text-sm font-bold text-green-600">Rp {{ number_format($product->harga, 0, ',', '.') }}</div>
                                     <div class="text-xs text-gray-400">Stok: {{ $product->stok }}</div>
@@ -139,7 +139,7 @@
 
                     <!-- Dynamic Payment Content -->
                     <!-- CASH view -->
-                    <div id="pendingView-cash" class="pending-payment-view hidden">
+                    <div id="pendingView-cash" class="hidden pending-payment-view">
                         <div class="text-center">
                             <div class="flex items-center justify-center w-16 h-16 mx-auto mb-3 bg-green-100 rounded-full dark:bg-green-900/30">
                                 <span class="text-3xl">💵</span>
@@ -149,7 +149,7 @@
                     </div>
 
                     <!-- QRIS view -->
-                    <div id="pendingView-qris" class="pending-payment-view hidden">
+                    <div id="pendingView-qris" class="hidden pending-payment-view">
                         <div class="text-center">
                             <div class="flex items-center justify-center p-4 mx-auto mb-3 bg-gray-100 border-2 border-gray-300 rounded shadow-sm w-52 h-52">
                                 <svg class="w-40 h-40 text-gray-800" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm-3 3h3v5h-3v-5zm3 3h3v2h-3v-2zm-3-8h5v2h-5v-2zM13 13h3v3h-3v-3zm0 5h3v3h-3v-3z"/></svg>
@@ -160,7 +160,7 @@
                     </div>
 
                     <!-- DEBIT / CREDIT / TRANSFER view -->
-                    <div id="pendingView-other" class="pending-payment-view hidden">
+                    <div id="pendingView-other" class="hidden pending-payment-view">
                         <div class="text-center">
                             <div class="flex items-center justify-center w-16 h-16 mx-auto mb-3 bg-blue-100 rounded-full dark:bg-blue-900/30">
                                 <span class="text-3xl" id="pendingOtherIcon">💳</span>
@@ -272,11 +272,11 @@
     <div id="variantModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-end justify-center min-h-screen px-4 pb-4 sm:items-center">
             <div class="fixed inset-0 bg-black bg-opacity-40" onclick="closeVariantModal()"></div>
-            <div class="relative w-full max-w-xs bg-white rounded-xl shadow-xl dark:bg-gray-800 p-5 z-10">
-                <h4 class="mb-1 text-base font-bold text-gray-900 dark:text-white" id="variantModalTitle">Pilih Ukuran</h4>
-                <p class="mb-3 text-xs text-gray-500 dark:text-gray-400" id="variantModalSubtitle"></p>
-                <div id="variantOptions" class="grid grid-cols-3 gap-2 mb-4"></div>
-                <button type="button" onclick="closeVariantModal()" class="w-full py-2 text-sm text-gray-600 border rounded-lg hover:bg-gray-50">Batal</button>
+            <div class="relative z-10 w-full max-w-md p-6 bg-white shadow-xl rounded-xl dark:bg-gray-800">
+                <h4 class="mb-2 text-xl font-bold text-gray-900 dark:text-white" id="variantModalTitle">Pilih Ukuran</h4>
+                <p class="mb-4 text-sm text-gray-500 dark:text-gray-400" id="variantModalSubtitle"></p>
+                <div id="variantOptions" class="grid grid-cols-2 gap-3 mb-6 sm:grid-cols-3"></div>
+                <button type="button" onclick="closeVariantModal()" class="w-full py-3 text-base font-semibold text-gray-600 transition-colors border-2 border-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300 dark:border-gray-600">Batal</button>
             </div>
         </div>
     </div>
@@ -308,12 +308,12 @@
                 const finalPrice = product.price + parseFloat(v.harga_tambahan);
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = 'flex flex-col items-center p-3 border-2 border-gray-200 rounded-xl hover:border-yellow-400 hover:bg-yellow-50 transition-all';
+                btn.className = 'variant-btn size-option-btn flex flex-col items-center p-4 border-2 border-gray-300 rounded-xl hover:border-yellow-400 hover:bg-yellow-50 dark:border-gray-600 dark:hover:border-yellow-400 dark:hover:bg-yellow-900/20 transition-all shadow-sm hover:shadow-md';
                 btn.innerHTML = `
-                    <span class="text-lg font-black text-gray-800">${v.kode_variant}</span>
-                    <span class="text-[10px] text-gray-500 mt-0.5">${v.nama_variant}</span>
-                    <span class="text-xs font-semibold text-gray-900 mt-1">Rp ${finalPrice.toLocaleString('id-ID')}</span>
-                    ${parseFloat(v.harga_tambahan) > 0 ? `<span class="text-[9px] text-gray-500">+Rp ${parseFloat(v.harga_tambahan).toLocaleString('id-ID')}</span>` : ''}
+                    <span class="text-2xl font-black text-gray-800 dark:text-gray-200">${v.kode_variant}</span>
+                    <span class="mt-1 text-xs text-gray-600 dark:text-gray-400">${v.nama_variant}</span>
+                    <span class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">Rp ${finalPrice.toLocaleString('id-ID')}</span>
+                    ${parseFloat(v.harga_tambahan) > 0 ? `<span class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">+Rp ${parseFloat(v.harga_tambahan).toLocaleString('id-ID')}</span>` : ''}
                 `;
                 btn.onclick = () => { pushToCart(product, v); closeVariantModal(); };
                 opts.appendChild(btn);
@@ -433,16 +433,16 @@
                     const btns = item.variants.map(v => {
                         const isActive = String(item.variantId) === String(v.id);
                         const activeClass = isActive
-                            ? 'bg-yellow-400 border-yellow-500 text-gray-900 font-bold'
-                            : 'bg-white border-gray-300 text-gray-600 hover:border-yellow-400 hover:bg-yellow-50';
+                            ? 'bg-yellow-400 border-yellow-500 text-gray-900 font-bold shadow-md'
+                            : 'bg-white border-gray-300 text-gray-600 hover:border-yellow-400 hover:bg-yellow-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300';
                         return `<button type="button"
                             onclick="changeVariant('${item.cartKey}', '${v.id}')"
-                            class="px-2 py-0.5 text-xs border rounded transition-colors ${activeClass}">
+                            class="size-option-btn variant-btn px-4 py-2 text-sm font-semibold border-2 rounded-lg transition-all ${activeClass}">
                             ${v.kode_variant}
                         </button>`;
                     }).join('');
-                    variantButtons = `<div class="flex gap-1 mt-1 items-center">
-                        <span class="text-xs text-gray-400 mr-1">Ukuran:</span>${btns}
+                    variantButtons = `<div class="flex flex-wrap items-center gap-2 mt-2">
+                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">Ukuran:</span>${btns}
                     </div>`;
                 }
 
@@ -457,7 +457,7 @@
                             <button type="button" onclick="removeItem('${item.cartKey}')" class="text-red-600 hover:text-red-800">✕</button>
                         </div>
                     </div>
-                    ${item.variantName ? `<div class="text-xs text-yellow-600 font-medium">${item.variantName}</div>` : ''}
+                    ${item.variantName ? `<div class="text-xs font-medium text-yellow-600">${item.variantName}</div>` : ''}
                     ${variantButtons}
                     <div class="flex items-center justify-between mt-1">
                         <div class="flex items-center gap-2">
@@ -575,7 +575,7 @@
                                     @endif
                                 </div>
                                 @if($detail->catatan)
-                                    <div class="text-xs text-gray-500 italic">{{ $detail->catatan }}</div>
+                                    <div class="text-xs italic text-gray-500">{{ $detail->catatan }}</div>
                                 @endif
                                 <div class="flex justify-between mt-1 text-xs text-gray-700">
                                     <span>{{ $detail->jumlah }} x {{ number_format($detail->subtotal / $detail->jumlah, 0, ',', '.') }}</span>

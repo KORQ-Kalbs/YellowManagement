@@ -4,6 +4,124 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global theme tokens (manual toggle uses .dark class on html) */
+:root {
+    --color-background: oklch(100% 0 0);
+    --color-foreground: oklch(15% 0 0);
+    --color-primary: oklch(85% 0.18 90);
+    --color-accent: oklch(97% 0 0);
+    --color-border: oklch(90% 0 0);
+    --color-muted: oklch(45% 0 0);
+    --color-hover: oklch(93% 0.04 90);
+}
+
+.dark {
+    --color-background: oklch(12% 0.02 260);
+    --color-foreground: oklch(98% 0 0);
+    --color-primary: oklch(90% 0.15 95);
+    --color-accent: oklch(25% 0.03 260);
+    --color-border: oklch(33% 0.03 260);
+    --color-muted: oklch(78% 0 0);
+    --color-hover: oklch(31% 0.03 260);
+}
+
+.app-shell-bg {
+    background-color: var(--color-background) !important;
+}
+
+.app-surface {
+    background-color: var(--color-accent) !important;
+}
+
+.app-border {
+    border-color: var(--color-border) !important;
+}
+
+.app-text {
+    color: var(--color-foreground) !important;
+}
+
+.app-muted {
+    color: var(--color-muted) !important;
+}
+
+.app-hover:hover {
+    background-color: var(--color-hover) !important;
+}
+
+.app-primary-bg {
+    background-color: var(--color-primary) !important;
+}
+
+.app-primary-text {
+    color: var(--color-primary) !important;
+}
+
+/* Compatibility layer: make legacy Tailwind color classes follow theme tokens */
+body.app-shell-bg .text-gray-900,
+body.app-shell-bg .text-gray-800,
+body.app-shell-bg .text-gray-700 {
+    color: var(--color-foreground) !important;
+}
+
+body.app-shell-bg .text-gray-600,
+body.app-shell-bg .text-gray-500,
+body.app-shell-bg .text-gray-400,
+body.app-shell-bg .text-gray-300 {
+    color: var(--color-muted) !important;
+}
+
+body.app-shell-bg .bg-white,
+body.app-shell-bg .bg-gray-50,
+body.app-shell-bg .bg-gray-100,
+body.app-shell-bg .bg-\[\#fef3c7\],
+body.app-shell-bg .bg-\[\#fff9db\],
+body.app-shell-bg .bg-\[\#fdf6c3\] {
+    background-color: var(--color-accent) !important;
+}
+
+body.app-shell-bg .border-gray-200,
+body.app-shell-bg .border-gray-300 {
+    border-color: var(--color-border) !important;
+}
+
+body.app-shell-bg .hover\:bg-\[\#fde89a\]:hover,
+body.app-shell-bg .hover\:bg-gray-100:hover,
+body.app-shell-bg .hover\:bg-gray-50:hover {
+    background-color: var(--color-hover) !important;
+}
+
+.dark body.app-shell-bg .dark\:text-white,
+.dark body.app-shell-bg .dark\:text-gray-100 {
+    color: var(--color-foreground) !important;
+}
+
+.dark body.app-shell-bg .dark\:text-gray-200,
+.dark body.app-shell-bg .dark\:text-gray-300,
+.dark body.app-shell-bg .dark\:text-gray-400 {
+    color: var(--color-muted) !important;
+}
+
+.dark body.app-shell-bg .dark\:bg-gray-700,
+.dark body.app-shell-bg .dark\:bg-gray-800,
+.dark body.app-shell-bg .dark\:bg-\[\#3b3226\],
+.dark body.app-shell-bg .dark\:bg-\[\#2d2416\],
+.dark body.app-shell-bg .dark\:bg-\[\#12100b\] {
+    background-color: var(--color-accent) !important;
+}
+
+.dark body.app-shell-bg .dark\:border-gray-700,
+.dark body.app-shell-bg .dark\:border-gray-600 {
+    border-color: var(--color-border) !important;
+}
+
+.dark body.app-shell-bg .dark\:hover\:bg-gray-700:hover,
+.dark body.app-shell-bg .dark\:hover\:bg-gray-700\/50:hover,
+.dark body.app-shell-bg .dark\:hover\:bg-\[\#4a3e2f\]:hover,
+.dark body.app-shell-bg .dark\:hover\:bg-gray-600:hover {
+    background-color: var(--color-hover) !important;
+}
+
 /* Global font styles */
 html,
 body,
@@ -16,6 +134,8 @@ html,
 body {
     overflow-x: hidden;
     max-width: 100vw;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
 }
 
 /* Ensure all containers respect viewport width */
@@ -26,6 +146,21 @@ body {
 /* Fix table overflow on mobile */
 .overflow-x-auto {
     -webkit-overflow-scrolling: touch;
+}
+
+/* Enhanced Mobile Size Buttons */
+.size-option-btn,
+.variant-btn {
+    @apply transition-all duration-200 transform;
+    cursor: pointer;
+    user-select: none;
+    min-height: 60px;
+    min-width: 60px;
+}
+
+.size-option-btn:active,
+.variant-btn:active {
+    transform: scale(0.95);
 }
 
 /* Responsive Table Styles for Mobile */
@@ -39,10 +174,10 @@ body {
     table tbody tr {
         display: block;
         margin-bottom: 1.5rem;
-        border: 1px solid rgba(229, 231, 235, 1);
+        border: 1px solid var(--color-border);
         border-radius: 0.5rem;
         padding: 1rem;
-        background-color: white;
+        background-color: var(--color-accent);
     }
 
     table tbody tr:hover {
@@ -54,7 +189,7 @@ body {
         display: block;
         text-align: left;
         padding: 0.75rem 0;
-        border-bottom: 1px solid rgba(229, 231, 235, 1);
+        border-bottom: 1px solid var(--color-border);
     }
 
     table tbody td:last-child {
@@ -68,16 +203,38 @@ body {
         width: auto;
     }
 
-    /* Dark mode */
-    @media (prefers-color-scheme: dark) {
-        table tbody tr {
-            background-color: rgba(31, 41, 55, 1);
-            border-color: rgba(75, 85, 99, 1);
-        }
+    .dark table tbody tr {
+        background-color: var(--color-accent);
+        border-color: var(--color-border);
+    }
 
-        table tbody td {
-            border-bottom-color: rgba(75, 85, 99, 1);
-        }
+    .dark table tbody td {
+        border-bottom-color: var(--color-border);
+    }
+
+    /* Enhanced mobile variant/size buttons */
+    .size-option-btn,
+    .variant-btn {
+        @apply px-3 py-2 text-sm;
+        min-height: 48px;
+        min-width: 48px;
+    }
+}
+
+/* Touch-friendly buttons for mobile */
+@media (hover: none) and (pointer: coarse) {
+    button,
+    a,
+    input[type="button"],
+    input[type="submit"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .size-option-btn,
+    .variant-btn {
+        min-height: 56px;
+        min-width: 56px;
     }
 }
 
@@ -92,7 +249,59 @@ body {
     table {
         min-width: 100%;
     }
-} /* Smooth scrolling */
+}
+
+/* Smooth scrolling */
 html {
     scroll-behavior: smooth;
+}
+
+/* Animation helpers for GSAP */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-in-up {
+    animation: slideInUp 0.3s ease-out;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.3s ease-out cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Smooth transitions for theme changes */
+button,
+a {
+    @apply transition-colors duration-200;
 }

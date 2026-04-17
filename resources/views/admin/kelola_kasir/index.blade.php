@@ -42,7 +42,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
                         @forelse($kasirs as $kasir)
-                            <tr class="transition-colors bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                            <tr class="transition-colors bg-[#fef3c7] dark:bg-gray-800 hover:bg-[#fde89a] dark:hover:bg-gray-700/50">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
                                         <div class="flex items-center justify-center w-10 h-10 mr-3 text-sm font-bold text-white bg-yellow-500 rounded-full">
@@ -88,7 +88,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr class="bg-white dark:bg-gray-800">
+                            <tr class="app-surface">
                                 <td colspan="5" class="px-6 py-12 text-center">
                                     <svg class="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
