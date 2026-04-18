@@ -10,7 +10,10 @@ use App\Http\Controllers\KategoriController;
 
 // Public route
 Route::view('/', 'welcome');
-
+Route::view('/menu', 'menu')->name('menu');
+Route::get('/cart', function () {
+    return view('cart');
+});
 // Auth routes
 require __DIR__.'/auth.php';
 

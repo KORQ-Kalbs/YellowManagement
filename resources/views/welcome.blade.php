@@ -1,534 +1,200 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="id" class="scroll-smooth">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Yellow Drink - Minuman Segar Pilihan Terbaik</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700&display=swap" rel="stylesheet" />
-    
-    <!-- Tailwind CSS -->
-    @vite('resources/css/app.css')  
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                    },
-                    colors: {
-                        'yellow-brand': '#FFD700',
-                        'yellow-light': '#FFF4CC',
-                        'yellow-dark': '#FFA500',
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #FFD700;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #FFA500;
-        }
-        
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        .float-animation {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yellow Drink - Semua Berhak Minum Enak</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<body class="overflow-x-hidden bg-[#311f08] text-[#F2E8D0] [font-family:'DM_Sans',sans-serif]">
+    <nav class="fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-gradient-to-b from-[#1A1208]/95 to-transparent px-6 py-5 lg:px-16">
+        <div class="text-2xl font-bold tracking-wide text-[#F5C518] [font-family:'Playfair_Display',serif]">Yellow Drink</div>
+        <ul class="hidden items-center gap-8 text-sm tracking-wider md:flex">
+            <li><a href="#menu" class="transition-colors hover:text-[#F5C518]">Menu</a></li>
+            <li><a href="#about" class="transition-colors hover:text-[#F5C518]">Tentang</a></li>
+            <li><a href="#location" class="transition-colors hover:text-[#F5C518]">Lokasi</a></li>
+        </ul>
+        <a href="/login" class="rounded-full bg-[#F5C518] px-5 py-2.5 text-sm font-medium text-[#311f08] transition hover:scale-105 hover:bg-white">Login Kasir</a>
+    </nav>
 
-<body class="min-h-screen antialiased bg-gradient-to-br from-yellow-50 via-white to-orange-50">
-    
-    <!-- Floating Login Button
-    @if (Route::has('login'))
-        <div class="fixed z-50 top-4 right-4">
-            @auth
-                <a href="{{ url('/dashboard') }}" class="px-6 py-2.5 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
-                    Dashboard
-                </a>
-            @else
-                <a href="{{ route('login') }}" class="px-6 py-2.5 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
-                    Login Kasir
-                </a>
-            @endauth
-        </div>
-    @endif -->
+    <section class="relative flex min-h-screen items-end overflow-hidden">
+        <div class="absolute inset-0 bg-[#1A1208] [background-image:linear-gradient(160deg,rgba(26,18,8,0.55)_0%,rgba(26,18,8,0.1)_50%,rgba(26,18,8,0.7)_100%),radial-gradient(ellipse_at_70%_40%,rgba(245,197,24,0.08)_0%,transparent_60%)]"></div>
+        <div class="pointer-events-none absolute right-[5%] top-[10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(245,197,24,0.15)_0%,transparent_70%)]"></div>
 
-    <!-- Hero Section -->
-    <section class="relative flex items-center justify-center min-h-screen px-4 py-20 overflow-hidden ">
-        <!-- Background decorative elements -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute bg-yellow-200 rounded-full -top-40 -right-40 w-80 h-80 mix-blend-multiply filter blur-3xl opacity-30 float-animation"></div>
-            <div class="absolute bg-orange-200 rounded-full -bottom-40 -left-40 w-80 h-80 mix-blend-multiply filter blur-3xl opacity-30 float-animation" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-20 right-[20%] flex w-[clamp(220px,28vw,500px)] items-end justify-center">
+            <div class="pointer-events-none absolute bottom-0 left-1/2 h-[60%] w-[80%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center_bottom,rgba(245,197,24,0.18)_0%,transparent_70%)]"></div>
+            <img src="{{ asset('images/drink.png') }}" alt="Yellow Drink" class="relative z-10 w-full drop-shadow-[0_30px_40px_rgba(0,0,0,0.5)]" />
         </div>
 
-        <div class="relative max-w-6xl mx-auto text-center fade-in">
-            <!-- Logo/Brand -->
-            <div class="mb-8">
-                <div class="flex justify-center mb-6">
-                    <img src="{{ asset('img/logoyellow.png') }}" alt="Yellow Drink Logo" width="96" height="96" class="h-24 w-24 object-contain drop-shadow-lg">
-                </div>
-                <h1 class="mb-4 text-6xl font-bold text-transparent md:text-8xl bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-400">
-                    Yellow Drink
-                </h1>
-                <p class="text-xl font-medium text-gray-700 md:text-2xl">
-                    🥤 Semua Berhak Minum Enak
-                </p>
+        <div class="relative z-10 max-w-2xl px-6 pb-40 lg:px-16">
+            <span class="mb-6 inline-block rounded-full border border-[#F5C518]/40 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.15em] text-[#F5C518]">Minuman Kekinian Terbaik</span>
+            <h1 class="mb-6 text-5xl font-black leading-[1.05] text-[#F5EDD6] lg:text-7xl [font-family:'Playfair_Display',serif]">
+                Segarnya Rasa<br /><em class="italic text-[#F5C518]">Temani</em><br />Setiap Cerita
+            </h1>
+            <p class="mb-10 max-w-lg text-base leading-8 text-[#9E8A6E] lg:text-[1.05rem]">
+                Minuman berkualitas, harga ramah di kantong. Karena semua berhak minum enak.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="#menu" class="rounded-full bg-[#F5C518] px-8 py-3.5 text-sm font-medium tracking-wide text-[#311f08] transition hover:-translate-y-0.5 hover:bg-white">Lihat Menu</a>
+                <a href="#location" class="rounded-full border border-[#F2E8D0]/30 px-8 py-3.5 text-sm tracking-wide text-[#F2E8D0] transition hover:border-[#F5C518] hover:text-[#F5C518]">Temukan Toko</a>
             </div>
+        </div>
 
-            <!-- Store Image -->
-            <div class="max-w-4xl mx-auto mb-12">
-                <div class="relative rounded-3xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-transform duration-500">
-                    <img src="/api/placeholder/1200/600" alt="Yellow Drink Store" width="1200" height="600" class="w-full h-auto">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 z-10 hidden border-t border-[#F5C518]/10 bg-[#1A1208]/70 backdrop-blur-xl md:flex">
+            <div class="flex-1 border-r border-[#F5C518]/10 px-8 py-5">
+                <div class="text-3xl font-bold leading-none text-[#F5C518] [font-family:'Playfair_Display',serif]">15+</div>
+                <div class="mt-1 text-xs leading-5 text-[#9E8A6E]">Varian Menu<br />Pilihan</div>
+            </div>
+            <div class="flex-1 border-r border-[#F5C518]/10 px-8 py-5">
+                <div class="text-3xl font-bold leading-none text-[#F5C518] [font-family:'Playfair_Display',serif]">100%</div>
+                <div class="mt-1 text-xs leading-5 text-[#9E8A6E]">Bahan Segar<br />Alami</div>
+            </div>
+            <div class="flex-1 border-r border-[#F5C518]/10 px-8 py-5">
+                <div class="text-3xl font-bold leading-none text-[#F5C518] [font-family:'Playfair_Display',serif]">4.9</div>
+                <div class="mt-1 text-xs leading-5 text-[#9E8A6E]">Rating<br />Pelanggan</div>
+            </div>
+            <div class="flex-1 px-8 py-5">
+                <div class="text-3xl font-bold leading-none text-[#F5C518] [font-family:'Playfair_Display',serif]">500+</div>
+                <div class="mt-1 text-xs leading-5 text-[#9E8A6E]">Pelanggan<br />Setia</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-[#FBF6EC] px-6 py-20 lg:px-16" aria-label="Mengapa Memilih Kami">
+        <span class="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-[#5C3D1E]">Mengapa Memilih Kami</span>
+        <h2 class="mb-14 text-4xl font-bold text-[#311f08] [font-family:'Playfair_Display',serif] lg:text-5xl">Kenapa Yellow Drink?</h2>
+        <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+            <div class="rounded-2xl border border-[#5C3D1E]/10 bg-white p-8 transition hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(92,61,30,0.1)]">
+                <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[#F5C518] text-2xl">🌿</div>
+                <h3 class="mb-2 text-xl font-bold text-[#311f08] [font-family:'Playfair_Display',serif]">Bahan Berkualitas</h3>
+                <p class="text-sm leading-7 text-[#6B5C47]">100% menggunakan bahan pilihan terbaik, segar, alami, dan dipilih dengan cermat setiap harinya.</p>
+            </div>
+            <div class="rounded-2xl border border-[#5C3D1E]/10 bg-white p-8 transition hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(92,61,30,0.1)]">
+                <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[#F5C518] text-2xl">💛</div>
+                <h3 class="mb-2 text-xl font-bold text-[#311f08] [font-family:'Playfair_Display',serif]">Harga Terjangkau</h3>
+                <p class="text-sm leading-7 text-[#6B5C47]">Minuman enak tidak harus mahal. Cita rasa premium dengan harga yang ramah di kantong.</p>
+            </div>
+            <div class="rounded-2xl border border-[#5C3D1E]/10 bg-white p-8 transition hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(92,61,30,0.1)]">
+                <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[#F5C518] text-2xl">⚡</div>
+                <h3 class="mb-2 text-xl font-bold text-[#311f08] [font-family:'Playfair_Display',serif]">Pelayanan Cepat</h3>
+                <p class="text-sm leading-7 text-[#6B5C47]">Proses pemesanan efisien dan ramah. Minuman siap tersaji tanpa menunggu lama.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="bg-[#422b0e] px-6 py-20 lg:px-16">
+        <div class="mb-12 flex flex-wrap items-center justify-between gap-4">
+            <h2 class="text-4xl font-bold text-[#F5EDD6] [font-family:'Playfair_Display',serif] lg:text-5xl">Menu Terfavorit</h2>
+            <span class="inline-flex items-center gap-1 rounded-full border border-[#F5C518]/35 bg-[#F5C518]/10 px-4 py-2 text-xs font-medium uppercase tracking-widest text-[#F5C518]">Best Seller</span>
+        </div>
+        <div id="menu-grid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"></div>
+        <div class="mt-12 text-center">
+            <a href="/menu" class="inline-block rounded-full border border-[#F5C518]/50 px-10 py-3.5 text-sm font-medium text-[#F5C518] transition hover:-translate-y-0.5 hover:bg-[#F5C518] hover:text-[#311f08]">Lihat Semua Menu</a>
+        </div>
+    </section>
+
+    <section id="about" class="bg-[#FBF6EC] px-6 py-20 lg:px-16">
+        <div class="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-2">
+            <div class="relative">
+                <div class="pointer-events-none absolute -left-4 -top-4 h-20 w-20 rounded-full border-2 border-[#F5C518]/35"></div>
+                <div class="pointer-events-none absolute -left-2 -top-2 h-14 w-14 rounded-full border border-[#F5C518]/20"></div>
+                <div class="overflow-hidden rounded-3xl">
+                    <img src="{{ asset('images/banner.png') }}" alt="Yellow Drink" class="aspect-[4/5] w-full object-cover" />
+                    <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,rgba(245,197,24,0.08)_0%,transparent_40%,rgba(49,31,8,0.35)_100%)]"></div>
+                </div>
+                <div class="absolute -bottom-5 -right-5 flex h-28 w-28 flex-col items-center justify-center rounded-full bg-[#F5C518] text-[#311f08] shadow-[0_12px_30px_rgba(245,197,24,0.35)]">
+                    <strong class="text-3xl font-black leading-none [font-family:'Playfair_Display',serif]">100%</strong>
+                    <span class="text-xs font-medium">Terjangkau</span>
                 </div>
             </div>
-
-            <!-- CTA Buttons -->
-            <div class="flex flex-col items-center justify-center gap-4 mb-16 sm:flex-row">
-                <a href="#menu" class="flex items-center gap-2 px-8 py-4 font-bold text-gray-900 transition-all duration-300 transform rounded-full shadow-lg group bg-gradient-to-r from-yellow-400 to-yellow-500 hover:shadow-xl hover:scale-105">
-                    <span>Lihat Menu</span>
-                    <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                    </svg>
-                </a>
-                <a href="#location" class="px-8 py-4 font-bold text-gray-900 transition-all duration-300 transform bg-white border-2 border-yellow-400 rounded-full shadow-lg hover:shadow-xl hover:scale-105">
-                    Lokasi Kami
-                </a>
-            </div>
-
-            <!-- Stats -->
-            <div class="grid max-w-3xl grid-cols-3 gap-8 mx-auto">
-                <div class="text-center">
-                    <div class="mb-2 text-4xl font-bold text-yellow-500 md:text-5xl">10+</div>
-                    <div class="text-sm text-gray-600 md:text-base">Varian Menu</div>
-                </div>
-                <div class="text-center">
-                    <div class="mb-2 text-4xl font-bold text-yellow-500 md:text-5xl">100%</div>
-                    <div class="text-sm text-gray-600 md:text-base">Segar</div>
-                </div>
-                <div class="text-center">
-                    <div class="mb-2 text-4xl font-bold text-yellow-500 md:text-5xl">⭐ 4.8</div>
-                    <div class="text-sm text-gray-600 md:text-base">Rating</div>
+            <div>
+                <span class="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-[#5C3D1E]">Tentang Kami</span>
+                <h2 class="mb-6 text-4xl font-black leading-tight text-[#311f08] [font-family:'Playfair_Display',serif] lg:text-5xl">Yellow Drink,<br />Rasa yang Bicara</h2>
+                <p class="mb-6 text-[0.95rem] leading-8 text-[#5C4430]">Yellow Drink adalah UMKM minuman kekinian yang berkomitmen menyajikan minuman berkualitas dengan harga terjangkau. Kami menggunakan bahan pilihan dan resep original yang terus disempurnakan.</p>
+                <p class="mb-8 text-[0.95rem] leading-8 text-[#5C4430]">Dengan visi <em>Semua Berhak Minum Enak</em>, kami ingin memberikan pengalaman minum yang menyenangkan untuk semua kalangan.</p>
+                <div class="space-y-4 text-sm font-medium text-[#311f08]">
+                    <div class="flex items-center gap-3"><span class="h-2 w-2 rounded-full bg-[#F5C518]"></span>Resep original dikembangkan oleh tim kami</div>
+                    <div class="flex items-center gap-3"><span class="h-2 w-2 rounded-full bg-[#F5C518]"></span>Bahan baku diperbarui setiap hari</div>
+                    <div class="flex items-center gap-3"><span class="h-2 w-2 rounded-full bg-[#F5C518]"></span>Tanpa pengawet, tanpa pewarna buatan</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Best Seller Section -->
-    <section id="menu" class="px-4 py-20 bg-white">
-        <div class="max-w-6xl mx-auto">
-            <!-- Section Header -->
-            <div class="mb-16 text-center">
-                <span class="inline-block px-6 py-2 mb-4 text-sm font-semibold text-yellow-600 bg-yellow-100 rounded-full">
-                    🔥 POPULER
-                </span>
-                <h2 class="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
-                    Best Seller
-                </h2>
-                <p class="max-w-2xl mx-auto text-lg text-gray-600">
-                    Menu favorit pelanggan yang paling banyak dipesan
-                </p>
+    <section id="location" class="bg-[#311f08] px-6 py-20 lg:px-16">
+        <span class="mb-2 block text-center text-xs font-medium uppercase tracking-[0.15em] text-[#F5C518]">Kunjungi Kami</span>
+        <h2 class="mb-14 text-center text-4xl font-bold text-[#F5EDD6] [font-family:'Playfair_Display',serif] lg:text-5xl">Lokasi Toko</h2>
+        <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
+            <div class="h-[360px] overflow-hidden rounded-3xl border border-[#F5C518]/12 bg-white/5">
+                <iframe src="https://www.google.com/maps?q=-6.573796898904178,106.7601842828633&output=embed" class="h-full w-full" style="border:0;" loading="lazy"></iframe>
             </div>
-
-            <!-- Products Grid -->
-            <div class="grid grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-4">
-                <!-- Product Card 1 - Boba & Cream -->
-                <div class="relative p-8 overflow-hidden transition-all duration-300 transform shadow-lg cursor-pointer group bg-gradient-to-br from-pink-400 to-pink-500 rounded-3xl hover:scale-105 hover:shadow-2xl">
-                    <div class="absolute inset-0 transition-opacity opacity-0 bg-gradient-to-br from-white/10 to-transparent group-hover:opacity-100"></div>
-                    
-                    <div class="relative z-10">
-                        <!-- Product Image Placeholder -->
-                        <div class="flex items-center justify-center w-40 h-40 mx-auto mb-6 bg-pink-200 rounded-full">
-                            <svg class="w-20 h-20 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        
-                        <h3 class="mb-2 text-2xl font-bold text-center text-white">
-                            Boba & Cream
-                        </h3>
-                        <p class="mb-4 text-sm text-center text-pink-100">
-                            Perpaduan boba kenyal dengan cream lembut
-                        </p>
-                        
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl font-bold text-white">
-                                Rp 18K
-                            </span>
-                            <button class="px-4 py-2 font-semibold text-pink-500 transition-colors bg-white rounded-full hover:bg-pink-50">
-                                Pesan
-                            </button>
-                        </div>
+            <div class="space-y-8 rounded-3xl border border-[#F5C518]/12 bg-white/5 p-10">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#F5C518]/12 text-lg">📍</div>
+                    <div>
+                        <h4 class="mb-1 text-xs tracking-wider text-[#9E8A6E]">ALAMAT</h4>
+                        <p class="text-sm leading-7 text-[#F2E8D0]">Jl. Contoh No. 123, Jakarta Selatan<br />DKI Jakarta, Indonesia 12345</p>
                     </div>
                 </div>
-
-                <!-- Product Card 2 - Mangga Yakult -->
-                <div class="relative p-8 overflow-hidden transition-all duration-300 transform shadow-lg cursor-pointer group bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-3xl hover:scale-105 hover:shadow-2xl">
-                    <div class="absolute inset-0 transition-opacity opacity-0 bg-gradient-to-br from-white/10 to-transparent group-hover:opacity-100"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-center w-40 h-40 mx-auto mb-6 bg-yellow-200 rounded-full">
-                            <svg class="w-20 h-20 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        
-                        <h3 class="mb-2 text-2xl font-bold text-center text-gray-900">
-                            Mangga Yakult
-                        </h3>
-                        <p class="mb-4 text-sm text-center text-gray-700">
-                            Segar manisnya mangga dengan yakult
-                        </p>
-                        
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl font-bold text-gray-900">
-                                Rp 15K
-                            </span>
-                            <button class="px-4 py-2 font-semibold text-yellow-500 transition-colors bg-white rounded-full hover:bg-yellow-50">
-                                Pesan
-                            </button>
-                        </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#F5C518]/12 text-lg">🕐</div>
+                    <div>
+                        <h4 class="mb-1 text-xs tracking-wider text-[#9E8A6E]">JAM OPERASIONAL</h4>
+                        <p class="text-sm leading-7 text-[#F2E8D0]">Senin - Jumat: 09.00 - 21.00<br />Sabtu - Minggu: 10.00 - 22.00</p>
                     </div>
                 </div>
-
-                <!-- Product Card 3 - Brown Sugar -->
-                <div class="relative p-8 overflow-hidden transition-all duration-300 transform shadow-lg cursor-pointer group bg-gradient-to-br from-amber-600 to-amber-700 rounded-3xl hover:scale-105 hover:shadow-2xl">
-                    <div class="absolute inset-0 transition-opacity opacity-0 bg-gradient-to-br from-white/10 to-transparent group-hover:opacity-100"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-center w-40 h-40 mx-auto mb-6 rounded-full bg-amber-300">
-                            <svg class="w-20 h-20 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        
-                        <h3 class="mb-2 text-2xl font-bold text-center text-white">
-                            Brown Sugar
-                        </h3>
-                        <p class="mb-4 text-sm text-center text-amber-100">
-                            Manis legit brown sugar milk
-                        </p>
-                        
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl font-bold text-white">
-                                Rp 16K
-                            </span>
-                            <button class="px-4 py-2 font-semibold transition-colors bg-white rounded-full text-amber-600 hover:bg-amber-50">
-                                Pesan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 4 - Taro Latte -->
-                <div class="relative p-8 overflow-hidden transition-all duration-300 transform shadow-lg cursor-pointer group bg-gradient-to-br from-purple-400 to-purple-500 rounded-3xl hover:scale-105 hover:shadow-2xl">
-                    <div class="absolute inset-0 transition-opacity opacity-0 bg-gradient-to-br from-white/10 to-transparent group-hover:opacity-100"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-center w-40 h-40 mx-auto mb-6 bg-purple-200 rounded-full">
-                            <svg class="w-20 h-20 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        
-                        <h3 class="mb-2 text-2xl font-bold text-center text-white">
-                            Taro Latte
-                        </h3>
-                        <p class="mb-4 text-sm text-center text-purple-100">
-                            Creamy taro dengan susu segar
-                        </p>
-                        
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl font-bold text-white">
-                                Rp 17K
-                            </span>
-                            <button class="px-4 py-2 font-semibold text-purple-500 transition-colors bg-white rounded-full hover:bg-purple-50">
-                                Pesan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- View All Menu Button -->
-            <div class="text-center">
-                <button class="px-8 py-4 font-bold text-gray-900 transition-all duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-yellow-400 to-orange-400 hover:shadow-xl hover:scale-105">
-                    Lihat Semua Menu
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="px-4 py-20 bg-gradient-to-br from-yellow-50 to-orange-50">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid items-center gap-12 md:grid-cols-2">
-                <!-- Image Side -->
-                <div class="order-2 md:order-1">
-                    <div class="relative overflow-hidden shadow-2xl rounded-3xl">
-                        <img src="/api/placeholder/600/700" alt="Tentang Yellow Drink" width="600" height="700" class="w-full h-auto">
-                    </div>
-                </div>
-
-                <!-- Content Side -->
-                <div class="order-1 md:order-2">
-                    <span class="inline-block px-6 py-2 mb-4 text-sm font-semibold text-yellow-600 bg-yellow-100 rounded-full">
-                        Tentang Kami
-                    </span>
-                    <h2 class="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
-                        Yellow Drink
-                    </h2>
-                    <p class="mb-6 text-lg leading-relaxed text-gray-600">
-                        Yellow Drink adalah UMKM minuman kekinian yang berkomitmen menyajikan minuman berkualitas dengan harga terjangkau. Kami menggunakan bahan-bahan pilihan dan resep original untuk menciptakan rasa yang unik dan menyegarkan.
-                    </p>
-                    <p class="mb-8 text-lg leading-relaxed text-gray-600">
-                        Dengan visi "Semua Berhak Minum Enak", kami ingin memberikan pengalaman minum yang menyenangkan untuk semua kalangan.
-                    </p>
-
-                    <!-- Features -->
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-4">
-                            <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-full">
-                                <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="mb-1 text-lg font-bold text-gray-900">Bahan Berkualitas</h3>
-                                <p class="text-gray-600">100% menggunakan bahan pilihan terbaik</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4">
-                            <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-full">
-                                <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="mb-1 text-lg font-bold text-gray-900">Harga Terjangkau</h3>
-                                <p class="text-gray-600">Minuman enak dengan harga ramah di kantong</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4">
-                            <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-full">
-                                <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="mb-1 text-lg font-bold text-gray-900">Pelayanan Cepat</h3>
-                                <p class="text-gray-600">Proses pemesanan yang efisien dan ramah</p>
-                            </div>
-                        </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#F5C518]/12 text-lg">📞</div>
+                    <div>
+                        <h4 class="mb-1 text-xs tracking-wider text-[#9E8A6E]">KONTAK</h4>
+                        <p class="text-sm leading-7 text-[#F2E8D0]"><a href="tel:+6281234567890" class="text-[#F5C518] hover:underline">+62 812-3456-7890</a><br /><a href="mailto:info@yellowdrink.com" class="text-[#F5C518] hover:underline">info@yellowdrink.com</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Location Section -->
-    <section id="location" class="px-4 py-20 bg-white">
-        <div class="max-w-6xl mx-auto">
-            <!-- Section Header -->
-            <div class="mb-16 text-center">
-                <span class="inline-block px-6 py-2 mb-4 text-sm font-semibold text-yellow-600 bg-yellow-100 rounded-full">
-                    📍 Kunjungi Kami
-                </span>
-                <h2 class="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
-                    Lokasi Toko
-                </h2>
-                <p class="max-w-2xl mx-auto text-lg text-gray-600">
-                    Temukan kami dan nikmati minuman segar favorit Anda
-                </p>
-            </div>
-
-            <div class="grid gap-12 md:grid-cols-2">
-                <!-- Map -->
-                <div class="overflow-hidden shadow-xl rounded-3xl">
-                    <div class="flex items-center justify-center w-full bg-gray-200 h-96">
-                        <div class="text-center">
-                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                            <p class="text-gray-600">Google Maps Integration</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Info -->
-                <div class="space-y-6">
-                    <div class="p-8 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-full">
-                                <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="mb-2 text-lg font-bold text-gray-900">Alamat</h3>
-                                <p class="text-gray-600">
-                                    Jl. Contoh No. 123<br>
-                                    Jakarta Selatan, DKI Jakarta<br>
-                                    Indonesia 12345
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-full">
-                                <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="mb-2 text-lg font-bold text-gray-900">Jam Operasional</h3>
-                                <p class="text-gray-600">
-                                    Senin - Jumat: 09.00 - 21.00<br>
-                                    Sabtu - Minggu: 10.00 - 22.00
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4">
-                            <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-full">
-                                <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="mb-2 text-lg font-bold text-gray-900">Kontak</h3>
-                                <p class="text-gray-600">
-                                    Telepon: +62 812-3456-7890<br>
-                                    Email: info@yellowdrink.com
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Social Media -->
-                    <div class="p-8 text-center bg-gradient-to-br from-yellow-400 to-orange-400 rounded-3xl">
-                        <h3 class="mb-4 text-2xl font-bold text-gray-900">
-                            Follow Us
-                        </h3>
-                        <div class="flex justify-center gap-4">
-                            <a href="#" class="flex items-center justify-center w-12 h-12 transition-transform bg-white rounded-full hover:scale-110">
-                                <svg class="w-6 h-6 text-gray-900" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                </svg>
-                            </a>
-                            <a href="#" class="flex items-center justify-center w-12 h-12 transition-transform bg-white rounded-full hover:scale-110">
-                                <svg class="w-6 h-6 text-gray-900" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                                </svg>
-                            </a>
-                            <a href="#" class="flex items-center justify-center w-12 h-12 transition-transform bg-white rounded-full hover:scale-110">
-                                <svg class="w-6 h-6 text-gray-900" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="px-4 py-12 text-white bg-gray-900">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid gap-8 mb-8 md:grid-cols-4">
-                <div class="md:col-span-2">
-                    <h3 class="mb-4 text-3xl font-bold text-yellow-400">Yellow Drink</h3>
-                    <p class="mb-4 text-gray-400">
-                        UMKM minuman kekinian dengan komitmen menyajikan minuman 
-                        
-                            <!-- Floating Login Button -->
-                             @if (Route::has('login'))
-                              <div class="text-gray-400 hover:text-yellow-400">
-                               @auth
-                              <a href="{{ url('/dashboard') }}">
-                                            BERKUALITAS UNTUK SEMUA KALANGAN.
-                               </a>
-                                 @else
-                              <a href="{{ route('login') }}">
-                                            berkualitas untuk semua kalangan.
-                                 </a>
-                              @endauth
-                            </div>
-                            @endif
-                    </p>
-                </div>
-                
-                <div>
-                    <h4 class="mb-4 text-lg font-bold">Menu</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#menu" class="transition-colors hover:text-yellow-400">Best Seller</a></li>
-                        <li><a href="#menu" class="transition-colors hover:text-yellow-400">Semua Menu</a></li>
-                        <li><a href="#about" class="transition-colors hover:text-yellow-400">Tentang Kami</a></li>
-                        <li><a href="#location" class="transition-colors hover:text-yellow-400">Lokasi</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="mb-4 text-lg font-bold">Kontak</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li>+62 812-3456-7890</li>
-                        <li>info@yellowdrink.com</li>
-                        <li>Jakarta, Indonesia</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="pt-8 text-center text-gray-400 border-t border-gray-800">
-                <p>&copy; {{ date('Y') }} Yellow Drink. All rights reserved.</p>
-            </div>
+    <footer class="flex flex-wrap items-center justify-between gap-4 border-t border-[#F5C518]/10 bg-[#422b0e] px-6 py-8 lg:px-16">
+        <div class="text-xl font-bold text-[#F5C518] [font-family:'Playfair_Display',serif]">Yellow Drink</div>
+        <p class="text-sm text-[#9E8A6E]">© 2025 Yellow Drink. Semua Berhak Minum Enak.</p>
+        <div class="flex gap-3">
+            <a href="#" class="flex h-9 w-9 items-center justify-center rounded-full border border-[#F5C518]/25 text-xs text-[#9E8A6E] transition hover:border-[#F5C518] hover:text-[#F5C518]">f</a>
+            <a href="#" class="flex h-9 w-9 items-center justify-center rounded-full border border-[#F5C518]/25 text-xs text-[#9E8A6E] transition hover:border-[#F5C518] hover:text-[#F5C518]">ig</a>
+            <a href="#" class="flex h-9 w-9 items-center justify-center rounded-full border border-[#F5C518]/25 text-xs text-[#9E8A6E] transition hover:border-[#F5C518] hover:text-[#F5C518]">tw</a>
         </div>
     </footer>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/6281234567890" target="_blank" class="fixed z-50 flex items-center justify-center transition-all duration-300 transform bg-green-500 rounded-full shadow-lg bottom-6 right-6 w-14 h-14 hover:bg-green-600 hover:shadow-xl hover:scale-110">
-        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
-    </a>
+    <script>
+        const allItems = [
+            { name: 'Cokelat Oreo', desc: 'manis dan renyahnya coklat oreo', price: 'Rp 18.000', rating: '4.9', img: "{{ asset('images/coklatoreo.png') }}" },
+            { name: 'Mangga Yakult', desc: 'Segar manis mangga + probiotik yakult', price: 'Rp 15.000', rating: '4.8', img: "{{ asset('images/manggayakult.png') }}" },
+            { name: 'Brown Sugar', desc: 'Manis legit brown sugar milk tea', price: 'Rp 16.000', rating: '4.9', img: "{{ asset('images/brownsugar.png') }}" },
+            { name: 'Taro Latte', desc: 'Creamy taro dengan susu segar premium', price: 'Rp 17.000', rating: '4.8', img: "{{ asset('images/tarolatte.png') }}" },
+        ];
 
+        function renderMenu() {
+            const html = allItems.map((item) => `
+                <div class="group overflow-hidden rounded-[20px] border border-[#F5C518]/10 bg-white/5 transition hover:-translate-y-2 hover:border-[#F5C518]/40 hover:bg-white/[0.07]">
+                    <div class="relative h-52 overflow-hidden">
+                        <img src="${item.img}" alt="${item.name}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#311f08]/80 via-transparent to-transparent"></div>
+                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#311f08]/25 via-transparent to-transparent"></div>
+                        <span class="absolute right-3 top-3 rounded-full border border-[#F5C518]/20 bg-[#1A1208]/85 px-2.5 py-1 text-[0.72rem] text-[#F5C518]">${item.rating}</span>
+                        <span class="absolute bottom-3 left-3 text-lg font-bold text-[#F5C518] drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] [font-family:'Playfair_Display',serif]">${item.price}</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="mb-1 text-lg font-bold text-[#F5EDD6] [font-family:'Playfair_Display',serif]">${item.name}</h3>
+                        <p class="text-xs leading-6 text-[#9E8A6E]">${item.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('menu-grid').innerHTML = html;
+        }
+
+        renderMenu();
+    </script>
 </body>
 </html>
