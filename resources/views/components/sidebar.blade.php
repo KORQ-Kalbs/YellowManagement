@@ -1,5 +1,5 @@
 <aside
-    class="fixed top-0 left-0 z-50 hidden h-full shadow-xl sidebar-shell lg:block lg:w-56"
+    class="fixed top-0 left-0 z-50 hidden h-full shadow-xl sidebar-shell lg:block"
     :style="sidebarOpen ? `width: ${sidebarWidth}px` : ''"
     style="font-family: 'Montserrat', sans-serif;"
     :class="sidebarOpen ? '' : 'w-20'"
@@ -16,73 +16,7 @@
         $watch('sidebarWidth', value => localStorage.setItem('sidebarWidth', value));
     ">
 
-    <style>
-        .sidebar-shell {
-            --sidebar-fg: var(--color-foreground);
-            --sidebar-muted: var(--color-muted);
-            --sidebar-hover: color-mix(in oklab, var(--color-primary) 12%, transparent);
-            --sidebar-active: color-mix(in oklab, var(--color-primary) 22%, transparent);
-            --sidebar-surface: color-mix(in oklab, var(--color-foreground) 7%, transparent);
-            --sidebar-outline: color-mix(in oklab, var(--color-primary) 26%, transparent);
-            background: linear-gradient(to bottom, color-mix(in oklab, var(--color-background) 95%, white), var(--color-accent));
-        }
 
-        .dark .sidebar-shell {
-            background: linear-gradient(to bottom, color-mix(in oklab, var(--color-background) 88%, #1f2937), color-mix(in oklab, var(--color-accent) 92%, #111827));
-        }
-
-        .sidebar-shell a,
-        .sidebar-shell button {
-            color: var(--sidebar-fg) !important;
-        }
-
-        .sidebar-shell nav a {
-            background-color: transparent !important;
-        }
-
-        .sidebar-shell nav a:hover {
-            background-color: var(--sidebar-hover) !important;
-        }
-
-        .sidebar-shell nav a.font-semibold {
-            background-color: var(--sidebar-active) !important;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
-        }
-
-        .sidebar-shell .sidebar-section {
-            color: var(--sidebar-muted) !important;
-        }
-
-        .sidebar-shell .sidebar-resize {
-            background-color: var(--sidebar-surface) !important;
-        }
-
-        .sidebar-shell .sidebar-resize:hover {
-            background-color: var(--sidebar-outline) !important;
-        }
-
-        .sidebar-shell .sidebar-resize-handle {
-            background-color: var(--sidebar-outline) !important;
-        }
-
-        .sidebar-shell .sidebar-avatar {
-            color: var(--color-background) !important;
-            background-color: var(--color-primary) !important;
-        }
-
-        .sidebar-shell .text-white {
-            color: var(--sidebar-fg) !important;
-        }
-
-        .sidebar-shell .text-yellow-100 {
-            color: var(--sidebar-muted) !important;
-        }
-
-        .sidebar-shell .bg-white {
-            background-color: var(--color-accent) !important;
-        }
-    </style>
-    
     <!-- Resize Handle -->
     <div x-show="sidebarOpen"
          @mousedown="

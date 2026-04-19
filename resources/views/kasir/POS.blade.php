@@ -643,24 +643,11 @@
             function printReceipt() {
                 const receiptContent = document.getElementById('receiptContent').innerHTML;
                 const printWindow = window.open('', '_blank', 'width=400,height=600');
+                const thermalPrintStyles = @json(file_get_contents(resource_path('css/receipt-print.css')));
                 printWindow.document.write(`
                     <html><head>
                         <title>Struk - {{ $transaksi->no_invoice }}</title>
-                        <style>
-                            @media print { @page { margin: 0; } body { margin: 0; padding: 5mm; } }
-                            body { font-family: 'Courier New', monospace; padding: 20px; max-width: 80mm; margin: 0 auto; color: #000; background: #fff; line-height: 1.4; }
-                            * { box-sizing: border-box; }
-                            .text-center { text-align: center; } .flex { display: flex; } .justify-between { justify-content: space-between; }
-                            .font-bold, .font-semibold, .font-medium { font-weight: 700; }
-                            .text-2xl { font-size: 1.5rem; } .text-base { font-size: 1rem; } .text-sm { font-size: 0.875rem; } .text-xs { font-size: 0.75rem; }
-                            .uppercase { text-transform: uppercase; } .italic { font-style: italic; }
-                            .mb-1 { margin-bottom: 0.25rem; } .mb-2 { margin-bottom: 0.5rem; } .mb-3 { margin-bottom: 0.75rem; } .mb-4 { margin-bottom: 1rem; }
-                            .mt-1 { margin-top: 0.25rem; } .mt-6 { margin-top: 1.5rem; } .my-4 { margin: 1rem 0; } .pt-2 { padding-top: 0.5rem; }
-                            .text-gray-500, .text-gray-600, .text-gray-700, .text-gray-800, .text-gray-900 { color: #000; }
-                            .bg-green-500 { background-color: #000; } .text-white { color: #fff; } .rounded-full { border-radius: 50%; }
-                            .border-t-2 { border-top: 2px solid #000; } .border-t { border-top: 1px solid #000; } .border-dashed { border-style: dashed; } .border-gray-300 { border-color: #000; }
-                            .text-red-600 { color: #000; }
-                        </style>
+                        <style>${thermalPrintStyles}</style>
                     </head><body>
                         ${receiptContent}
                         <script>window.onload=function(){window.print();window.onafterprint=function(){window.close();}}<\/script>

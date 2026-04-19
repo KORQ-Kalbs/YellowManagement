@@ -288,74 +288,13 @@
         function printReceipt() {
             const receiptContent = document.getElementById('receiptContent').innerHTML;
             const printWindow = window.open('', '_blank', 'width=400,height=600');
+            const thermalPrintStyles = @json(file_get_contents(resource_path('css/receipt-print.css')));
             
             printWindow.document.write(`
                 <html>
                 <head>
                     <title>Struk Pembayaran - {{ $transaksi->no_invoice }}</title>
-                    <style>
-                        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
-                        @media print {
-                            @page { margin: 0; }
-                            body { margin: 0; padding: 5mm; }
-                        }
-                        body { 
-                            font-family: 'Courier Prime', 'Courier New', Courier, monospace;
-                            padding: 20px; 
-                            max-width: 80mm; /* Standard thermal printer width */
-                            margin: 0 auto; 
-                            color: #000;
-                            background: #fff;
-                            line-height: 1.4;
-                        }
-                        * { box-sizing: border-box; }
-                        
-                        /* Core utility classes mapped to standard CSS */
-                        .text-center { text-align: center; }
-                        .flex { display: flex; }
-                        .justify-between { justify-content: space-between; }
-                        .items-center { align-items: center; }
-                        .font-bold { font-weight: 700; }
-                        .font-semibold { font-weight: 700; }
-                        .font-medium { font-weight: 700; }
-                        
-                        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-                        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-                        .text-base { font-size: 1rem; line-height: 1.5rem; }
-                        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-                        .text-xs { font-size: 0.75rem; line-height: 1rem; }
-                        .text-\\[10px\\] { font-size: 10px; }
-                        
-                        .uppercase { text-transform: uppercase; }
-                        .italic { font-style: italic; }
-                        .tracking-wider { letter-spacing: 0.05em; }
-                        
-                        .mb-1 { margin-bottom: 0.25rem; }
-                        .mb-2 { margin-bottom: 0.5rem; }
-                        .mb-3 { margin-bottom: 0.75rem; }
-                        .mb-4 { margin-bottom: 1rem; }
-                        .mt-1 { margin-top: 0.25rem; }
-                        .mt-6 { margin-top: 1.5rem; }
-                        .my-4 { margin-top: 1rem; margin-bottom: 1rem; }
-                        .pt-2 { padding-top: 0.5rem; }
-                        
-                        /* Thermal simulation forces colors to black */
-                        .text-gray-500, .text-gray-600, .text-gray-700, .text-gray-800, .text-gray-900 { color: #000; }
-                        
-                        .bg-green-500 { background-color: #000; }
-                        .text-white { color: #fff; }
-                        .rounded-full { border-radius: 50%; }
-                        .w-10 { width: 40px; }
-                        .h-10 { height: 40px; }
-                        .w-6 { width: 24px; }
-                        .h-6 { height: 24px; }
-                        .justify-center { justify-content: center; }
-                        
-                        .border-t-2 { border-top: 2px solid #000; }
-                        .border-t { border-top: 1px solid #000; }
-                        .border-dashed { border-style: dashed; }
-                        .border-gray-300 { border-color: #000; }
-                    </style>
+                    <style>${thermalPrintStyles}</style>
                 </head>
                 <body>
                     ${receiptContent}

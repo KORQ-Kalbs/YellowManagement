@@ -71,9 +71,7 @@
         
         <div class="flex min-h-screen max-w-full overflow-x-hidden">
             <!-- Sidebar - Hidden on Mobile -->
-            <div class="hidden lg:block fixed top-0 left-0 z-50 h-full w-56">
-                <x-sidebar />
-            </div>
+            <x-sidebar />
 
             <!-- Main Content Area -->
             <div class="flex flex-col w-full min-h-screen lg:ml-56"

@@ -221,6 +221,91 @@ body {
     }
 }
 
+.sidebar-shell {
+    --sidebar-fg: var(--color-foreground);
+    --sidebar-muted: var(--color-muted);
+    --sidebar-hover: color-mix(in oklab, var(--color-primary) 12%, transparent);
+    --sidebar-active: color-mix(
+        in oklab,
+        var(--color-primary) 22%,
+        transparent
+    );
+    --sidebar-surface: color-mix(
+        in oklab,
+        var(--color-foreground) 7%,
+        transparent
+    );
+    --sidebar-outline: color-mix(
+        in oklab,
+        var(--color-primary) 26%,
+        transparent
+    );
+    background: linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--color-background) 95%, white),
+        var(--color-accent)
+    );
+}
+
+.dark .sidebar-shell {
+    background: linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--color-background) 88%, #1f2937),
+        color-mix(in oklab, var(--color-accent) 92%, #111827)
+    );
+}
+
+.sidebar-shell a,
+.sidebar-shell button {
+    color: var(--sidebar-fg) !important;
+}
+
+.sidebar-shell nav a {
+    background-color: transparent !important;
+}
+
+.sidebar-shell nav a:hover {
+    background-color: var(--sidebar-hover) !important;
+}
+
+.sidebar-shell nav a.font-semibold {
+    background-color: var(--sidebar-active) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+.sidebar-shell .sidebar-section {
+    color: var(--sidebar-muted) !important;
+}
+
+.sidebar-shell .sidebar-resize {
+    background-color: var(--sidebar-surface) !important;
+}
+
+.sidebar-shell .sidebar-resize:hover {
+    background-color: var(--sidebar-outline) !important;
+}
+
+.sidebar-shell .sidebar-resize-handle {
+    background-color: var(--sidebar-outline) !important;
+}
+
+.sidebar-shell .sidebar-avatar {
+    color: var(--color-background) !important;
+    background-color: var(--color-primary) !important;
+}
+
+.sidebar-shell .text-white {
+    color: var(--sidebar-fg) !important;
+}
+
+.sidebar-shell .text-yellow-100 {
+    color: var(--sidebar-muted) !important;
+}
+
+.sidebar-shell .bg-white {
+    background-color: var(--color-accent) !important;
+}
+
 /* Touch-friendly buttons for mobile */
 @media (hover: none) and (pointer: coarse) {
     button,
