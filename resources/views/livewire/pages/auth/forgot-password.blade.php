@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 new #[Layout('layouts.guest')] class extends Component
 {
@@ -20,9 +21,16 @@ new #[Layout('layouts.guest')] class extends Component
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $this->only('email')
-        );
+        try {
+            $status = Password::sendResetLink(
+                $this->only('email')
+            );
+        } catch (TransportExceptionInterface $e) {
+            report($e);
+            $this->addError('email', __('Unable to send reset link right now. Please try again later.'));
+
+            return;
+        }
 
         if ($status != Password::RESET_LINK_SENT) {
             $this->addError('email', __($status));
