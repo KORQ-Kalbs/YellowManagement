@@ -284,13 +284,47 @@
     <script>
         let cart = [];
 
+        const preferredSizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
+
+        function normalizeVariantCode(code) {
+            return String(code || '').trim().toUpperCase();
+        }
+
+        function getOrderedVariants(variants) {
+            if (!Array.isArray(variants)) return [];
+
+            const normalized = variants
+                .filter(v => v && v.id)
+                .map(v => ({
+                    ...v,
+                    kode_variant: normalizeVariantCode(v.kode_variant),
+                }))
+                .filter(v => v.kode_variant !== '');
+
+            normalized.sort((a, b) => {
+                const aIndex = preferredSizeOrder.indexOf(a.kode_variant);
+                const bIndex = preferredSizeOrder.indexOf(b.kode_variant);
+
+                if (aIndex === -1 && bIndex === -1) {
+                    return a.kode_variant.localeCompare(b.kode_variant);
+                }
+
+                if (aIndex === -1) return 1;
+                if (bIndex === -1) return -1;
+
+                return aIndex - bIndex;
+            });
+
+            return normalized;
+        }
+
         function addToCart(element) {
             const product = {
                 id:       element.dataset.id,
                 name:     element.dataset.name,
                 price:    parseFloat(element.dataset.price),
                 stock:    parseInt(element.dataset.stock),
-                variants: JSON.parse(element.dataset.variants || '[]'),
+                variants: getOrderedVariants(JSON.parse(element.dataset.variants || '[]')),
             };
             if (product.variants.length > 0) {
                 openVariantModal(product);

@@ -33,6 +33,7 @@ class UpdateProductRequest extends FormRequest
             'harga' => ['required', 'numeric', 'min:0', 'decimal:0,2'],
             'stok' => ['required', 'integer', 'min:0'],
             'status' => ['nullable', 'in:active,inactive'],
+            'gambar' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:5120'],
             'variants' => ['nullable', 'array'],
             'variants.*.id' => ['nullable', 'integer'],
             'variants.*.kode_variant' => ['required_with:variants', 'string', 'max:10'],
@@ -60,6 +61,9 @@ class UpdateProductRequest extends FormRequest
             'stok.required' => 'Stok harus diisi',
             'stok.integer' => 'Stok harus berupa angka bulat',
             'stok.min' => 'Stok tidak boleh kurang dari 0',
+            'gambar.image' => 'File harus berupa gambar',
+            'gambar.mimes' => 'Format gambar harus jpg, jpeg, png, webp, atau gif',
+            'gambar.max' => 'Ukuran gambar maksimal 5MB',
         ];
     }
 }

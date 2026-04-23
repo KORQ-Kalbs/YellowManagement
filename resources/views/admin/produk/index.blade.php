@@ -133,7 +133,7 @@
         <div class="p-6">
             <h3 class="mb-4 text-lg font-bold text-gray-900 dark:text-white" id="product-modal-title">Add Product</h3>
             
-            <form id="product-form" method="POST" action="{{ route('admin.products.store') }}">
+            <form id="product-form" method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="product-method" name="_method" value="POST">
                 <input type="hidden" id="product-id" name="id">

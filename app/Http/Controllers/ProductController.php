@@ -9,6 +9,8 @@ use App\Models\ProductVariant;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProductController extends Controller
@@ -47,7 +49,15 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request): RedirectResponse
     {
         try {
-            $product = Product::create($request->validated());
+            $validated = $request->validated();
+
+            if ($request->hasFile('gambar')) {
+                $validated['gambar_produk'] = $this->storeProductImage($request->file('gambar'));
+            }
+
+            unset($validated['gambar']);
+
+            $product = Product::create($validated);
 
             // Sync variants
             $this->syncVariants($product, $request->input('variants', []));
@@ -88,7 +98,16 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product): RedirectResponse
     {
         try {
-            $product->update($request->validated());
+            $validated = $request->validated();
+
+            if ($request->hasFile('gambar')) {
+                $this->deleteProductImage($product->gambar_produk);
+                $validated['gambar_produk'] = $this->storeProductImage($request->file('gambar'));
+            }
+
+            unset($validated['gambar']);
+
+            $product->update($validated);
 
             // Sync variants
             $this->syncVariants($product, $request->input('variants', []));
@@ -109,6 +128,7 @@ class ProductController extends Controller
     public function destroy(Product $product): RedirectResponse
     {
         try {
+            $this->deleteProductImage($product->gambar_produk);
             $product->delete();
 
             return redirect()
@@ -164,5 +184,36 @@ class ProductController extends Controller
         ProductVariant::where('product_id', $product->id)
             ->whereNotIn('id', $submittedIds)
             ->delete();
+    }
+
+    private function storeProductImage($uploadedFile): string
+    {
+        $directory = public_path('images/products');
+
+        if (!File::exists($directory)) {
+            File::makeDirectory($directory, 0755, true);
+        }
+
+        $baseName = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+        $safeName = Str::slug($baseName);
+        $extension = strtolower($uploadedFile->getClientOriginalExtension() ?: 'jpg');
+        $fileName = now()->format('YmdHis') . '-' . Str::random(8) . ($safeName ? '-' . $safeName : '') . '.' . $extension;
+
+        $uploadedFile->move($directory, $fileName);
+
+        return 'images/products/' . $fileName;
+    }
+
+    private function deleteProductImage(?string $path): void
+    {
+        if (!$path) {
+            return;
+        }
+
+        $absolutePath = public_path($path);
+
+        if (File::exists($absolutePath)) {
+            File::delete($absolutePath);
+        }
     }
 }
