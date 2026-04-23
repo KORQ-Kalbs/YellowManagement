@@ -7,6 +7,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\ProductImageController;
 
 // Public route
 Route::view('/', 'welcome');
@@ -64,6 +65,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Product Management (Produk)
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::resource('products', ProductController::class)->except(['index']);
+
+    // Image Library (Public Images)
+    Route::get('/img-product', [ProductImageController::class, 'index'])->name('img-product.index');
+    Route::post('/img-product', [ProductImageController::class, 'store'])->name('img-product.store');
+    Route::put('/img-product/{productImage}', [ProductImageController::class, 'update'])->name('img-product.update');
+    Route::delete('/img-product/{productImage}', [ProductImageController::class, 'destroy'])->name('img-product.destroy');
     
     // Kategori Management
     Route::get('/kategoris', [KategoriController::class, 'index'])->name('kategoris.index');

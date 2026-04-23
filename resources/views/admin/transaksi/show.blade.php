@@ -11,12 +11,12 @@
             </div>
             <div class="flex gap-2">
                 @if($transaksi->status === 'completed')
-                <button onclick="openReceiptModal()" class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
+                <a href="{{ route('admin.transaksi.receipt.pdf', $transaksi->id) }}" class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                     </svg>
-                    Print Receipt
-                </button>
+                    Download PDF
+                </a>
                 @endif
                 <a href="{{ route('admin.transaksi.index') }}" class="inline-flex items-center px-4 py-2 font-medium text-gray-700 transition-colors bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@
                     <div class="space-y-4">
                         <div class="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
                             <span class="font-medium text-gray-700 dark:text-gray-300">Payment Method</span>
-                            <span class="font-semibold text-gray-900 dark:text-white uppercase">{{ $transaksi->pembayaran->metode_pembayaran }}</span>
+                            <span class="font-semibold text-gray-900 uppercase dark:text-white">{{ $transaksi->pembayaran->metode_pembayaran }}</span>
                         </div>
                         <div class="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
                             <span class="font-medium text-gray-700 dark:text-gray-300">Amount Paid</span>
@@ -156,168 +156,3 @@
 </x-app-layout>
 
 
-<!-- Receipt Modal -->
-<div id="receiptModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" onclick="closeReceiptModal()"></div>
-
-        <!-- Modal panel -->
-        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-sm sm:w-full">
-            <!-- Receipt Content (Thermal Receipt Style) -->
-            <div id="receiptContent" class="p-6 bg-white text-gray-900 font-mono text-sm border-t-8 border-gray-100 border-b-8 border-gray-100">
-                <!-- Success Checkmark -->
-                <div class="flex justify-center mb-3">
-                    <div class="flex items-center justify-center bg-green-500 rounded-full print-bg-black" style="width: 40px; height: 40px;">
-                        <svg class="text-white" style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-                </div>
-
-                <!-- Shop Info -->
-                <div class="text-center mb-4">
-                    <h2 class="text-2xl font-bold uppercase tracking-wider mb-1">Yellow Drink</h2>
-                    <p class="text-xs text-gray-600">Jl. Kasir Yellow No. 1, City</p>
-                    <p class="text-xs text-gray-600">Telp: 0812-3456-7890</p>
-                </div>
-
-                <!-- Divider -->
-                <div class="border-t-2 border-dashed border-gray-300 my-4"></div>
-
-                <!-- Transaction Info -->
-                <div class="text-xs text-gray-700 mb-4 space-y-1">
-                    <div class="flex justify-between">
-                        <span>No: {{ $transaksi->no_invoice }}</span>
-                        <span>{{ $transaksi->tanggal_transaksi->format('d/m/Y H:i') }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Kasir: {{ $transaksi->user->name }}</span>
-                        <span class="uppercase">By: {{ $transaksi->pembayaran->metode_pembayaran ?? 'CASH' }}</span>
-                    </div>
-                </div>
-
-                <!-- Divider -->
-                <div class="border-t-2 border-dashed border-gray-300 my-4"></div>
-
-                <!-- Items -->
-                <div class="mb-4">
-                    @foreach($transaksi->details as $detail)
-                    <div class="mb-3">
-                        <div class="font-bold text-sm">{{ $detail->product->nama_produk }}@if($detail->variant) <span class="font-normal">({{ $detail->variant->kode_variant }})</span>@endif</div>
-                        @if($detail->catatan)
-                            <div class="text-xs text-gray-500 italic">{{ $detail->catatan }}</div>
-                        @endif
-                        <div class="flex justify-between text-xs text-gray-700 mt-1">
-                            <span>{{ $detail->jumlah }} x {{ number_format($detail->subtotal / $detail->jumlah, 0, ',', '.') }}</span>
-                            <span class="font-medium text-gray-900">{{ number_format($detail->subtotal, 0, ',', '.') }}</span>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-
-                <!-- Divider -->
-                <div class="border-t-2 border-dashed border-gray-300 my-4"></div>
-
-                <!-- Totals -->
-                <div class="">
-                    @php
-                        $subtotalBruto = $transaksi->details->sum('subtotal');
-                        $discountPct = $transaksi->discountEvent ? floatval($transaksi->discountEvent->discount_percentage) : 0;
-                        $discountAmount = $subtotalBruto - $transaksi->total_harga;
-                    @endphp
-                    <div class="flex justify-between text-xs text-gray-700 mb-1">
-                        <span>SUBTOTAL</span>
-                        <span>Rp {{ number_format($subtotalBruto, 0, ',', '.') }}</span>
-                    </div>
-                    @if($discountPct > 0)
-                    <div class="flex justify-between text-xs text-red-600 mb-2">
-                        <span>DISKON ({{ number_format($discountPct, 0) }}%{{ $transaksi->discountEvent ? ' - '.$transaksi->discountEvent->name : '' }})</span>
-                        <span>- Rp {{ number_format($discountAmount, 0, ',', '.') }}</span>
-                    </div>
-                    @endif
-                    <div class="flex justify-between text-base font-bold mb-2 border-t border-gray-300 pt-2">
-                        <span>TOTAL</span>
-                        <span>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</span>
-                    </div>
-                    @if($transaksi->pembayaran)
-                    <div class="flex justify-between text-sm text-gray-700 mb-2">
-                        <span>TUNAI/BAYAR</span>
-                        <span>Rp {{ number_format($transaksi->pembayaran->jumlah_pembayaran, 0, ',', '.') }}</span>
-                    </div>
-                    <div class="flex justify-between text-sm font-bold border-t border-gray-300 pt-2">
-                        <span>KEMBALI</span>
-                        <span>Rp {{ number_format($transaksi->pembayaran->jumlah_pembayaran - $transaksi->total_harga, 0, ',', '.') }}</span>
-                    </div>
-                    @endif
-                </div>
-
-                <!-- Divider -->
-                <div class="border-t-2 border-dashed border-gray-300 my-4"></div>
-
-                <!-- Footer -->
-                <div class="text-center mt-6 text-xs text-gray-600">
-                    <p class="font-bold mb-1">Terima Kasih Atas Kunjungan Anda!</p>
-                    <p class="italic text-[10px]">Layanan Konsumen: @yellowdrink.id</p>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="grid grid-cols-3 gap-2 px-6 py-4 bg-gray-50 border-t">
-                <button onclick="printReceipt()" class="flex items-center justify-center px-4 py-3 text-sm font-semibold text-gray-700 transition-colors bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-100">
-                    🖨️ Cetak
-                </button>
-                <button onclick="window.location.href='{{ route('admin.transaksi.index') }}'" class="flex items-center justify-center px-4 py-3 text-sm font-semibold text-gray-700 transition-colors bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-100">
-                    📋 Riwayat
-                </button>
-                <button onclick="closeReceiptModal()" class="flex items-center justify-center px-4 py-3 text-sm font-semibold text-white transition-colors bg-green-600 border border-green-600 rounded shadow-sm hover:bg-green-700">
-                    ✅ Tutup
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function openReceiptModal() {
-        document.getElementById('receiptModal').classList.remove('hidden');
-    }
-
-    function closeReceiptModal() {
-        document.getElementById('receiptModal').classList.add('hidden');
-    }
-
-    function printReceipt() {
-        const receiptContent = document.getElementById('receiptContent').innerHTML;
-        const printWindow = window.open('', '_blank', 'width=400,height=600');
-        const thermalPrintStyles = @json(file_get_contents(resource_path('css/receipt-print.css')));
-        
-        printWindow.document.write(`
-            <html>
-            <head>
-                <title>Struk Pembayaran - {{ $transaksi->no_invoice }}</title>
-                <style>${thermalPrintStyles}</style>
-            </head>
-            <body>
-                ${receiptContent}
-                <script>
-                    window.onload = function() {
-                        window.print();
-                        window.onafterprint = function() {
-                            window.close();
-                        }
-                    }
-                <\/script>
-            </body>
-            </html>
-        `);
-        printWindow.document.close();
-    }
-
-    // Close modal when clicking outside
-    document.getElementById('receiptModal')?.addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeReceiptModal();
-        }
-    });
-</script>

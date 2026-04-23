@@ -297,7 +297,7 @@ class TransaksiController extends Controller
     {
         $transaksi = $this->getAuthorizedTransaksi($id);
 
-        $pdf = Pdf::loadView('exports.transaksi-receipt-pdf', compact('transaksi'));
+        $pdf = Pdf::loadView('exports.transaksi-receipt', compact('transaksi'));
         $filename = 'struk-' . $transaksi->no_invoice . '.pdf';
 
         return $pdf->download($filename);

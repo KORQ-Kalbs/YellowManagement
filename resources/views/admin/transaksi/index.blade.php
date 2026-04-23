@@ -97,7 +97,7 @@
                                 </x-table-cell>
                                 <x-table-cell>
                                     @if($transaksi->pembayaran)
-                                        <span class="text-sm text-gray-600 dark:text-gray-400 capitalize">
+                                        <span class="text-sm text-gray-600 capitalize dark:text-gray-400">
                                             {{ ucfirst($transaksi->pembayaran->metode_pembayaran) }}
                                         </span>
                                     @else
@@ -124,7 +124,7 @@
                                             View
                                         </a>
                                         
-                                        <button onclick="downloadReceipt({{ $transaksi->id }})" 
+                                        <button onclick="openReceiptDownloadModal({{ $transaksi->id }})" 
                                                 class="inline-flex items-center px-3 py-1 text-sm font-medium text-green-600 transition-colors rounded-lg bg-green-50 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -156,20 +156,35 @@
         </x-card>
     </div>
 
+    <x-modal name="receipt-download-modal" :show="false">
+        <div class="p-6">
+            <h3 class="mb-2 text-lg font-bold text-gray-900 dark:text-white">Download Receipt</h3>
+            <p class="mb-6 text-sm text-gray-600 dark:text-gray-400">
+                Download the receipt as PDF.
+            </p>
+
+            <a id="receiptDownloadPdf" href="#" x-on:click="$dispatch('close')" class="flex items-center justify-between w-full px-4 py-3 font-medium text-gray-700 transition-colors bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <span>Download PDF</span>
+                <span>DOMPDF</span>
+            </a>
+
+            <div class="flex justify-end mt-6">
+                <x-secondary-button type="button" x-on:click="$dispatch('close')">Cancel</x-secondary-button>
+            </div>
+        </div>
+    </x-modal>
+
     <script>
-        function downloadReceipt(transaksiId) {
-            // Open the transaction detail page in a new window for printing
-            const url = '{{ route("admin.transaksi.show", ":id") }}'.replace(':id', transaksiId);
-            const printWindow = window.open(url, '_blank');
-            
-            // Wait for the page to load, then trigger print
-            if (printWindow) {
-                printWindow.onload = function() {
-                    setTimeout(() => {
-                        printWindow.print();
-                    }, 500);
-                };
-            }
+        const receiptDownloadRoutes = {
+            pdf: @json(route('admin.transaksi.receipt.pdf', ['id' => '__ID__'])),
+        };
+
+        function openReceiptDownloadModal(transaksiId) {
+            const pdfLink = document.getElementById('receiptDownloadPdf');
+
+            pdfLink.href = receiptDownloadRoutes.pdf.replace('__ID__', transaksiId);
+
+            window.dispatchEvent(new CustomEvent('open-modal', { detail: 'receipt-download-modal' }));
         }
     </script>
 </x-app-layout>
