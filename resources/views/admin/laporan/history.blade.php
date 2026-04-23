@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between flex-wrap gap-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
             <div class="min-w-0">
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white truncate">Reports History</h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate">View all reports generated</p>
+                <h2 class="text-3xl font-bold text-gray-900 truncate dark:text-white">Reports History</h2>
+                <p class="mt-1 text-sm text-gray-600 truncate dark:text-gray-400">View all reports generated</p>
             </div>
         </div>
     </x-slot>
@@ -123,9 +123,9 @@
     <!-- View Report Modal -->
     <x-modal name="view-report-modal" :show="false">
         <div class="p-6">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4" x-text="reportTitle"></h3>
-            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6 max-h-96 overflow-y-auto">
-                <pre class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap" x-text="reportContent"></pre>
+            <h3 class="mb-4 text-lg font-bold text-gray-900 dark:text-white" x-text="reportTitle"></h3>
+            <div class="p-4 mb-6 overflow-y-auto rounded-lg bg-gray-50 dark:bg-gray-700 max-h-96">
+                <pre class="text-sm text-gray-700 whitespace-pre-wrap dark:text-gray-300" x-text="reportContent"></pre>
             </div>
             <div class="flex justify-end space-x-3">
                 <x-secondary-button type="button" @click="$dispatch('close')">Close</x-secondary-button>
@@ -136,8 +136,8 @@
     <!-- Download Report Modal -->
     <x-modal name="download-report-modal" :show="false">
         <div class="p-6">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Download Report</h3>
-            <p class="text-gray-700 dark:text-gray-300 mb-4">Ready to download: <span class="font-semibold" x-text="reportFile"></span></p>
+            <h3 class="mb-4 text-lg font-bold text-gray-900 dark:text-white">Download Report</h3>
+            <p class="mb-4 text-gray-700 dark:text-gray-300">Ready to download: <span class="font-semibold" x-text="reportFile"></span></p>
             <div class="flex justify-end space-x-3">
                 <x-secondary-button type="button" @click="$dispatch('close')">Cancel</x-secondary-button>
                 <x-primary-button type="button" @click="window.location.href='/download/' + reportFile; $dispatch('close')">Download PDF</x-primary-button>

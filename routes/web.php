@@ -97,6 +97,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // View All Transactions (Admin can see all)
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');
+    Route::get('/transaksi/{id}/receipt-pdf', [TransaksiController::class, 'exportReceiptPdf'])->name('transaksi.receipt.pdf');
+    Route::get('/transaksi/{id}/receipt-excel', [TransaksiController::class, 'exportReceiptExcel'])->name('transaksi.receipt.excel');
     Route::patch('/transaksi/{id}/batalkan', [TransaksiController::class, 'batalkan'])->name('transaksi.batalkan');
     Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'selesai'])->name('transaksi.selesai');
     Route::patch('/transaksi/{id}/suspend', [TransaksiController::class, 'suspend'])->name('transaksi.suspend');
@@ -141,6 +143,8 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->grou
     // View Own Transactions
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');
+    Route::get('/transaksi/{id}/receipt-pdf', [TransaksiController::class, 'exportReceiptPdf'])->name('transaksi.receipt.pdf');
+    Route::get('/transaksi/{id}/receipt-excel', [TransaksiController::class, 'exportReceiptExcel'])->name('transaksi.receipt.excel');
     Route::patch('/transaksi/{id}/batalkan', [TransaksiController::class, 'batalkan'])->name('transaksi.batalkan');
     Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'selesai'])->name('transaksi.selesai');
     Route::patch('/transaksi/{id}/suspend', [TransaksiController::class, 'suspend'])->name('transaksi.suspend');

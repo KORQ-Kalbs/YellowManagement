@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransaksiReceiptExport;
 use App\Http\Requests\StoreTransaksiRequest;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
 use App\Models\Pembayaran;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransaksiController extends Controller
 {
@@ -277,13 +280,7 @@ class TransaksiController extends Controller
      */
     public function show($id): View
     {
-        $transaksi = Transaksi::with(['details.product', 'details.variant', 'user', 'pembayaran', 'discountEvent'])
-            ->findOrFail($id);
-
-        // Check if user is admin or kasir viewing their own transaction
-        if (auth()->user()->role !== 'admin' && $transaksi->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized access to this transaction');
-        }
+        $transaksi = $this->getAuthorizedTransaksi($id);
 
         // Return appropriate view based on role
         if (auth()->user()->role === 'admin') {
@@ -291,5 +288,41 @@ class TransaksiController extends Controller
         } else {
             return view('kasir.transaksi.show', compact('transaksi'));
         }
+    }
+
+    /**
+     * Export a single transaction receipt as PDF via DOMPDF.
+     */
+    public function exportReceiptPdf($id)
+    {
+        $transaksi = $this->getAuthorizedTransaksi($id);
+
+        $pdf = Pdf::loadView('exports.transaksi-receipt-pdf', compact('transaksi'));
+        $filename = 'struk-' . $transaksi->no_invoice . '.pdf';
+
+        return $pdf->download($filename);
+    }
+
+    /**
+     * Export a single transaction receipt as Excel via Maatwebsite.
+     */
+    public function exportReceiptExcel($id)
+    {
+        $transaksi = $this->getAuthorizedTransaksi($id);
+        $filename = 'struk-' . $transaksi->no_invoice . '.xlsx';
+
+        return Excel::download(new TransaksiReceiptExport($transaksi), $filename);
+    }
+
+    private function getAuthorizedTransaksi($id): Transaksi
+    {
+        $transaksi = Transaksi::with(['details.product', 'details.variant', 'user', 'pembayaran', 'discountEvent'])
+            ->findOrFail($id);
+
+        if (auth()->user()->role !== 'admin' && $transaksi->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized access to this transaction');
+        }
+
+        return $transaksi;
     }
 }

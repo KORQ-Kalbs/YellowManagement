@@ -12,7 +12,7 @@
 <body class="overflow-x-hidden bg-[#311f08] text-[#F2E8D0] [font-family:'DM_Sans',sans-serif]">
     <nav class="fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-gradient-to-b from-[#1A1208]/95 to-transparent px-6 py-5 lg:px-16">
         <div class="text-2xl font-bold tracking-wide text-[#F5C518] [font-family:'Playfair_Display',serif]">Yellow Drink</div>
-        <ul class="hidden items-center gap-8 text-sm tracking-wider md:flex">
+        <ul class="items-center hidden gap-8 text-sm tracking-wider md:flex">
             <li><a href="#menu" class="transition-colors hover:text-[#F5C518]">Menu</a></li>
             <li><a href="#about" class="transition-colors hover:text-[#F5C518]">Tentang</a></li>
             <li><a href="#location" class="transition-colors hover:text-[#F5C518]">Lokasi</a></li>
@@ -20,7 +20,7 @@
         <a href="/login" class="rounded-full bg-[#F5C518] px-5 py-2.5 text-sm font-medium text-[#311f08] transition hover:scale-105 hover:bg-white">Login Kasir</a>
     </nav>
 
-    <section class="relative flex min-h-screen items-end overflow-hidden">
+    <section class="relative flex items-end min-h-screen overflow-hidden">
         <div class="absolute inset-0 bg-[#1A1208] [background-image:linear-gradient(160deg,rgba(26,18,8,0.55)_0%,rgba(26,18,8,0.1)_50%,rgba(26,18,8,0.7)_100%),radial-gradient(ellipse_at_70%_40%,rgba(245,197,24,0.08)_0%,transparent_60%)]"></div>
         <div class="pointer-events-none absolute right-[5%] top-[10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(245,197,24,0.15)_0%,transparent_70%)]"></div>
 
@@ -86,7 +86,7 @@
     </section>
 
     <section id="menu" class="bg-[#422b0e] px-6 py-20 lg:px-16">
-        <div class="mb-12 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-12">
             <h2 class="text-4xl font-bold text-[#F5EDD6] [font-family:'Playfair_Display',serif] lg:text-5xl">Menu Terfavorit</h2>
             <span class="inline-flex items-center gap-1 rounded-full border border-[#F5C518]/35 bg-[#F5C518]/10 px-4 py-2 text-xs font-medium uppercase tracking-widest text-[#F5C518]">Best Seller</span>
         </div>
@@ -97,7 +97,7 @@
     </section>
 
     <section id="about" class="bg-[#FBF6EC] px-6 py-20 lg:px-16">
-        <div class="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-2">
+        <div class="grid items-center max-w-6xl gap-16 mx-auto lg:grid-cols-2">
             <div class="relative">
                 <div class="pointer-events-none absolute -left-4 -top-4 h-20 w-20 rounded-full border-2 border-[#F5C518]/35"></div>
                 <div class="pointer-events-none absolute -left-2 -top-2 h-14 w-14 rounded-full border border-[#F5C518]/20"></div>
@@ -127,9 +127,9 @@
     <section id="location" class="bg-[#311f08] px-6 py-20 lg:px-16">
         <span class="mb-2 block text-center text-xs font-medium uppercase tracking-[0.15em] text-[#F5C518]">Kunjungi Kami</span>
         <h2 class="mb-14 text-center text-4xl font-bold text-[#F5EDD6] [font-family:'Playfair_Display',serif] lg:text-5xl">Lokasi Toko</h2>
-        <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
+        <div class="grid max-w-6xl gap-10 mx-auto lg:grid-cols-2">
             <div class="h-[360px] overflow-hidden rounded-3xl border border-[#F5C518]/12 bg-white/5">
-                <iframe src="https://www.google.com/maps?q=-6.573796898904178,106.7601842828633&output=embed" class="h-full w-full" style="border:0;" loading="lazy"></iframe>
+                <iframe src="https://www.google.com/maps?q=-6.573796898904178,106.7601842828633&output=embed" class="w-full h-full" style="border:0;" loading="lazy"></iframe>
             </div>
             <div class="space-y-8 rounded-3xl border border-[#F5C518]/12 bg-white/5 p-10">
                 <div class="flex items-start gap-4">
@@ -178,8 +178,8 @@
         function renderMenu() {
             const html = allItems.map((item) => `
                 <div class="group overflow-hidden rounded-[20px] border border-[#F5C518]/10 bg-white/5 transition hover:-translate-y-2 hover:border-[#F5C518]/40 hover:bg-white/[0.07]">
-                    <div class="relative h-52 overflow-hidden">
-                        <img src="${item.img}" alt="${item.name}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                    <div class="relative overflow-hidden h-52">
+                        <img src="${item.img}" alt="${item.name}" class="object-cover w-full h-full transition duration-500 group-hover:scale-105" />
                         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#311f08]/80 via-transparent to-transparent"></div>
                         <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#311f08]/25 via-transparent to-transparent"></div>
                         <span class="absolute right-3 top-3 rounded-full border border-[#F5C518]/20 bg-[#1A1208]/85 px-2.5 py-1 text-[0.72rem] text-[#F5C518]">${item.rating}</span>
