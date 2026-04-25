@@ -15,6 +15,14 @@
     </x-slot>
 
     <div class="space-y-6">
+        <x-low-stock-alert
+            :products="$lowStockProducts ?? collect()"
+            :show="!($lowStockAlertDismissed ?? false)"
+            :dismiss-route="route('low-stock-alerts.dismiss')"
+            title="Stok produk mulai menipis"
+            subtitle="Tinjau produk berikut sebelum stok habis."
+        />
+
         @if(session('success'))
             <div class="p-4 text-green-800 bg-green-100 rounded-lg dark:bg-green-900/30 dark:text-green-400">
                 {{ session('success') }}

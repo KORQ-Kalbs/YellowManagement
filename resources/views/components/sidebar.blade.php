@@ -153,6 +153,21 @@
                 <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Gambar Produk</span>
             </a>
 
+            <!-- Dashboard Settings -->
+            <a href="{{ route('admin.dashboard-setting.index') }}" 
+               @class([
+                   'flex items-center p-2 rounded-md transition-all duration-200 gap-2 text-[14px] leading-[1.5] text-white group',
+                   'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.dashboard-setting.*'),
+                   'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.dashboard-setting.*')
+               ])
+               :title="!sidebarOpen ? 'Dashboard Settings' : ''">
+                <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3.75a2.25 2.25 0 013 0l.5.5a2.25 2.25 0 003.182 0l.5-.5a2.25 2.25 0 013 3l-.5.5a2.25 2.25 0 000 3.182l.5.5a2.25 2.25 0 01-3 3l-.5-.5a2.25 2.25 0 00-3.182 0l-.5.5a2.25 2.25 0 01-3-3l.5-.5a2.25 2.25 0 000-3.182l-.5-.5a2.25 2.25 0 010-3z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                </svg>
+                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Dashboard Settings</span>
+            </a>
+
             <!-- Categories -->
             <a href="{{ route('admin.kategoris.index') }}" 
                @class([

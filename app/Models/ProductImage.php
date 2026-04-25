@@ -19,6 +19,7 @@ class ProductImage extends Model
         'file_path',
         'mime_type',
         'size',
+        'product_id',
     ];
 
     protected $casts = [
@@ -53,5 +54,10 @@ class ProductImage extends Model
     public function getDisplayNameAttribute(): string
     {
         return $this->title ?: pathinfo($this->original_name, PATHINFO_FILENAME);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

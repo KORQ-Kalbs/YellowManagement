@@ -9,6 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    public const LOW_STOCK_THRESHOLD = 5;
+
     protected $table = 'products';
 
     protected $fillable = [
@@ -62,6 +64,11 @@ class Product extends Model
     public function allVariants()
     {
         return $this->hasMany(ProductVariant::class)->orderBy('urutan');
+    }
+
+    public function productImage()
+    {
+        return $this->hasOne(ProductImage::class);
     }
 
     /**

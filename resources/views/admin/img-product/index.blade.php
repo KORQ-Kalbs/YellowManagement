@@ -110,6 +110,11 @@
                                 <div class="absolute top-3 left-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white backdrop-blur">
                                     {{ strtoupper(pathinfo($image->file_name, PATHINFO_EXTENSION)) }}
                                 </div>
+                                @if($image->product)
+                                    <div class="absolute top-3 right-3 rounded-full bg-emerald-600/90 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
+                                        Linked
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="p-4 space-y-4">
@@ -118,14 +123,23 @@
                                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 break-all">{{ $image->original_name }}</p>
                                 </div>
 
+                                <div class="flex items-center justify-between gap-3 text-xs text-gray-500 dark:text-gray-400">
+                                    <span>Linked product</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white">{{ $image->product?->nama_produk ?? 'Not linked' }}</span>
+                                </div>
+
                                 <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                                     <span>{{ $image->human_size }}</span>
                                     <span>{{ $image->created_at->format('d M Y') }}</span>
                                 </div>
 
                                 <div class="flex gap-2">
-                                    <button type="button" onclick="editImage({{ $image->id }}, @js($image->title), @js($image->alt_text), @js($image->original_name), @js($image->url), @js($image->display_name))" class="inline-flex flex-1 items-center justify-center px-3 py-2 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50">
+                                    <button type="button" onclick="editImage({{ $image->id }}, @js($image->title), @js($image->alt_text), @js($image->original_name), @js($image->url), @js($image->display_name), @js($image->product_id))" class="inline-flex flex-1 items-center justify-center px-3 py-2 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50">
                                         Edit
+                                    </button>
+
+                                    <button type="button" onclick="editImage({{ $image->id }}, @js($image->title), @js($image->alt_text), @js($image->original_name), @js($image->url), @js($image->display_name), @js($image->product_id))" class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-700 transition-colors rounded-lg bg-yellow-50 dark:bg-yellow-900/30 dark:text-yellow-300 hover:bg-yellow-100 dark:hover:bg-yellow-900/50">
+                                        Link
                                     </button>
 
                                     <form action="{{ route('admin.img-product.destroy', $image->id) }}" method="POST" onsubmit="return confirm('Delete this image?')">
@@ -192,6 +206,17 @@
                         </div>
 
                         <div>
+                            <x-input-label for="image-product-id" value="Link to Product" />
+                            <select id="image-product-id" name="product_id" class="block w-full px-4 py-3 mt-1 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                                <option value="">-- No linked product --</option>
+                                @foreach($products as $product)
+                                    <option value="{{ $product->id }}">{{ $product->nama_produk }}</option>
+                                @endforeach
+                            </select>
+                            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Choose a product to keep the image library and product image synchronized.</p>
+                        </div>
+
+                        <div>
                             <x-input-label for="image-file" value="Image File" />
                             <input type="file" id="image-file" name="image" accept="image/*" class="block w-full px-4 py-3 mt-1 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                             <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Allowed: JPG, JPEG, PNG, WEBP, GIF, SVG. Max 5 MB.</p>
@@ -237,6 +262,7 @@
             document.getElementById('image-id').value = '';
             document.getElementById('image-title').value = '';
             document.getElementById('image-alt').value = '';
+            document.getElementById('image-product-id').value = '';
             document.getElementById('image-file').value = '';
             document.getElementById('image-preview').src = '';
             document.getElementById('image-preview').classList.add('hidden');
@@ -249,13 +275,14 @@
             window.dispatchEvent(new CustomEvent('open-modal', { detail: 'image-modal' }));
         }
 
-        function editImage(id, title, altText, originalName, imageUrl, displayName) {
+        function editImage(id, title, altText, originalName, imageUrl, displayName, productId = '') {
             document.getElementById('image-modal-title').textContent = 'Edit Image';
             document.getElementById('image-form').action = imageModalRoutes.update.replace('__ID__', id);
             document.getElementById('image-method').value = 'PUT';
             document.getElementById('image-id').value = id;
             document.getElementById('image-title').value = title || displayName || '';
             document.getElementById('image-alt').value = altText || '';
+            document.getElementById('image-product-id').value = productId || '';
             document.getElementById('image-file').value = '';
             document.getElementById('image-preview').src = imageUrl;
             document.getElementById('image-preview').classList.remove('hidden');

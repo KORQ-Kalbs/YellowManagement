@@ -19,6 +19,14 @@
     </x-slot>
 
     <div class="space-y-6">
+        <x-low-stock-alert
+            :products="$lowStockProducts ?? collect()"
+            :show="!($lowStockAlertDismissed ?? false)"
+            :dismiss-route="route('low-stock-alerts.dismiss')"
+            title="Stok produk menipis"
+            subtitle="Pantau produk berikut agar tidak mengganggu penjualan."
+        />
+
         <!-- Filters -->
         <x-card>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">

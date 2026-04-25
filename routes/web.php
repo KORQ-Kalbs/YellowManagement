@@ -8,6 +8,7 @@ use App\Http\Controllers\KasirController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\DashboardSettingController;
 
 // Public route
 Route::view('/', 'welcome');
@@ -31,6 +32,9 @@ Route::middleware('auth')->group(function () {
     
     // Profile
     Route::view('profile', 'profile')->name('profile');
+
+    Route::post('/low-stock-alerts/dismiss-today', [ProductController::class, 'dismissLowStockAlert'])
+        ->name('low-stock-alerts.dismiss');
 });
 
 // ==============================================
@@ -100,6 +104,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/settings', function () {
         return view('admin.settings.index');
     })->name('settings.index');
+
+    Route::get('/dashboard-setting', [DashboardSettingController::class, 'index'])->name('dashboard-setting.index');
+    Route::post('/dashboard-setting', [DashboardSettingController::class, 'store'])->name('dashboard-setting.store');
+    Route::put('/dashboard-setting/{dashboardSetting}', [DashboardSettingController::class, 'update'])->name('dashboard-setting.update');
+    Route::delete('/dashboard-setting/{dashboardSetting}', [DashboardSettingController::class, 'destroy'])->name('dashboard-setting.destroy');
     
     // View All Transactions (Admin can see all)
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');

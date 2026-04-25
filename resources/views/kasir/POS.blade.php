@@ -6,6 +6,14 @@
     <div class="py-6">
         <div class="mx-auto max-w-7xl">
 
+            <x-low-stock-alert
+                :products="$lowStockProducts ?? collect()"
+                :show="!($lowStockAlertDismissed ?? false)"
+                :dismiss-route="route('low-stock-alerts.dismiss')"
+                title="Stok produk menurun"
+                subtitle="Produk di bawah ambang stok akan terus muncul sampai disembunyikan untuk hari ini."
+            />
+
             @if(session('success'))
                 <div class="p-4 mb-4 text-green-800 bg-green-100 rounded">{{ session('success') }}</div>
             @endif

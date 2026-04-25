@@ -17,6 +17,19 @@
     </x-slot>
 
     <div class="space-y-8">
+        @if(isset($activeDiscount))
+            <div class="overflow-hidden border border-amber-200 rounded-2xl bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-950/30 dark:via-yellow-950/25 dark:to-orange-950/25 dark:border-amber-900/60">
+                <div class="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <p class="text-xs font-semibold tracking-[0.25em] text-amber-700 uppercase dark:text-amber-300">Promo Aktif</p>
+                        <h3 class="mt-1 text-xl font-bold text-amber-950 dark:text-amber-100">{{ $activeDiscount->name }} - {{ floatval($activeDiscount->discount_percentage) }}% OFF</h3>
+                        <p class="mt-1 text-sm text-amber-900/80 dark:text-amber-100/75">{{ $activeDiscount->description ?? 'Discount event is currently active.' }}</p>
+                    </div>
+                    <x-badge type="success">Active</x-badge>
+                </div>
+            </div>
+        @endif
+
         <!-- Key Metrics -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Total Products -->
@@ -176,6 +189,23 @@
                             <div>
                                 <p class="font-medium text-gray-900 dark:text-white">Lihat Transaksi</p>
                                 <p class="text-xs text-gray-600 dark:text-gray-400">{{ \App\Models\Transaksi::count() }} transaksi</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+
+                    <a href="{{ route('admin.dashboard-setting.index') }}" class="flex items-center justify-between p-4 rounded-lg bg-[#fef3c7] dark:bg-[#3b3226] hover:bg-[#fde89a] dark:hover:bg-[#4a3e2f] transition-colors group">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l-3-3m0 0l3-3m-3 3h12M14 4l3 3m0 0l-3 3m3-3H4" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">Dashboard Settings</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Soft-code welcome & menu</p>
                             </div>
                         </div>
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

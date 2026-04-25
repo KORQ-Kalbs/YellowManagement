@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Kategori;
-use Illuminate\Http\Request;
+use App\Services\LowStockAlertService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -29,6 +29,13 @@ class ProductController extends Controller
         });
 
         return view('admin.produk.index', compact('products', 'kategoris'));
+    }
+
+    public function dismissLowStockAlert(LowStockAlertService $lowStockAlertService): RedirectResponse
+    {
+        $lowStockAlertService->dismissForToday();
+
+        return back();
     }
 
     /**

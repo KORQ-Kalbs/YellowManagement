@@ -231,6 +231,17 @@
                             </svg>
                             <span class="text-sm font-medium">Categories</span>
                         </a>
+
+                        <!-- Dashboard Settings -->
+                        <a href="{{ route('admin.dashboard-setting.index') }}" 
+                           @click="moreMenuOpen = false"
+                           class="flex flex-col items-center justify-center p-4 rounded-lg transition-colors {{ Request::routeIs('admin.dashboard-setting.*') ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400' : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600' }}">
+                            <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3.75a2.25 2.25 0 013 0l.5.5a2.25 2.25 0 003.182 0l.5-.5a2.25 2.25 0 013 3l-.5.5a2.25 2.25 0 000 3.182l.5.5a2.25 2.25 0 01-3 3l-.5-.5a2.25 2.25 0 00-3.182 0l-.5.5a2.25 2.25 0 01-3-3l.5-.5a2.25 2.25 0 000-3.182l-.5-.5a2.25 2.25 0 010-3z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                            </svg>
+                            <span class="text-sm font-medium">Dashboard Settings</span>
+                        </a>
                         
                         <!-- Profile -->
                         <a href="{{ route('profile') }}" 
