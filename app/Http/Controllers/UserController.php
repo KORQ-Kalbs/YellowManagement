@@ -23,7 +23,7 @@ class UserController extends Controller
             ->latest()
             ->paginate(20);
 
-        return view('admin.kelola_kasir.index', compact('kasirs'));
+        return view('admin.kelola_kasir.index-kelola-kasir', compact('kasirs'));
     }
 
     /**

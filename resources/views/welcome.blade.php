@@ -34,7 +34,7 @@
         <div class="pointer-events-none absolute right-[5%] top-[10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(245,197,24,0.15)_0%,transparent_70%)]"></div>
 
         @if($activeDiscountLabel)
-            <div class="absolute left-6 right-6 top-24 z-20 mx-auto max-w-5xl rounded-2xl border border-amber-200 bg-amber-50/95 px-4 py-3 text-sm text-amber-900 shadow-lg backdrop-blur dark:border-amber-900/60 dark:bg-amber-950/55 dark:text-amber-100 lg:left-16 lg:right-auto lg:w-auto">
+            <div class="fixed z-[60] max-w-md px-4 py-3 text-sm border shadow-lg bottom-4 right-4 rounded-2xl border-amber-200 bg-amber-50/95 text-amber-900 backdrop-blur dark:border-amber-900/60 dark:bg-amber-950/55 dark:text-amber-100 lg:bottom-6 lg:right-6">
                 <div class="font-semibold">Discount active</div>
                 <div>{{ $activeDiscountLabel }}</div>
             </div>
@@ -72,14 +72,14 @@
     </section>
 
     @if($activeDiscount)
-        <section class="border-y border-amber-200 bg-amber-50 px-6 py-5 text-amber-950 lg:px-16 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-100">
+        <section class="px-6 py-5 border-y border-amber-200 bg-amber-50 text-amber-950 lg:px-16 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-100">
             <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 dark:text-amber-300">Promo Hari Ini</p>
                     <h2 class="text-2xl font-bold">{{ $activeDiscount->name }}</h2>
                     <p class="text-sm text-amber-900/80 dark:text-amber-100/80">{{ $activeDiscount->description ?? 'Discount event is active.' }}</p>
                 </div>
-                <div class="rounded-full bg-amber-600 px-4 py-2 text-sm font-semibold text-white">-{{ floatval($activeDiscount->discount_percentage) }}%</div>
+                <div class="px-4 py-2 text-sm font-semibold text-white rounded-full bg-amber-600">-{{ floatval($activeDiscount->discount_percentage) }}%</div>
             </div>
         </section>
     @endif

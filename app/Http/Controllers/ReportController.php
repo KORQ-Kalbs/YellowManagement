@@ -35,7 +35,7 @@ class ReportController extends Controller
         $topProducts = $this->getTopProducts($period, $selectedDate, $isKasir, $userId);
         
         // Use different views for admin and kasir
-        $view = $isKasir ? 'kasir.laporan.index' : 'admin.laporan.index';
+        $view = $isKasir ? 'kasir.laporan.index-laporan' : 'admin.laporan.index-laporan';
         
         return view($view, compact(
             'salesData',

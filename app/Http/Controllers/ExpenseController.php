@@ -36,7 +36,7 @@ class ExpenseController extends Controller
         // Summary stats for filtered period
         $totalFiltered = (clone $query)->getQuery()->sum('amount');
 
-        return view('admin.pengeluaran.index', compact('expenses', 'categories', 'totalFiltered'));
+        return view('admin.pengeluaran.index-pengeluaran', compact('expenses', 'categories', 'totalFiltered'));
     }
 
     /**

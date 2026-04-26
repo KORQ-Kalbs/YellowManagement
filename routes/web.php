@@ -97,12 +97,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // Units Management (Satuan Produk)
     Route::get('/units', function () {
-        return view('admin.satuan_produk.index');
+        return view('admin.satuan_produk.index-satuan-produk');
     })->name('units.index');
     
     // Settings
     Route::get('/settings', function () {
-        return view('admin.settings.index');
+        return view('admin.settings.index-settings');
     })->name('settings.index');
 
     Route::get('/dashboard-setting', [DashboardSettingController::class, 'index'])->name('dashboard-setting.index');

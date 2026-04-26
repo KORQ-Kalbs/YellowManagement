@@ -16,7 +16,7 @@ class DashboardSettingController extends Controller
         $menuSetting = DashboardSetting::query()->where('page', 'menu')->first();
         $activeDiscount = DiscountEvent::active()->latest('start_date')->first();
 
-        return view('admin.dashboard-setting.index', compact('welcomeSetting', 'menuSetting', 'activeDiscount'));
+        return view('admin.dashboard-setting.index-dashboard-setting', compact('welcomeSetting', 'menuSetting', 'activeDiscount'));
     }
 
     public function store(Request $request): RedirectResponse

@@ -40,7 +40,7 @@ class TransaksiController extends Controller
 
         $transaksis = $query->paginate(20);
         
-        $view = auth()->user()->role === 'admin' ? 'admin.transaksi.index' : 'kasir.transaksi.index';
+        $view = auth()->user()->role === 'admin' ? 'admin.transaksi.index-transaksi' : 'kasir.transaksi.index-transaksi';
         return view($view, compact('transaksis'));
     }
 

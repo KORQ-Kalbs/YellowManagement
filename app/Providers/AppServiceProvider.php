@@ -39,9 +39,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer([
-            'admin.produk.index',
+            'admin.produk.index-produk',
             'kasir.POS',
-            'kasir.kelola.produk.index',
+            'kasir.kelola.produk.index-produk',
         ], function ($view) {
             $lowStockService = app(LowStockAlertService::class);
 

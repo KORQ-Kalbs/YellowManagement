@@ -13,7 +13,7 @@ class KategoriController extends Controller
         // Optimize: Use cache for categories (rarely change)
         $kategoris = CacheService::getKategorisWithCount();
         
-        return view('admin.kategori.index', compact('kategoris'));
+        return view('admin.kategori.index-kategori', compact('kategoris'));
     }
 
     public function store(Request $request)

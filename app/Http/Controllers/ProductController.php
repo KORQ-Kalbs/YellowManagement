@@ -28,7 +28,7 @@ class ProductController extends Controller
             return Kategori::select('id', 'nama_kategori')->orderBy('nama_kategori')->get();
         });
 
-        return view('admin.produk.index', compact('products', 'kategoris'));
+        return view('admin.produk.index-produk', compact('products', 'kategoris'));
     }
 
     public function dismissLowStockAlert(LowStockAlertService $lowStockAlertService): RedirectResponse

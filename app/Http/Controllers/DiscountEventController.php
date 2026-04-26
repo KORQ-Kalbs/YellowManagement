@@ -10,7 +10,7 @@ class DiscountEventController extends Controller
     public function index()
     {
         $events = DiscountEvent::latest()->paginate(10);
-        return view('admin.event-diskon.index', compact('events'));
+        return view('admin.event-diskon.index-event-diskon', compact('events'));
     }
 
     public function create()

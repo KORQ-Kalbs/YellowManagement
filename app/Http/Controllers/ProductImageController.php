@@ -36,7 +36,7 @@ class ProductImageController extends Controller
             'searched' => $search !== '' ? $images->total() : null,
         ];
 
-        return view('admin.img-product.index', compact('images', 'stats', 'search', 'products'));
+        return view('admin.img-product.index-img-product', compact('images', 'stats', 'search', 'products'));
     }
 
     public function store(Request $request): RedirectResponse
