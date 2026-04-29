@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Services\CaptchaService;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -21,6 +22,9 @@ class LoginForm extends Form
     #[Validate('boolean')]
     public bool $remember = false;
 
+    #[Validate('required|string')]
+    public string $captcha = '';
+
     /**
      * Attempt to authenticate the request's credentials.
      *
@@ -29,6 +33,13 @@ class LoginForm extends Form
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
+
+        // Verify CAPTCHA first
+        if (!CaptchaService::verify($this->captcha)) {
+            throw ValidationException::withMessages([
+                'form.captcha' => 'CAPTCHA answer is incorrect. Please try again.',
+            ]);
+        }
 
         if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
             RateLimiter::hit($this->throttleKey());
