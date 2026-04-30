@@ -31,6 +31,26 @@ class ProductController extends Controller
         return view('admin.produk.index-produk', compact('products', 'kategoris'));
     }
 
+    /**
+     * Read-only product listing for kasir.
+     */
+    public function indexReadOnly(): View
+    {
+        // Optimize: Select only needed columns
+        $products = Product::select('id', 'nama_produk', 'kategori_id', 'harga', 'stok', 'status', 'gambar_produk', 'created_at')
+            ->with(['kategori:id,nama_kategori', 'allVariants'])
+            ->where('status', 'active')
+            ->latest()
+            ->paginate(15);
+        
+        // Use cached categories
+        $kategoris = cache()->remember('kategoris_all', 3600, function () {
+            return Kategori::select('id', 'nama_kategori')->orderBy('nama_kategori')->get();
+        });
+
+        return view('kasir.produk.index-produk', compact('products', 'kategoris'));
+    }
+
     public function dismissLowStockAlert(LowStockAlertService $lowStockAlertService): RedirectResponse
     {
         $lowStockAlertService->dismissForToday();

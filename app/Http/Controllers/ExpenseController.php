@@ -158,4 +158,147 @@ class ExpenseController extends Controller
         $category->delete();
         return back()->with('success', 'Kategori pengeluaran berhasil dihapus.');
     }
+
+    // ========================================
+    // KASIR-SPECIFIC METHODS
+    // ========================================
+
+    /**
+     * Daftar pengeluaran kasir (hanya milik kasir tersebut).
+     */
+    public function indexKasir(Request $request): View
+    {
+        $query = Expense::where('user_id', auth()->id())
+            ->with(['category', 'user'])
+            ->latest('date');
+
+        // Date range filter
+        if ($request->filled('start_date')) {
+            $query->whereDate('date', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('date', '<=', $request->end_date);
+        }
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        $expenses   = $query->paginate(15)->withQueryString();
+        $categories = ExpenseCategory::orderBy('name')->get();
+
+        // Summary stats for filtered period
+        $totalFiltered = (clone $query)->getQuery()->sum('amount');
+
+        return view('kasir.pengeluaran.index-pengeluaran', compact('expenses', 'categories', 'totalFiltered'));
+    }
+
+    /**
+     * Form input pengeluaran baru untuk kasir.
+     */
+    public function createKasir(): View
+    {
+        $categories = ExpenseCategory::orderBy('name')->get();
+        return view('kasir.pengeluaran.create', compact('categories'));
+    }
+
+    /**
+     * Simpan pengeluaran baru untuk kasir + upload attachment.
+     */
+    public function storeKasir(StoreExpenseRequest $request): RedirectResponse
+    {
+        try {
+            $data = $request->validated();
+            $data['user_id'] = auth()->id();
+
+            // Handle file upload
+            if ($request->hasFile('attachment')) {
+                $data['attachment'] = $request->file('attachment')
+                    ->store('expenses/attachments', 'public');
+            }
+
+            Expense::create($data);
+
+            return redirect()
+                ->route('kasir.expenses.index')
+                ->with('success', 'Pengeluaran berhasil dicatat.');
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Gagal menyimpan pengeluaran: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    /**
+     * Form edit pengeluaran untuk kasir (dengan auth check).
+     */
+    public function editKasir(Expense $expense): View
+    {
+        // Ensure kasir can only edit their own expenses
+        if ($expense->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $categories = ExpenseCategory::orderBy('name')->get();
+        return view('kasir.pengeluaran.edit', compact('expense', 'categories'));
+    }
+
+    /**
+     * Update pengeluaran untuk kasir (dengan auth check).
+     */
+    public function updateKasir(StoreExpenseRequest $request, Expense $expense): RedirectResponse
+    {
+        // Ensure kasir can only update their own expenses
+        if ($expense->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        try {
+            $data = $request->validated();
+
+            // Handle file upload (replace old if new uploaded)
+            if ($request->hasFile('attachment')) {
+                // Delete old attachment
+                if ($expense->attachment) {
+                    Storage::disk('public')->delete($expense->attachment);
+                }
+                $data['attachment'] = $request->file('attachment')
+                    ->store('expenses/attachments', 'public');
+            }
+
+            $expense->update($data);
+
+            return redirect()
+                ->route('kasir.expenses.index')
+                ->with('success', 'Pengeluaran berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Gagal memperbarui pengeluaran: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    /**
+     * Hapus pengeluaran untuk kasir (dengan auth check).
+     */
+    public function destroyKasir(Expense $expense): RedirectResponse
+    {
+        // Ensure kasir can only delete their own expenses
+        if ($expense->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        try {
+            if ($expense->attachment) {
+                Storage::disk('public')->delete($expense->attachment);
+            }
+            $expense->delete();
+
+            return redirect()
+                ->route('kasir.expenses.index')
+                ->with('success', 'Pengeluaran berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Gagal menghapus pengeluaran: ' . $e->getMessage());
+        }
+    }
 }

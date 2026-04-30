@@ -9,6 +9,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\DashboardSettingController;
+use App\Http\Controllers\ExpenseController;
 
 // Public route
 Route::view('/', 'welcome');
@@ -164,4 +165,15 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->grou
     Route::patch('/transaksi/{id}/batalkan', [TransaksiController::class, 'batalkan'])->name('transaksi.batalkan');
     Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'selesai'])->name('transaksi.selesai');
     Route::patch('/transaksi/{id}/suspend', [TransaksiController::class, 'suspend'])->name('transaksi.suspend');
+
+    // Products (Read-only)
+    Route::get('/products', [ProductController::class, 'indexReadOnly'])->name('products.index');
+
+    // Expenses Management (Pengeluaran - Own only)
+    Route::get('/expenses', [ExpenseController::class, 'indexKasir'])->name('expenses.index');
+    Route::get('/expenses/create', [ExpenseController::class, 'createKasir'])->name('expenses.create');
+    Route::post('/expenses', [ExpenseController::class, 'storeKasir'])->name('expenses.store');
+    Route::get('/expenses/{expense}/edit', [ExpenseController::class, 'editKasir'])->name('expenses.edit');
+    Route::put('/expenses/{expense}', [ExpenseController::class, 'updateKasir'])->name('expenses.update');
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroyKasir'])->name('expenses.destroy');
 });

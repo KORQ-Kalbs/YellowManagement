@@ -154,7 +154,7 @@
             </a>
 
             <!-- Dashboard Settings -->
-            <a href="{{ route('admin.dashboard-setting.index') }}" 
+            <!-- <a href="{{ route('admin.dashboard-setting.index') }}" 
                @class([
                    'flex items-center p-2 rounded-md transition-all duration-200 gap-2 text-[14px] leading-[1.5] text-white group',
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.dashboard-setting.*'),
@@ -166,7 +166,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
                 </svg>
                 <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Dashboard Settings</span>
-            </a>
+            </a> -->
 
             <!-- Categories -->
             <a href="{{ route('admin.kategoris.index') }}" 
@@ -256,6 +256,39 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Laporan</span>
+            </a>
+
+            <!-- Data Section -->
+            <div x-show="sidebarOpen" x-transition class="sidebar-section px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider uppercase">
+                Data
+            </div>
+
+            <!-- Products (Read-only) -->
+            <a href="{{ route('kasir.products.index') }}" 
+               @class([
+                   'flex items-center p-2 rounded-md transition-all duration-200 gap-2 text-[14px] leading-[1.5] text-white group',
+                   'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('kasir.products.*'),
+                   'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('kasir.products.*')
+               ])
+               :title="!sidebarOpen ? 'Products' : ''">
+                <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Data Produk</span>
+            </a>
+
+            <!-- Expenses -->
+            <a href="{{ route('kasir.expenses.index') }}" 
+               @class([
+                   'flex items-center p-2 rounded-md transition-all duration-200 gap-2 text-[14px] leading-[1.5] text-white group',
+                   'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('kasir.expenses.*'),
+                   'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('kasir.expenses.*')
+               ])
+               :title="!sidebarOpen ? 'Expenses' : ''">
+                <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Pengeluaran</span>
             </a>
         @endif
     </nav>
