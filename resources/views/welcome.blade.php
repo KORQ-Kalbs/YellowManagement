@@ -64,7 +64,7 @@
     <section class="grid min-h-screen grid-cols-1 overflow-hidden lg:grid-cols-2">
 
         <!-- Left: cream panel -->
-        <div class="relative flex flex-col justify-end bg-white px-6 pb-20 pt-36 lg:px-14 lg:pb-24">
+        <div class="relative flex flex-col justify-end px-6 pb-20 bg-white pt-36 lg:px-14 lg:pb-24">
             <!-- yellow arc corner -->
             <div class="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-[#FFD600]"></div>
 
@@ -98,7 +98,7 @@
         <!-- Right: yellow panel -->
         <div class="relative flex min-h-[50vh] items-center justify-center overflow-hidden bg-[#FFD600] lg:min-h-0">
             <!-- dot grid -->
-            <div class="pointer-events-none absolute inset-0 opacity-20"
+            <div class="absolute inset-0 pointer-events-none opacity-20"
                  style="background-image:radial-gradient(circle,#000 1px,transparent 1px);background-size:28px 28px;"></div>
 
             <!-- circle rings -->
@@ -133,7 +133,7 @@
 
     <!-- MARQUEE -->
     <div class="overflow-hidden bg-[#1A1600] py-3.5" aria-hidden="true">
-        <div class="marquee-track flex gap-0">
+        <div class="flex gap-0 marquee-track">
             @foreach(array_fill(0, 3, ['Kasir Digital','Laporan Harian','Manajemen Stok','Diskon & Promo','Multi Varian','Yellow Drink POS']) as $group)
                 @foreach($group as $word)
                     <span class="font-display whitespace-nowrap px-8 text-base italic text-[#FFD600] after:ml-8 after:text-[.7rem] after:opacity-50 after:content-['✦']">{{ $word }}</span>
@@ -144,14 +144,14 @@
 
     <!-- ACTIVE DISCOUNT BANNER -->
     @if($activeDiscount)
-        <section class="border-y border-amber-200 bg-amber-50 px-6 py-5 text-amber-950 lg:px-14">
+        <section class="px-6 py-5 border-y border-amber-200 bg-amber-50 text-amber-950 lg:px-14">
             <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div>
                     <p class="text-xs font-extrabold uppercase tracking-[.18em] text-amber-700">Promo Hari Ini</p>
-                    <h2 class="font-display text-2xl font-bold">{{ $activeDiscount->name }}</h2>
+                    <h2 class="text-2xl font-bold font-display">{{ $activeDiscount->name }}</h2>
                     <p class="text-sm text-amber-900/80">{{ $activeDiscount->description ?? 'Discount event is active.' }}</p>
                 </div>
-                <div class="w-fit rounded-full bg-amber-600 px-4 py-2 text-sm font-bold text-white">
+                <div class="px-4 py-2 text-sm font-bold text-white rounded-full w-fit bg-amber-600">
                     -{{ floatval($activeDiscount->discount_percentage) }}%
                 </div>
             </div>
@@ -183,7 +183,7 @@
         <!-- big watermark -->
         <div class="font-display pointer-events-none absolute -bottom-10 -right-5 select-none text-[22rem] font-black leading-none text-black/[.04]">15+</div>
 
-        <div class="relative z-10 mb-12 flex flex-wrap items-end justify-between gap-4">
+        <div class="relative z-10 flex flex-wrap items-end justify-between gap-4 mb-12">
             <div>
                 <span class="mb-3 block text-[.68rem] font-extrabold uppercase tracking-[.22em] text-[#8A7A20]">
                     Pilihan Terbaik Kami
@@ -216,9 +216,9 @@
                         ?? ($product->gambar_produk ? asset($product->gambar_produk) : asset('images/drink.png'));
                 @endphp
                 <article class="menu-card overflow-hidden rounded-[20px] border border-[#FFD600]/10 bg-white shadow-sm transition duration-300 hover:shadow-2xl">
-                    <div class="relative h-52 overflow-hidden">
+                    <div class="relative overflow-hidden h-52">
                         <img src="{{ $imagePath }}" alt="{{ $product->nama_produk }}"
-                             class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                             class="object-cover w-full h-full transition duration-500 group-hover:scale-105" />
                         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0F0E0A]/60 to-transparent"></div>
                         <span class="absolute right-3 top-3 rounded-full bg-[#FFD600] px-3 py-1 text-[.72rem] font-extrabold text-[#1A1600]">
                             {{ $product->kategori?->nama_kategori ?? 'Menu' }}
@@ -241,7 +241,7 @@
                     </div>
                 </article>
             @empty
-                <div class="col-span-full rounded-3xl border border-black/10 bg-white/60 p-10 text-center">
+                <div class="p-10 text-center border col-span-full rounded-3xl border-black/10 bg-white/60">
                     <h3 class="font-display text-2xl font-bold text-[#1A1600]">
                         {{ data_get($menuSettings, 'empty_title', 'Belum ada produk aktif') }}
                     </h3>
@@ -253,7 +253,7 @@
         </div>
 
         <div class="relative z-10 mt-12 text-center">
-            <a href="{{ data_get($menuSettings, 'cta_link', '/') }}"
+            <a href="{{ route('menu') }}"
                class="inline-block rounded-full bg-white px-10 py-3.5 text-[.84rem] font-extrabold text-[#1A1600] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#1A1600] hover:text-[#FFD600]">
                 {{ data_get($menuSettings, 'cta_label', 'Lihat Semua Menu') }} →
             </a>
@@ -262,10 +262,10 @@
 
     <!-- ABOUT -->
     <section id="about" class="bg-[#FFFDE0] px-6 py-24 lg:px-14">
-        <div class="mx-auto grid max-w-6xl items-center gap-20 lg:grid-cols-2">
+        <div class="grid items-center max-w-6xl gap-20 mx-auto lg:grid-cols-2">
 
             <!-- image col -->
-            <div class="about-decor relative">
+            <div class="relative about-decor">
                 <img src="{{ $bannerImage }}" alt="{{ data_get($welcome, 'brand_name', 'Yellow Drink') }}"
                      class="relative z-10 aspect-[4/5] w-full rounded-3xl object-cover shadow-[0_24px_60px_rgba(249,115,22,.12)]" />
                 <div class="absolute -bottom-3 -right-3 z-20 flex h-[116px] w-[116px] flex-col items-center justify-center rounded-full border-4 border-white bg-[#1A1600] text-[#FFD600] shadow-xl">
@@ -308,10 +308,10 @@
                 {{ data_get($welcome, 'location_title', 'Lokasi Toko') }}
             </h2>
         </div>
-        <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
+        <div class="grid max-w-6xl gap-6 mx-auto lg:grid-cols-2">
             <div class="h-[380px] overflow-hidden rounded-[20px] border-2 border-[#FFD600]/12">
                 <iframe src="{{ data_get($welcome, 'location_map_embed', 'https://www.google.com/maps?q=-6.573796898904178,106.7601842828633&output=embed') }}"
-                        class="h-full w-full" style="border:0;" loading="lazy"></iframe>
+                        class="w-full h-full" style="border:0;" loading="lazy"></iframe>
             </div>
             <div class="flex flex-col gap-7 rounded-[20px] border border-[#FFD600]/10 bg-white/[.04] p-10">
                 <div class="flex items-start gap-4">

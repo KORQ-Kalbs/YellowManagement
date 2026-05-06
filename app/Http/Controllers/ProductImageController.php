@@ -63,7 +63,7 @@ class ProductImageController extends Controller
             'file_name' => $storedImage['file_name'],
             'file_path' => $storedImage['file_path'],
             'mime_type' => $uploadedFile->getClientMimeType(),
-            'size' => $uploadedFile->getSize(),
+            'size' => $storedImage['size'],
         ]);
 
         if (! empty($validated['product_id'])) {
@@ -103,7 +103,7 @@ class ProductImageController extends Controller
                 'file_name' => $storedImage['file_name'],
                 'file_path' => $storedImage['file_path'],
                 'mime_type' => $uploadedFile->getClientMimeType(),
-                'size' => $uploadedFile->getSize(),
+                'size' => $storedImage['size'],
             ]);
         }
 
@@ -156,9 +156,13 @@ class ProductImageController extends Controller
 
         $uploadedFile->move($directory, $storedFileName);
 
+        $storedPath = $directory . DIRECTORY_SEPARATOR . $storedFileName;
+        $fileSize = File::size($storedPath);
+
         return [
             'file_name' => $storedFileName,
             'file_path' => 'images/' . $storedFileName,
+            'size' => $fileSize,
         ];
     }
 

@@ -147,14 +147,6 @@ new #[Layout('layouts.guest', ['title' => 'Login to your account'])] class exten
                     Forgot password?
                 </a>
             @endif
-
-            <a 
-                class="text-gray-600 hover:text-gray-900 font-medium" 
-                href="{{ route('register') }}" 
-                wire:navigate
-            >
-                Create account
-            </a>
         </div>
     </form>
 </div>
