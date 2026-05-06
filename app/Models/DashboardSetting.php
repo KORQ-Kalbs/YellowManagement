@@ -49,7 +49,7 @@ class DashboardSetting extends Model
                     ['emoji' => '⚡', 'title' => 'Pelayanan Cepat', 'description' => 'Proses pemesanan efisien dan ramah. Minuman siap tersaji tanpa menunggu lama.'],
                 ],
                 'about_badge' => 'Tentang Kami',
-                'about_title' => 'Yellow Drink,\nRasa yang Bicara',
+                'about_title' => 'Yellow Drink, biar rasa yang bicara',
                 'about_body_1' => 'Yellow Drink adalah UMKM minuman kekinian yang berkomitmen menyajikan minuman berkualitas dengan harga terjangkau. Kami menggunakan bahan pilihan dan resep original yang terus disempurnakan.',
                 'about_body_2' => 'Dengan visi Semua Berhak Minum Enak, kami ingin memberikan pengalaman minum yang menyenangkan untuk semua kalangan.',
                 'about_points' => [
@@ -63,10 +63,9 @@ class DashboardSetting extends Model
                 'location_badge' => 'Kunjungi Kami',
                 'location_title' => 'Lokasi Toko',
                 'location_map_embed' => 'https://www.google.com/maps?q=-6.573796898904178,106.7601842828633&output=embed',
-                'location_address' => "Jl. Contoh No. 123, Jakarta Selatan\nDKI Jakarta, Indonesia 12345",
-                'location_hours' => "Senin - Jumat: 09.00 - 21.00\nSabtu - Minggu: 10.00 - 22.00",
-                'location_phone' => '+62 812-3456-7890',
-                'location_email' => 'info@yellowdrink.com',
+                'location_address' => "Jl. Sindang Barang Pengkolan No.132, RT.04/RW.06, Sindangbarang, Kec. Bogor Bar., Kota Bogor, Jawa Barat 16117",
+                'location_hours' => "Setiap Hari: 09.00 - 19.00",
+                'location_phone' => '+62 816-634-757',
                 'footer_note' => '© 2025 Yellow Drink. Semua Berhak Minum Enak.',
             ],
             'menu' => [
