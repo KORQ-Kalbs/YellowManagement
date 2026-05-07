@@ -1,64 +1,36 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ data_get($welcomeSettings, 'brand_name', 'Yellow Drink') }} - Sistem Kasir & Laporan</title>
+@extends('layouts.guest')
+
+@section('htmlClass', 'scroll-smooth')
+@section('title', data_get($welcomeSettings, 'brand_name', 'Yellow Drink') . ' - Sistem Kasir & Laporan')
+@section('bodyClass', 'overflow-x-hidden bg-[#FFFEF5] text-[#1A1600] guest-landing guest-landing--welcome')
+
+@push('guest-fonts')
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=Cabinet+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        body { font-family: 'Cabinet Grotesk', sans-serif; cursor: none; }
-        h1, h2, h3, .font-display { font-family: 'Fraunces', serif; }
-        #cursor { mix-blend-mode: multiply; transition: width .25s, height .25s, background .25s; }
-        #cursor.big { width: 56px !important; height: 56px !important; }
-        @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
-        @keyframes floaty2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.65)} }
-        @keyframes spin { to{transform:translate(-50%,-50%) rotate(360deg)} }
-        @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-        .drink-float { animation: floaty 4s ease-in-out infinite; }
-        .pill-float  { animation: floaty2 5s ease-in-out infinite; }
-        .pill-float2 { animation: floaty2 5s ease-in-out infinite 1.5s; }
-        .badge-dot   { animation: pulse-dot 2s infinite; }
-        .ring-spin   { animation: spin 18s linear infinite; }
-        .marquee-track { animation: marquee 18s linear infinite; width: max-content; }
-        .hero-ring   { border-radius:50%; border:2px solid rgba(0,0,0,.08); position:absolute; pointer-events:none; top:50%; left:50%; transform:translate(-50%,-50%); }
-        .hero-clip   { clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%); }
-        .underline-y::after { content:''; display:block; height:4px; width:70%; background:#C9A800; border-radius:2px; margin-top:4px; }
-        .why-card:hover { background: #FFF176; }
-        .menu-card:hover { transform: translateY(-8px) rotate(-1deg); }
-        .about-decor::before { content:''; position:absolute; inset:24px -24px -24px 24px; background:#FFD600; border-radius:24px; z-index:0; }
-    </style>
-</head>
-<body class="overflow-x-hidden bg-[#FFFEF5] text-[#1A1600]">
+@endpush
 
+@section('content')
+
+<!-- MARQUEE -->
     @php
         $welcome = $welcomeSettings ?? \App\Models\DashboardSetting::defaultsForPage('welcome');
         $featuredProducts = ($menuProducts ?? collect())->take(4);
         $heroImage = asset(data_get($welcome, 'hero_image', 'images/drink.png'));
         $bannerImage = asset(data_get($welcome, 'banner_image', 'images/banner.png'));
-        $activeDiscountLabel = $activeDiscount ? $activeDiscount->name . ' - ' . floatval($activeDiscount->discount_percentage) . '% OFF' : null;
+        $marqueeItems = $activeDiscount
+            ? array_fill(0, 3, [
+                $activeDiscount->name . ' · ' . floatval($activeDiscount->discount_percentage) . '% OFF',
+                'Promo Hari Ini',
+                'Diskon Terbatas',
+            ])
+            : array_fill(0, 3, ['Kasir Digital','Laporan Harian','Manajemen Stok','Diskon & Promo','Multi Varian','Yellow Drink POS']);
     @endphp
 
     <!-- CURSOR -->
     <div id="cursor" class="pointer-events-none fixed z-[9999] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FFD600]"></div>
 
-    <!-- NAV -->
-    <nav class="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-[#FFD600]/18 bg-white/85 px-6 py-5 backdrop-blur-xl lg:px-14">
-        <div class="font-display text-2xl font-black tracking-tight text-[#1A1600]">
-            Yellow<span class="text-[#C9A800]">.</span>
-        </div>
-        <ul class="hidden items-center gap-8 text-xs font-bold uppercase tracking-[.09em] text-[#4A3F00] md:flex">
-            <li><a href="#menu"     class="transition-colors hover:text-[#1A1600]">Menu</a></li>
-            <li><a href="#about"    class="transition-colors hover:text-[#1A1600]">Tentang</a></li>
-            <li><a href="#location" class="transition-colors hover:text-[#1A1600]">Lokasi</a></li>
-        </ul>
-        <a href="/login" class="rounded-full bg-[#1A1600] px-5 py-2.5 text-xs font-extrabold tracking-wide text-[#FFD600] transition hover:bg-[#FFD600] hover:text-[#1A1600]">
-            Login Kasir
-        </a>
-    </nav>
+    <x-navbar variant="guest" brand-name="Yellow" menu-href="#menu" about-href="#about" location-href="#location" login-href="/login" />
 
     <!-- HERO -->
     <section class="grid min-h-screen grid-cols-1 overflow-hidden lg:grid-cols-2">
@@ -134,29 +106,13 @@
     <!-- MARQUEE -->
     <div class="overflow-hidden bg-[#1A1600] py-3.5" aria-hidden="true">
         <div class="flex gap-0 marquee-track">
-            @foreach(array_fill(0, 3, ['Kasir Digital','Laporan Harian','Manajemen Stok','Diskon & Promo','Multi Varian','Yellow Drink POS']) as $group)
+            @foreach($marqueeItems as $group)
                 @foreach($group as $word)
                     <span class="font-display whitespace-nowrap px-8 text-base italic text-[#FFD600] after:ml-8 after:text-[.7rem] after:opacity-50 after:content-['✦']">{{ $word }}</span>
                 @endforeach
             @endforeach
         </div>
     </div>
-
-    <!-- ACTIVE DISCOUNT BANNER -->
-    @if($activeDiscount)
-        <section class="px-6 py-5 border-y border-amber-200 bg-amber-50 text-amber-950 lg:px-14">
-            <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                <div>
-                    <p class="text-xs font-extrabold uppercase tracking-[.18em] text-amber-700">Promo Hari Ini</p>
-                    <h2 class="text-2xl font-bold font-display">{{ $activeDiscount->name }}</h2>
-                    <p class="text-sm text-amber-900/80">{{ $activeDiscount->description ?? 'Discount event is active.' }}</p>
-                </div>
-                <div class="px-4 py-2 text-sm font-bold text-white rounded-full w-fit bg-amber-600">
-                    -{{ floatval($activeDiscount->discount_percentage) }}%
-                </div>
-            </div>
-        </section>
-    @endif
 
     <!-- WHY US -->
     <section class="bg-[#FFFEF5] px-6 py-24 lg:px-14" aria-label="Fitur Sistem">
@@ -351,14 +307,9 @@ Kab. Bogor, Jawa Barat 16911'))) !!}</p>
         </div>
     </footer>
 
-    <!-- ACTIVE DISCOUNT TOAST -->
-    @if($activeDiscountLabel)
-        <div class="fixed bottom-4 right-4 z-[60] max-w-xs rounded-2xl border border-amber-200 bg-amber-50/95 px-4 py-3 text-sm text-amber-900 shadow-lg backdrop-blur lg:bottom-6 lg:right-6">
-            <div class="font-semibold">Discount active</div>
-            <div>{{ $activeDiscountLabel }}</div>
-        </div>
-    @endif
+@endsection
 
+@push('guest-scripts')
     <script>
         // Cursor
         const cur = document.getElementById('cursor');
@@ -371,5 +322,4 @@ Kab. Bogor, Jawa Barat 16911'))) !!}</p>
             el.addEventListener('mouseleave', () => cur.classList.remove('big'));
         });
     </script>
-</body>
-</html>
+@endpush

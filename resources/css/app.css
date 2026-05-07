@@ -341,6 +341,215 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Guest landing shared styles (welcome + menu pages) */
+.guest-landing {
+    font-family: "Cabinet Grotesk", sans-serif !important;
+    cursor: none;
+}
+
+.guest-landing h1,
+.guest-landing h2,
+.guest-landing h3,
+.guest-landing .font-display {
+    font-family: "Fraunces", serif !important;
+}
+
+.guest-landing #cursor {
+    mix-blend-mode: multiply;
+    transition:
+        width 0.25s,
+        height 0.25s,
+        background 0.25s;
+}
+
+.guest-landing #cursor.big {
+    width: 56px !important;
+    height: 56px !important;
+}
+
+/* Welcome page custom styles */
+@keyframes yd-welcome-floaty {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-18px);
+    }
+}
+
+@keyframes yd-welcome-floaty2 {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes yd-welcome-pulse-dot {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(0.65);
+    }
+}
+
+@keyframes yd-welcome-spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes yd-welcome-marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.guest-landing--welcome .drink-float {
+    animation: yd-welcome-floaty 4s ease-in-out infinite;
+}
+
+.guest-landing--welcome .pill-float {
+    animation: yd-welcome-floaty2 5s ease-in-out infinite;
+}
+
+.guest-landing--welcome .pill-float2 {
+    animation: yd-welcome-floaty2 5s ease-in-out infinite 1.5s;
+}
+
+.guest-landing--welcome .badge-dot {
+    animation: yd-welcome-pulse-dot 2s infinite;
+}
+
+.guest-landing--welcome .ring-spin {
+    animation: yd-welcome-spin 18s linear infinite;
+}
+
+.guest-landing--welcome .marquee-track {
+    animation: yd-welcome-marquee 18s linear infinite;
+    width: max-content;
+}
+
+.guest-landing--welcome .hero-ring {
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    position: absolute;
+    pointer-events: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.guest-landing--welcome .hero-clip {
+    clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.guest-landing--welcome .underline-y::after {
+    content: "";
+    display: block;
+    height: 4px;
+    width: 70%;
+    background: #c9a800;
+    border-radius: 2px;
+    margin-top: 4px;
+}
+
+.guest-landing--welcome .why-card:hover {
+    background: #fff176;
+}
+
+.guest-landing--welcome .menu-card:hover {
+    transform: translateY(-8px) rotate(-1deg);
+}
+
+.guest-landing--welcome .about-decor::before {
+    content: "";
+    position: absolute;
+    inset: 24px -24px -24px 24px;
+    background: #ffd600;
+    border-radius: 24px;
+    z-index: 0;
+}
+
+/* Menu page custom styles */
+@keyframes yd-menu-pulse-dot {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(0.65);
+    }
+}
+
+@keyframes yd-menu-marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes yd-menu-card-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.guest-landing--menu .badge-dot {
+    animation: yd-menu-pulse-dot 2s infinite;
+}
+
+.guest-landing--menu .marquee-track {
+    animation: yd-menu-marquee 20s linear infinite;
+    width: max-content;
+}
+
+.guest-landing--menu .menu-card {
+    animation: yd-menu-card-in 0.4s ease both;
+    transition:
+        transform 0.3s,
+        box-shadow 0.3s;
+}
+
+.guest-landing--menu .menu-card:hover {
+    transform: translateY(-8px) rotate(-0.8deg);
+    box-shadow: 0 24px 60px rgba(26, 22, 0, 0.15);
+}
+
+.guest-landing--menu .menu-card:hover .card-img {
+    transform: scale(1.06);
+}
+
+.guest-landing--menu .card-img {
+    transition: transform 0.5s;
+}
+
+.guest-landing--menu .filter-btn.active,
+.guest-landing--menu .filter-btn:hover {
+    background: #ffd600;
+    color: #1a1600;
+    border-color: #ffd600;
+}
+
 /* Smooth transitions for theme changes */
 button,
 a {

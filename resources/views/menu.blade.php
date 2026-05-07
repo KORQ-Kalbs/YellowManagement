@@ -1,29 +1,16 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ data_get($menuSettings, 'page_title', 'Semua Menu Kami') }} — Yellow Drink</title>
+@extends('layouts.guest')
+
+@section('htmlClass', 'scroll-smooth')
+@section('title', data_get($menuSettings, 'page_title', 'Semua Menu Kami') . ' — Yellow Drink')
+@section('bodyClass', 'overflow-x-hidden bg-[#FFFEF5] text-[#1A1600] guest-landing guest-landing--menu')
+
+@push('guest-fonts')
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=Cabinet+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-  <style>
-    body{font-family:'Cabinet Grotesk',sans-serif;cursor:none;}
-    h1,h2,h3{font-family:'Fraunces',serif;}
-    #cursor{mix-blend-mode:multiply;transition:width .25s,height .25s;}
-    #cursor.big{width:56px!important;height:56px!important;}
-    @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
-    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    @keyframes card-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    .badge-dot{animation:pulse-dot 2s infinite;}
-    .marquee-track{animation:marquee 20s linear infinite;width:max-content;}
-    .menu-card{animation:card-in .4s ease both;transition:transform .3s,box-shadow .3s;}
-    .menu-card:hover{transform:translateY(-8px) rotate(-0.8deg);box-shadow:0 24px 60px rgba(26,22,0,.15);}
-    .menu-card:hover .card-img{transform:scale(1.06);}
-    .card-img{transition:transform .5s;}
-    .filter-btn.active,.filter-btn:hover{background:#FFD600;color:#1A1600;border-color:#FFD600;}
-  </style>
-</head>
-<body class="overflow-x-hidden bg-[#FFFEF5] text-[#1A1600]">
+@endpush
+
+@section('content')
 
 @php
   $menu = $menuSettings ?? \App\Models\DashboardSetting::defaultsForPage('menu');
@@ -34,19 +21,14 @@
 <div id="cursor" class="pointer-events-none fixed z-[9999] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FFD600]"></div>
 
 {{-- NAV --}}
-<nav class="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-[#FFD600]/20 bg-white/85 px-6 py-5 backdrop-blur-xl lg:px-14">
-  <a href="/" class="font-display text-2xl font-black tracking-tight text-[#1A1600] no-underline" style="font-family:'Fraunces',serif;">
-    {{ data_get($welcomeSettings,'brand_name','Yellow') }}<span class="text-[#C9A800]">.</span>
-  </a>
-  <ul class="hidden gap-8 text-xs font-bold uppercase tracking-widest text-[#4A3F00] md:flex" style="list-style:none;">
-    <li><a href="/#menu"     class="hover:text-[#1A1600] no-underline">Menu</a></li>
-    <li><a href="/#about"    class="hover:text-[#1A1600] no-underline">Tentang</a></li>
-    <li><a href="/#location" class="hover:text-[#1A1600] no-underline">Lokasi</a></li>
-  </ul>
-  <a href="/login" class="rounded-full bg-[#1A1600] px-5 py-2.5 text-xs font-extrabold text-[#FFD600] transition hover:bg-[#FFD600] hover:text-[#1A1600] no-underline">
-    Login Kasir
-  </a>
-</nav>
+<x-navbar
+  variant="guest"
+  :brand-name="data_get($welcomeSettings, 'brand_name', 'Yellow')"
+  menu-href="/#menu"
+  about-href="/#about"
+  location-href="/#location"
+  login-href="/login"
+/>
 
 {{-- PAGE HEADER --}}
 <div class="relative overflow-hidden bg-[#FFFEF5] px-6 pb-14 pt-32 lg:px-14">
@@ -65,7 +47,7 @@
       {{ data_get($menu,'page_subtitle','Pilih favoritmu dari produk yang aktif di database, lengkap dengan kategori dan varian.') }}
     </p>
     @if($activeDiscountLabel)
-      <div class="mt-5 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-bold text-amber-900">
+      <div class="inline-flex items-center gap-2 px-4 py-2 mt-5 text-sm font-bold border rounded-full border-amber-200 bg-amber-50 text-amber-900">
         🎉 Promo aktif:
         <span class="rounded-full bg-amber-600 px-3 py-0.5 text-xs font-bold text-white">{{ $activeDiscountLabel }}</span>
       </div>
@@ -75,8 +57,8 @@
 
 {{-- MARQUEE --}}
 <div class="overflow-hidden bg-[#1A1600] py-3" aria-hidden="true">
-  <div class="marquee-track flex">
-    @foreach(array_fill(0,3,['Kasir Digital','Laporan Harian','Manajemen Stok','Rekap Penjualan','Diskon & Promo','Yellow Drink POS']) as $group)
+  <div class="flex marquee-track">
+    @foreach(array_fill(0,3,['100% Segar Setiap Hari','Happy Hour☀️','Pure Freshness in Every Bottle','Diskon & Promo','Mood Booster!']) as $group)
       @foreach($group as $w)
         <span class="whitespace-nowrap px-8 text-sm font-bold italic text-[#FFD600]" style="font-family:'Fraunces',serif;">
           {{ $w }}<span class="ml-8 text-xs opacity-40">✦</span>
@@ -103,10 +85,10 @@
 {{-- MAIN CONTENT --}}
 <div class="bg-[#FFFEF5] px-6 pb-24 pt-12 lg:px-14" id="main-content">
   @forelse($menuCategories ?? collect() as $category)
-    <div class="category-section mb-16" data-cat="{{ $category['slug'] }}">
+    <div class="mb-16 category-section" data-cat="{{ $category['slug'] }}">
 
       {{-- Category header --}}
-      <div class="mb-7 flex items-center gap-4">
+      <div class="flex items-center gap-4 mb-7">
         <h2 class="whitespace-nowrap text-xl font-black text-[#1A1600]">{{ $category['name'] }}</h2>
         <div class="h-[1.5px] flex-1 rounded-full bg-gradient-to-r from-[#FFD600] to-transparent"></div>
         <span class="whitespace-nowrap rounded-full border border-[#FFD600] bg-[#FFF9C4] px-3 py-1 text-[.65rem] font-extrabold uppercase tracking-widest text-[#8A7A20]">
@@ -128,16 +110,16 @@
             {{-- Image --}}
             <div class="relative h-48 overflow-hidden bg-[#FFF9C4]">
               <img src="{{ $imgUrl }}" alt="{{ $product->nama_produk }}" loading="lazy"
-                   class="card-img h-full w-full object-cover"
+                   class="object-cover w-full h-full card-img"
                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-              <div class="hidden h-full w-full items-center justify-center text-5xl" style="background:linear-gradient(135deg,#FFF9C4,#FFE082)">🥤</div>
+              <div class="items-center justify-center hidden w-full h-full text-5xl" style="background:linear-gradient(135deg,#FFF9C4,#FFE082)">🥤</div>
 
               {{-- overlays --}}
               <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0F0E0A]/65 to-transparent"></div>
-              <div class="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-black/20 to-transparent"></div>
+              <div class="absolute inset-x-0 top-0 pointer-events-none h-14 bg-gradient-to-b from-black/20 to-transparent"></div>
 
               {{-- variant badges --}}
-              <div class="absolute left-2 top-2 flex flex-wrap gap-1">
+              <div class="absolute flex flex-wrap gap-1 left-2 top-2">
                 @foreach($actVar as $v)
                   <span class="rounded-lg bg-[#FFD600] px-2 py-0.5 text-[.6rem] font-extrabold uppercase text-[#1A1600]">{{ $v->kode_variant }}</span>
                 @endforeach
@@ -191,6 +173,9 @@
   </div>
 </footer>
 
+@endsection
+
+@push('guest-scripts')
 <script>
   const cur = document.getElementById('cursor');
   document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
@@ -209,5 +194,4 @@
     });
   });
 </script>
-</body>
-</html>
+@endpush

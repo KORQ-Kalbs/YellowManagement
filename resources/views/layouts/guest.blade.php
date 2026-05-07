@@ -1,21 +1,26 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="@yield('htmlClass')">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', $title ?? config('app.name', 'Laravel'))</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    @stack('guest-fonts')
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased text-gray-900">
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('guest-head')
+</head>
+<body class="@yield('bodyClass', 'font-sans antialiased text-gray-900')">
+    @if(trim($__env->yieldContent('content')))
+        @yield('content')
+    @else
         <!-- Header Bar -->
         <div class="bg-yellow-400 h-16 flex items-center px-6">
             <div class="flex items-center space-x-2">
@@ -55,7 +60,7 @@
 
                 <!-- Card Content -->
                 <div class="px-6 py-8">
-                    {{ $slot }}
+                    {{ $slot ?? '' }}
                 </div>
             </div>
 
@@ -64,5 +69,8 @@
                 <p>© 2026 Yellow Drink</p>
             </div>
         </div>
-    </body>
+    @endif
+
+    @stack('guest-scripts')
+</body>
 </html>
