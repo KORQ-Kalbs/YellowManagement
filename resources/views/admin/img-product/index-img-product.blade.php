@@ -10,7 +10,7 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-                <button type="button" @click="window.dispatchEvent(new CustomEvent('open-modal', { detail: 'image-modal' })); resetImageForm();" class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors rounded-lg bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700">
+                <button type="button" @click="window.dispatchEvent(new CustomEvent('open-modal', { detail: 'image-modal' })); resetImageForm();" class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-yellow-500 rounded-lg hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -36,7 +36,7 @@
         <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
             <x-card>
                 <div class="flex items-center gap-4">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-2xl bg-yellow-500/10 text-yellow-600 dark:text-yellow-400">
+                    <div class="flex items-center justify-center w-12 h-12 text-yellow-600 rounded-2xl bg-yellow-500/10 dark:text-yellow-400">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -50,7 +50,7 @@
 
             <x-card>
                 <div class="flex items-center gap-4">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-2xl bg-green-500/10 text-green-600 dark:text-green-400">
+                    <div class="flex items-center justify-center w-12 h-12 text-green-600 rounded-2xl bg-green-500/10 dark:text-green-400">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M5 11h14M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -64,7 +64,7 @@
 
             <x-card>
                 <div class="flex items-center gap-4">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                    <div class="flex items-center justify-center w-12 h-12 text-blue-600 rounded-2xl bg-blue-500/10 dark:text-blue-400">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
                         </svg>
@@ -105,7 +105,7 @@
                 <div class="grid grid-cols-1 gap-5 p-5 sm:grid-cols-2 xl:grid-cols-4">
                     @foreach($images as $image)
                         <article class="overflow-hidden border border-gray-200 shadow-sm group rounded-2xl bg-white/80 dark:bg-gray-800/80 dark:border-gray-700">
-                            <div class="relative aspect-square bg-gray-100 dark:bg-gray-700">
+                            <div class="relative bg-gray-100 aspect-square dark:bg-gray-700">
                                 <img src="{{ $image->url }}" alt="{{ $image->alt_text ?? $image->display_name }}" class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105">
                                 <div class="absolute top-3 left-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white backdrop-blur">
                                     {{ strtoupper(pathinfo($image->file_name, PATHINFO_EXTENSION)) }}
@@ -120,7 +120,7 @@
                             <div class="p-4 space-y-4">
                                 <div>
                                     <h3 class="text-sm font-semibold text-gray-900 dark:text-white line-clamp-1">{{ $image->display_name }}</h3>
-                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 break-all">{{ $image->original_name }}</p>
+                                    <p class="mt-1 text-xs text-gray-500 break-all dark:text-gray-400">{{ $image->original_name }}</p>
                                 </div>
 
                                 <div class="flex items-center justify-between gap-3 text-xs text-gray-500 dark:text-gray-400">
@@ -134,7 +134,7 @@
                                 </div>
 
                                 <div class="flex gap-2">
-                                    <button type="button" onclick="editImage({{ $image->id }}, @js($image->title), @js($image->alt_text), @js($image->original_name), @js($image->url), @js($image->display_name), @js($image->product_id))" class="inline-flex flex-1 items-center justify-center px-3 py-2 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50">
+                                    <button type="button" onclick="editImage({{ $image->id }}, @js($image->title), @js($image->alt_text), @js($image->original_name), @js($image->url), @js($image->display_name), @js($image->product_id))" class="inline-flex items-center justify-center flex-1 px-3 py-2 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50">
                                         Edit
                                     </button>
 
@@ -162,7 +162,7 @@
                 @endif
             @else
                 <div class="px-6 py-16 text-center">
-                    <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-yellow-500/10 text-yellow-600 dark:text-yellow-400">
+                    <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-yellow-600 rounded-2xl bg-yellow-500/10 dark:text-yellow-400">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -210,7 +210,16 @@
                             <select id="image-product-id" name="product_id" class="block w-full px-4 py-3 mt-1 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                                 <option value="">-- No linked product --</option>
                                 @foreach($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->nama_produk }}</option>
+                                    <option
+                                        value="{{ $product->id }}"
+                                    >
+                                        {{ $product->nama_produk }}
+                                        @if($product->productImage)
+                                            [Linked: {{ $product->productImage->display_name }}]
+                                        @else
+                                            [Not Linked]
+                                        @endif
+                                    </option>
                                 @endforeach
                             </select>
                             <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Choose a product to keep the image library and product image synchronized.</p>
@@ -224,12 +233,12 @@
                     </div>
 
                     <div class="space-y-4">
-                        <div class="overflow-hidden border border-dashed border-gray-300 rounded-2xl dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">
-                            <div class="p-3 border-b border-dashed border-gray-300 dark:border-gray-600">
+                        <div class="overflow-hidden border border-gray-300 border-dashed rounded-2xl dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">
+                            <div class="p-3 border-b border-gray-300 border-dashed dark:border-gray-600">
                                 <p class="text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">Preview</p>
                             </div>
                             <div class="flex items-center justify-center p-4 min-h-64">
-                                <img id="image-preview" src="" alt="Preview" class="hidden object-contain max-h-64 rounded-xl shadow-sm">
+                                <img id="image-preview" src="" alt="Preview" class="hidden object-contain shadow-sm max-h-64 rounded-xl">
                                 <div id="image-preview-empty" class="text-center text-gray-400 dark:text-gray-500">
                                     <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -303,5 +312,6 @@
             preview.classList.remove('hidden');
             emptyState.classList.add('hidden');
         });
+
     </script>
 </x-app-layout>

@@ -36,7 +36,7 @@
                     <div class="p-4 text-sm bg-white rounded shadow lg:col-span-2 sm:text-base">
                         <h3 class="mb-4 text-lg font-bold">Pilih Produk</h3>
                         <div class="mb-4">
-                            <input type="text" id="searchProduct" placeholder="Cari produk..." class="w-full p-2 border rounded">
+                            <input type="text" id="searchProduct" placeholder="Cari produk..." class="w-full p-2 !text-black  border rounded">
                         </div>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <button type="button" onclick="filterCategory('all')" class="px-3 py-1 text-xs bg-gray-500 rounded sm:text-sm">Semua</button>
