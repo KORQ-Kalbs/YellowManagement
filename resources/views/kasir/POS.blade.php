@@ -68,6 +68,7 @@
                                 </div>
                             @endforeach
                         </div>
+                        <div id="productPagination" class="flex flex-wrap items-center justify-center gap-1 mt-4 text-xs sm:text-sm"></div>
                     </div>
 
                     <!-- RIGHT: Cart & Checkout -->
@@ -542,18 +543,81 @@
             if (confirm('Kosongkan keranjang?')) { cart = []; renderCart(); }
         }
 
-        function filterCategory(categoryId) {
-            document.querySelectorAll('.product-item').forEach(item => {
-                item.style.display = (categoryId === 'all' || item.dataset.category == categoryId) ? 'block' : 'none';
+        const productItems = Array.from(document.querySelectorAll('.product-item'));
+        const productPagination = document.getElementById('productPagination');
+        const productPageSize = 10;
+        let currentProductPage = 1;
+        let currentCategoryFilter = 'all';
+        let currentSearchFilter = '';
+
+        function getFilteredProducts() {
+            return productItems.filter(item => {
+                const categoryMatch = currentCategoryFilter === 'all'
+                    || item.dataset.category === String(currentCategoryFilter);
+                const searchMatch = currentSearchFilter === ''
+                    || item.dataset.name.toLowerCase().includes(currentSearchFilter);
+                return categoryMatch && searchMatch;
             });
         }
 
-        document.getElementById('searchProduct').addEventListener('input', function(e) {
-            const search = e.target.value.toLowerCase();
-            document.querySelectorAll('.product-item').forEach(item => {
-                item.style.display = item.dataset.name.toLowerCase().includes(search) ? 'block' : 'none';
+        function renderProductPagination(totalPages) {
+            if (!productPagination) return;
+            productPagination.innerHTML = '';
+            if (totalPages <= 1) return;
+
+            const createButton = (label, page, disabled, isActive) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = label;
+                btn.disabled = disabled;
+                btn.className = isActive
+                    ? 'px-2 py-1 rounded border bg-gray-800 text-white'
+                    : 'px-2 py-1 rounded border text-gray-600 bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed';
+                btn.addEventListener('click', () => renderProductPage(page));
+                return btn;
+            };
+
+            productPagination.appendChild(
+                createButton('<', currentProductPage - 1, currentProductPage === 1, false)
+            );
+
+            for (let page = 1; page <= totalPages; page += 1) {
+                productPagination.appendChild(
+                    createButton(String(page), page, false, page === currentProductPage)
+                );
+            }
+
+            productPagination.appendChild(
+                createButton('>', currentProductPage + 1, currentProductPage === totalPages, false)
+            );
+        }
+
+        function renderProductPage(page) {
+            const filtered = getFilteredProducts();
+            const totalPages = Math.max(1, Math.ceil(filtered.length / productPageSize));
+            currentProductPage = Math.min(Math.max(1, page), totalPages);
+
+            productItems.forEach(item => { item.style.display = 'none'; });
+
+            const start = (currentProductPage - 1) * productPageSize;
+            const end = start + productPageSize;
+            filtered.slice(start, end).forEach(item => { item.style.display = 'block'; });
+
+            renderProductPagination(totalPages);
+        }
+
+        function filterCategory(categoryId) {
+            currentCategoryFilter = categoryId;
+            renderProductPage(1);
+        }
+
+        const searchInput = document.getElementById('searchProduct');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                currentSearchFilter = e.target.value.toLowerCase();
+                renderProductPage(1);
             });
-        });
+        }
 
         function toggleJumlahBayar() {
             const method      = document.getElementById('metodePembayaran').value;
@@ -570,7 +634,10 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => toggleJumlahBayar());
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleJumlahBayar();
+            renderProductPage(1);
+        });
     </script>
 
     @if(session('show_receipt'))
@@ -619,9 +686,8 @@
                                 @if($detail->catatan)
                                     <div class="text-xs italic text-gray-500">{{ $detail->catatan }}</div>
                                 @endif
-                                <div class="flex justify-between mt-1 text-xs text-gray-700">
+                                <div class="mt-1 text-xs text-gray-700">
                                     <span>{{ $detail->jumlah }} x {{ number_format($detail->subtotal / $detail->jumlah, 0, ',', '.') }}</span>
-                                    <span class="font-medium text-gray-900">{{ number_format($detail->subtotal, 0, ',', '.') }}</span>
                                 </div>
                             </div>
                             @endforeach

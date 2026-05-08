@@ -65,9 +65,10 @@
             color: #6b7280;
         }
 
-        .items td:last-child,
-        .items th:last-child {
-            text-align: right;
+        .item-line {
+            margin: 2px 0 0;
+            font-family: monospace;
+            white-space: pre;
         }
 
         .totals td {
@@ -106,8 +107,8 @@
     <div class="receipt">
         <div class="header">
             <h1>Yellow Drink</h1>
-            <p>Jl. Kasir Yellow No. 1, City</p>
-            <p>Telp: 0812-3456-7890</p>
+            <p>Jl. Sindang Barang Pengkolan No.132, RT.04/RW.06, Sindangbarang, Kec. Bogor Bar., Kota Bogor, Jawa Barat 16117</p>
+            <p>Telp: +62 816-634-757</p>
         </div>
 
         <div class="divider"></div>
@@ -137,8 +138,6 @@
             <thead>
                 <tr>
                     <th>Produk</th>
-                    <th>Qty</th>
-                    <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
@@ -146,6 +145,7 @@
                     <tr>
                         <td>
                             <div>{{ $detail->product->nama_produk }}</div>
+                            <div class="item-line">{{ str_pad($detail->jumlah . ' x', 12) }}{{ number_format($detail->subtotal, 0, ',', '.') }}</div>
                             @if($detail->variant)
                                 <div class="muted">{{ $detail->variant->kode_variant }}</div>
                             @endif
@@ -153,8 +153,6 @@
                                 <div class="muted">{{ $detail->catatan }}</div>
                             @endif
                         </td>
-                        <td>{{ $detail->jumlah }}x</td>
-                        <td>Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             </tbody>
