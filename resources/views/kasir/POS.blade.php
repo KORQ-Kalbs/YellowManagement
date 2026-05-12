@@ -209,7 +209,7 @@
                         <form action="{{ route(auth()->user()->role === 'admin' ? 'admin.transaksi.batalkan' : 'kasir.transaksi.batalkan', $pendingTx->id) }}" method="POST">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="w-full px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded hover:bg-gray-300">
+                            <button type="submit" class="w-full px-4 py-2 text-sm font-semibold text-black bg-gray-200 rounded hover:bg-gray-300">
                                 Batalkan Transaksi
                             </button>
                         </form>

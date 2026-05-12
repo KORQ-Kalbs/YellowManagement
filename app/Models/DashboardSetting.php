@@ -69,7 +69,7 @@ class DashboardSetting extends Model
                 'footer_note' => '© 2025 Yellow Drink. Semua Berhak Minum Enak.',
             ],
             'menu' => [
-                'page_title' => 'Semua Menu Kami',
+                'page_title' => 'Semua Menu',
                 'page_highlight' => 'Menu',
                 'page_subtitle' => 'Pilih favoritmu dari produk yang aktif di database, lengkap dengan kategori dan varian.',
                 'page_badge' => 'Menu Aktif',

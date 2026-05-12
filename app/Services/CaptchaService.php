@@ -13,9 +13,15 @@ class CaptchaService
     {
         $operations = ['+', '-', '*'];
         $operation = $operations[array_rand($operations)];
-        
-        $num1 = rand(1, 50);
-        $num2 = rand(1, 50);
+
+        // Keep multiplication very small so CAPTCHA remains easy to solve.
+        if ($operation === '*') {
+            $num1 = rand(1, 10);
+            $num2 = rand(1, 10);
+        } else {
+            $num1 = rand(1, 20);
+            $num2 = rand(1, 20);
+        }
         
         // For subtraction, ensure result is positive
         if ($operation === '-' && $num2 > $num1) {

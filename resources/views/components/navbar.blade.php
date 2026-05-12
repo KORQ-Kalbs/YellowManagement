@@ -18,9 +18,8 @@
         <li><a href="{{ $aboutHref }}" class="transition-colors hover:text-[#1A1600] no-underline">Tentang</a></li>
         <li><a href="{{ $locationHref }}" class="transition-colors hover:text-[#1A1600] no-underline">Lokasi</a></li>
     </ul>
-    <a href="{{ $loginHref }}" class="rounded-full bg-[#1A1600] px-5 py-2.5 text-xs font-extrabold tracking-wide text-[#FFD600] transition hover:bg-[#FFD600] hover:text-[#1A1600] no-underline">
-        Login Kasir
-    </a>
+
+    
 </nav>
 @else
 <nav class="sticky top-0 z-30 flex items-center justify-between w-full px-3 py-3 border-b shadow-sm lg:px-6 lg:py-4 app-surface dark:shadow-md app-border">
