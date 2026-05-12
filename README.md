@@ -1,59 +1,122 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🟡 YellowManagement
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> **Money Management System for UMKM (Usaha Mikro, Kecil, dan Menengah)**
 
-## About Laravel
+YellowManagement is a web-based financial and operational management application built specifically for small and medium-sized businesses (UMKM) in Indonesia. It provides a complete Point-of-Sale (POS) system, expense tracking, sales reporting, product catalog management, and discount event handling — all in one place.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👨‍💼 Admin
 
-## Learning Laravel
+| Feature                          | Description                                                                                |
+| -------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Dashboard & KPIs**             | Monitor 7-day sales trends, total revenue, total expenses, and net profit at a glance      |
+| **Product & Variant Management** | Full CRUD for products with variants, images, pricing, and stock synchronization           |
+| **Category Management**          | Organize products into categories for easier navigation and reporting                      |
+| **Product Image Management**     | Centralized media management — upload, search, edit, and associate images to products      |
+| **Discount Events**              | Create and manage time-based promotional discount events applied automatically at checkout |
+| **Expense Management**           | Track operational costs by category with receipt attachment support                        |
+| **Cashier (User) Management**    | Add, edit, and manage cashier accounts with role-based access control                      |
+| **Sales Reports**                | View daily/weekly/monthly sales analytics with top product breakdowns; export to PDF/Excel |
+| **Transaction Management**       | Audit, adjust, and validate all transactions; change statuses (complete, cancel, suspend)  |
+| **Page Content Settings**        | Edit landing page and public menu content without touching code                            |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🧾 Kasir (Cashier)
 
-## Laravel Sponsors
+| Feature                                     | Description                                                                                  |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Cashier Dashboard**                       | Personal 7-day performance summary and recent transaction list                               |
+| **POS & Create Transaction**                | Fast product selection with variant and discount support; handles cash and non-cash payments |
+| **Complete / Suspend / Cancel Transaction** | Manage pending transactions; cancellations automatically restore stock                       |
+| **Print Receipt**                           | Export transaction receipts as PDF/Excel for customers                                       |
+| **Transaction History**                     | View and review all personal past transactions                                               |
+| **Cashier Reports**                         | Filter and export personal sales reports by daily, weekly, or monthly periods                |
+| **Product & Stock Check**                   | Read-only view of active products, variants, categories, and stock availability              |
+| **Record Expenses**                         | Log shift-level operational expenses with optional receipt attachment                        |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🛠 Tech Stack
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- **Backend:** [Laravel](https://laravel.com) (PHP)
+- **Frontend:** [Blade](https://laravel.com/docs/blade) + [Tailwind CSS](https://tailwindcss.com)
+- **Build Tool:** [Vite](https://vitejs.dev)
+- **Database:** MySQL (via Laravel Eloquent ORM)
+- **Export:** PDF & Excel report generation
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🚀 Getting Started
 
-## Code of Conduct
+### Prerequisites
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP >= 8.1
+- Composer
+- Node.js & NPM
+- MySQL
 
-## Security Vulnerabilities
+### Installation
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+# 1. Clone the repository
+git clone https://github.com/KORQ-Kalbs/YellowManagement.git
+cd YellowManagement
 
-## License
+# 2. Install PHP dependencies
+composer install
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 3. Install Node dependencies
+npm install
+
+# 4. Copy and configure your environment file
+cp .env.example .env
+
+# 5. Generate the application key
+php artisan key:generate
+
+# 6. Configure your database in .env, then run migrations and seeders
+php artisan migrate --seed
+
+# 7. Link storage
+php artisan storage:link
+
+# 8. Build frontend assets
+npm run build
+
+# 9. Serve the application
+php artisan serve
+```
+
+> **Quick setup (optional):** A `setup.sh` script is included for sidebar UI adjustments. Run `bash setup.sh` after installation if needed.
+
+---
+
+## 👥 User Roles
+
+| Role      | Access Level                                                                          |
+| --------- | ------------------------------------------------------------------------------------- |
+| **Admin** | Full access — manage products, users, reports, expenses, discounts, and site settings |
+| **Kasir** | Operational access — run POS, manage own transactions, log expenses, view own reports |
+
+---
+
+## 📂 Project Structure
+
+```
+app/          → Controllers, Models, and business logic
+resources/    → Blade views and frontend assets
+database/     → Migrations and seeders
+routes/       → Web and API route definitions
+public/       → Publicly accessible files and compiled assets
+storage/      → File uploads and application storage
+```
+
+---
+
+## 📄 License
+
+This project is open-sourced under the [MIT license](https://opensource.org/licenses/MIT).
