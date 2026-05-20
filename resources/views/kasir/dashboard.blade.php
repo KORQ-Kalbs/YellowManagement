@@ -184,7 +184,7 @@
                             beginAtZero: true,
                             ticks: {
                                 color: isDark ? '#9CA3AF' : '#374151',
-                                callback: value => 'Rp ' + value.toLocaleString('id-ID')
+                                callback: value => 'Rp ' + value.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
                             },
                             grid: { color: isDark ? '#374151' : '#E5E7EB' }
                         },

@@ -108,7 +108,8 @@
                             </div>
                             <div class="mb-4" id="divJumlahBayar">
                                 <label class="block mb-1 text-sm">Jumlah Bayar (Tunai)</label>
-                                <input type="number" name="jumlah_bayar" id="jumlahBayar" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="" min="0" placeholder="Rp ">
+                                <input type="text" id="jumlahBayarDisplay" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="" placeholder="Rp " oninput="formatInputRupiah(this, 'jumlahBayar')">
+                                <input type="hidden" name="jumlah_bayar" id="jumlahBayar" value="">
                             </div>
                             <button type="submit" class="w-full p-3 font-bold text-white bg-green-600 rounded hover:bg-green-700">
                                 Proses Transaksi
@@ -190,11 +191,11 @@
                             <div id="pendingCashFields" class="hidden">
                                 <div class="box-border p-3 mb-4 text-left border rounded-lg bg-gray-50 dark:bg-gray-700/50">
                                     <label class="block mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300">Pembayaran Diterima (Rp)</label>
-                                    <input type="number" id="jumlah_bayar_diterima" name="jumlah_bayar_diterima"
-                                        value="{{ $pendingTx->pembayaran->jumlah_pembayaran }}"
-                                        min="{{ $pendingTx->total_harga }}"
+                                    <input type="text" id="jumlah_bayar_diterima_display"
+                                        value="{{ number_format((int) $pendingTx->pembayaran->jumlah_pembayaran, 0, ',', '.') }}"
                                         class="w-full px-3 py-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring focus:border-blue-300"
-                                        oninput="calculateKembalian(this.value, {{ $pendingTx->total_harga }})">
+                                        oninput="formatInputRupiah(this, 'jumlah_bayar_diterima'); calculateKembalian(document.getElementById('jumlah_bayar_diterima').value, {{ $pendingTx->total_harga }})">
+                                    <input type="hidden" id="jumlah_bayar_diterima" name="jumlah_bayar_diterima" value="{{ (int) $pendingTx->pembayaran->jumlah_pembayaran }}">
                                     <div class="flex justify-between mt-2 text-sm text-gray-600 dark:text-gray-400">
                                         <span>Kembalian:</span>
                                         <span id="labelKembalian" class="font-bold text-green-600 dark:text-green-400">Rp {{ number_format(max(0, $pendingTx->pembayaran->jumlah_pembayaran - $pendingTx->total_harga), 0, ',', '.') }}</span>
@@ -238,17 +239,17 @@
                     document.getElementById('pendingView-cash').classList.remove('hidden');
                     document.getElementById('pendingCashFields').classList.remove('hidden');
                     document.getElementById('pendingModalTitle').textContent = 'Pembayaran Cash';
-                    const inp = document.getElementById('jumlah_bayar_diterima');
+                    const inp = document.getElementById('jumlah_bayar_diterima_display');
                     inp.required = true;
                 } else if (method === 'qris') {
                     document.getElementById('pendingView-qris').classList.remove('hidden');
                     document.getElementById('pendingCashFields').classList.add('hidden');
                     document.getElementById('pendingModalTitle').textContent = 'QRIS Payment';
-                    document.getElementById('jumlah_bayar_diterima').required = false;
+                    document.getElementById('jumlah_bayar_diterima_display').required = false;
                 } else {
                     document.getElementById('pendingView-other').classList.remove('hidden');
                     document.getElementById('pendingCashFields').classList.add('hidden');
-                    document.getElementById('jumlah_bayar_diterima').required = false;
+                    document.getElementById('jumlah_bayar_diterima_display').required = false;
 
                     const labels = {
                         debit:    { icon: '💳', text: 'Menunggu pembayaran via Debit Card...',    title: 'Debit Card Payment' },
@@ -265,7 +266,7 @@
             function calculateKembalian(diterima, total) {
                 let diff = diterima - total;
                 if (diff < 0) diff = 0;
-                document.getElementById('labelKembalian').textContent = 'Rp ' + diff.toLocaleString('id-ID');
+                document.getElementById('labelKembalian').textContent = 'Rp ' + diff.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             }
 
             // Initialize on load
@@ -344,7 +345,7 @@
 
         function openVariantModal(product) {
             document.getElementById('variantModalTitle').textContent = product.name;
-            document.getElementById('variantModalSubtitle').textContent = 'Harga dasar: Rp ' + product.price.toLocaleString('id-ID');
+            document.getElementById('variantModalSubtitle').textContent = 'Harga dasar: Rp ' + product.price.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             const opts = document.getElementById('variantOptions');
             opts.innerHTML = '';
             product.variants.forEach(v => {
@@ -355,8 +356,8 @@
                 btn.innerHTML = `
                     <span class="text-2xl font-black text-gray-800 dark:text-gray-200">${v.kode_variant}</span>
                     <span class="mt-1 text-xs text-gray-600 dark:text-gray-400">${v.nama_variant}</span>
-                    <span class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">Rp ${finalPrice.toLocaleString('id-ID')}</span>
-                    ${parseFloat(v.harga_tambahan) > 0 ? `<span class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">+Rp ${parseFloat(v.harga_tambahan).toLocaleString('id-ID')}</span>` : ''}
+                    <span class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">Rp ${finalPrice.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                    ${parseFloat(v.harga_tambahan) > 0 ? `<span class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">+Rp ${parseFloat(v.harga_tambahan).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>` : ''}
                 `;
                 btn.onclick = () => { pushToCart(product, v); closeVariantModal(); };
                 opts.appendChild(btn);
@@ -508,7 +509,7 @@
                             <span class="text-sm">${item.qty}</span>
                             <button type="button" onclick="updateQty('${item.cartKey}', 1)" class="px-2 border rounded">+</button>
                         </div>
-                        <div class="text-sm font-semibold">Rp ${itemSubtotal.toLocaleString('id-ID')}</div>
+                        <div class="text-sm font-semibold">Rp ${itemSubtotal.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</div>
                     </div>
                     <input type="text"
                         placeholder="Catatan (opsional)..."
@@ -535,8 +536,8 @@
 
             cartItemsDiv.innerHTML = html;
             cartDataDiv.innerHTML  = hiddenInputs;
-            document.getElementById('subTotalAmount').textContent = 'Rp ' + subtotalCart.toLocaleString('id-ID');
-            document.getElementById('totalAmount').textContent    = 'Rp ' + finalTotal.toLocaleString('id-ID');
+            document.getElementById('subTotalAmount').textContent = 'Rp ' + subtotalCart.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            document.getElementById('totalAmount').textContent    = 'Rp ' + finalTotal.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
         function clearCart() {
@@ -619,18 +620,33 @@
             });
         }
 
+        function formatInputRupiah(displayElem, hiddenId) {
+            let val = displayElem.value.replace(/[^0-9]/g, '');
+            document.getElementById(hiddenId).value = val;
+            if (val) {
+                displayElem.value = parseInt(val, 10).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            } else {
+                displayElem.value = '';
+            }
+        }
+
         function toggleJumlahBayar() {
             const method      = document.getElementById('metodePembayaran').value;
             const divJumlah   = document.getElementById('divJumlahBayar');
             const inputJumlah = document.getElementById('jumlahBayar');
+            const inputJumlahDisplay = document.getElementById('jumlahBayarDisplay');
             if (method === 'cash') {
                 divJumlah.style.display = 'block';
-                inputJumlah.required    = true;
-                if (inputJumlah.value === '0') inputJumlah.value = '';
+                inputJumlahDisplay.required    = true;
+                if (inputJumlah.value === '0') {
+                    inputJumlah.value = '';
+                    inputJumlahDisplay.value = '';
+                }
             } else {
                 divJumlah.style.display = 'none';
-                inputJumlah.required    = false;
+                inputJumlahDisplay.required    = false;
                 inputJumlah.value       = '0';
+                inputJumlahDisplay.value = '0';
             }
         }
 
