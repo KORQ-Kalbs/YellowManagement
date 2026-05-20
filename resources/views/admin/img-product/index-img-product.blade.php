@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-2xl">
-                <p class="text-xs font-semibold tracking-[0.35em] text-yellow-600 uppercase dark:text-yellow-400">Asset Library</p>
-                <h2 class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">Image Product Manager</h2>
+                <p class="text-xs font-semibold tracking-[0.35em] text-yellow-600 uppercase dark:text-yellow-400">Pustaka Aset</p>
+                <h2 class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">Manajer Gambar Produk</h2>
                 <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                    Manage every image stored in <span class="font-semibold">public/images</span>, keep metadata in sync, and upload new assets whenever you need them.
+                    Kelola setiap gambar yang tersimpan di <span class="font-semibold">public/images</span>, sinkronkan metadata, dan unggah aset baru kapan pun Anda butuhkan.
                 </p>
             </div>
 
@@ -14,7 +14,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                    Upload Image
+                    Unggah Gambar
                 </button>
             </div>
         </div>
@@ -42,7 +42,7 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Total Images</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Total Gambar</p>
                         <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['total'] }}</p>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Uploaded This Week</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Diunggah Minggu Ini</p>
                         <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['recent'] }}</p>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Visible on Page</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Terlihat di Halaman</p>
                         <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $images->count() }}</p>
                     </div>
                 </div>
@@ -80,19 +80,19 @@
         <x-card>
             <form method="GET" class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                 <div class="w-full lg:max-w-xl">
-                    <x-input-label for="q" value="Search images" />
+                    <x-input-label for="q" value="Cari gambar" />
                     <div class="relative mt-1">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </span>
-                        <input type="text" id="q" name="q" value="{{ $search }}" placeholder="Search by title or filename..." class="block w-full py-3 pl-10 pr-4 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                        <input type="text" id="q" name="q" value="{{ $search }}" placeholder="Cari berdasarkan judul atau nama file..." class="block w-full py-3 pl-10 pr-4 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                     </div>
                 </div>
 
                 <div class="flex gap-2">
-                    <x-secondary-button type="submit">Filter</x-secondary-button>
+                    <x-secondary-button type="submit">Cari</x-secondary-button>
                     @if($search !== '')
                         <a href="{{ route('admin.img-product.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600">Reset</a>
                     @endif
@@ -112,7 +112,7 @@
                                 </div>
                                 @if($image->product)
                                     <div class="absolute top-3 right-3 rounded-full bg-emerald-600/90 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
-                                        Linked
+                                        Tertaut
                                     </div>
                                 @endif
                             </div>
@@ -124,8 +124,8 @@
                                 </div>
 
                                 <div class="flex items-center justify-between gap-3 text-xs text-gray-500 dark:text-gray-400">
-                                    <span>Linked product</span>
-                                    <span class="font-semibold text-gray-900 dark:text-white">{{ $image->product?->nama_produk ?? 'Not linked' }}</span>
+                                    <span>Produk tertaut</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white">{{ $image->product?->nama_produk ?? 'Tidak tertaut' }}</span>
                                 </div>
 
                                 <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
@@ -139,14 +139,14 @@
                                     </button>
 
                                     <button type="button" onclick="editImage({{ $image->id }}, @js($image->title), @js($image->alt_text), @js($image->original_name), @js($image->url), @js($image->display_name), @js($image->product_id))" class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-700 transition-colors rounded-lg bg-yellow-50 dark:bg-yellow-900/30 dark:text-yellow-300 hover:bg-yellow-100 dark:hover:bg-yellow-900/50">
-                                        Link
+                                        Tautkan
                                     </button>
 
                                     <form action="{{ route('admin.img-product.destroy', $image->id) }}" method="POST" onsubmit="return confirm('Delete this image?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-red-600 transition-colors rounded-lg bg-red-50 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50">
-                                            Delete
+                                            Hapus
                                         </button>
                                     </form>
                                 </div>
@@ -167,8 +167,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">No images found</h3>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Upload an image to start building the media library.</p>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Tidak ada gambar ditemukan</h3>
+                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Unggah gambar untuk mulai membangun pustaka media.</p>
                 </div>
             @endif
         </x-card>
@@ -178,8 +178,8 @@
         <div class="p-6">
             <div class="flex items-start justify-between gap-4 mb-6">
                 <div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white" id="image-modal-title">Upload Image</h3>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Store a new image in <span class="font-semibold">public/images</span>.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white" id="image-modal-title">Unggah Gambar</h3>
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Simpan gambar baru di <span class="font-semibold">public/images</span>.</p>
                 </div>
                 <button type="button" class="text-gray-400 transition-colors hover:text-gray-600 dark:hover:text-gray-200" x-on:click="$dispatch('close')">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -196,39 +196,39 @@
                 <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
                     <div class="space-y-4">
                         <div>
-                            <x-input-label for="image-title" value="Title" />
-                            <input type="text" id="image-title" name="title" class="block w-full px-4 py-3 mt-1 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white" placeholder="Optional title">
+                            <x-input-label for="image-title" value="Judul" />
+                            <input type="text" id="image-title" name="title" class="block w-full px-4 py-3 mt-1 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white" placeholder="Judul opsional">
                         </div>
 
                         <div>
-                            <x-input-label for="image-alt" value="Alt Text" />
-                            <input type="text" id="image-alt" name="alt_text" class="block w-full px-4 py-3 mt-1 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white" placeholder="Optional alt text">
+                            <x-input-label for="image-alt" value="Teks Alt" />
+                            <input type="text" id="image-alt" name="alt_text" class="block w-full px-4 py-3 mt-1 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white" placeholder="Teks alt opsional">
                         </div>
 
                         <div>
-                            <x-input-label for="image-product-id" value="Link to Product" />
+                            <x-input-label for="image-product-id" value="Tautkan ke Produk" />
                             <select id="image-product-id" name="product_id" class="block w-full px-4 py-3 mt-1 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                                <option value="">-- No linked product --</option>
+                                <option value="">-- Tidak ada produk tertaut --</option>
                                 @foreach($products as $product)
                                     <option
                                         value="{{ $product->id }}"
                                     >
                                         {{ $product->nama_produk }}
                                         @if($product->productImage)
-                                            [Linked: {{ $product->productImage->display_name }}]
+                                            [Tertaut: {{ $product->productImage->display_name }}]
                                         @else
-                                            [Not Linked]
+                                            [Belum Tertaut]
                                         @endif
                                     </option>
                                 @endforeach
                             </select>
-                            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Choose a product to keep the image library and product image synchronized.</p>
+                            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Pilih produk untuk menjaga gambar dan produk tetap tersinkronisasi.</p>
                         </div>
 
                         <div>
-                            <x-input-label for="image-file" value="Image File" />
+                            <x-input-label for="image-file" value="File Gambar" />
                             <input type="file" id="image-file" name="image" accept="image/*" class="block w-full px-4 py-3 mt-1 border border-gray-300 rounded-xl dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Allowed: JPG, JPEG, PNG, WEBP, GIF, SVG. Max 5 MB.</p>
+                            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Format: JPG, JPEG, PNG, WEBP, GIF, SVG. Maks 5 MB.</p>
                         </div>
                     </div>
 
@@ -243,7 +243,7 @@
                                     <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
-                                    <p class="text-sm">Your selected image will appear here.</p>
+                                    <p class="text-sm">Gambar yang dipilih akan muncul di sini.</p>
                                 </div>
                             </div>
                         </div>
@@ -251,8 +251,8 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-3 mt-6">
-                    <x-secondary-button type="button" x-on:click="$dispatch('close')">Cancel</x-secondary-button>
-                    <x-primary-button type="submit" id="image-submit-button">Save Image</x-primary-button>
+                    <x-secondary-button type="button" x-on:click="$dispatch('close')">Batal</x-secondary-button>
+                    <x-primary-button type="submit" id="image-submit-button">Simpan Gambar</x-primary-button>
                 </div>
             </form>
         </div>
@@ -265,7 +265,7 @@
         };
 
         function resetImageForm() {
-            document.getElementById('image-modal-title').textContent = 'Upload Image';
+            document.getElementById('image-modal-title').textContent = 'Unggah Gambar';
             document.getElementById('image-form').action = imageModalRoutes.store;
             document.getElementById('image-method').value = 'POST';
             document.getElementById('image-id').value = '';
@@ -276,7 +276,7 @@
             document.getElementById('image-preview').src = '';
             document.getElementById('image-preview').classList.add('hidden');
             document.getElementById('image-preview-empty').classList.remove('hidden');
-            document.getElementById('image-submit-button').textContent = 'Save Image';
+            document.getElementById('image-submit-button').textContent = 'Simpan Gambar';
         }
 
         function openImageModal() {
@@ -285,7 +285,7 @@
         }
 
         function editImage(id, title, altText, originalName, imageUrl, displayName, productId = '') {
-            document.getElementById('image-modal-title').textContent = 'Edit Image';
+            document.getElementById('image-modal-title').textContent = 'Edit Gambar';
             document.getElementById('image-form').action = imageModalRoutes.update.replace('__ID__', id);
             document.getElementById('image-method').value = 'PUT';
             document.getElementById('image-id').value = id;
@@ -296,7 +296,7 @@
             document.getElementById('image-preview').src = imageUrl;
             document.getElementById('image-preview').classList.remove('hidden');
             document.getElementById('image-preview-empty').classList.add('hidden');
-            document.getElementById('image-submit-button').textContent = 'Update Image';
+            document.getElementById('image-submit-button').textContent = 'Perbarui Gambar';
             window.dispatchEvent(new CustomEvent('open-modal', { detail: 'image-modal' }));
         }
 

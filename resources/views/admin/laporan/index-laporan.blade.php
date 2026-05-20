@@ -2,8 +2,8 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Reports</h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Sales and business analytics</p>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Laporan</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Analisis penjualan dan bisnis</p>
             </div>
         </div>
     </x-slot>

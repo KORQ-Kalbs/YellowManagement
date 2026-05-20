@@ -2,14 +2,14 @@
     <x-slot name="header">
         <div class="flex items-center justify-between flex-wrap gap-4">
             <div class="min-w-0">
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white truncate">Kasir Management</h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate">Manage cashier accounts and permissions</p>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white truncate">Manajemen Kasir</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate">Kelola akun dan izin kasir</p>
             </div>
             <button @click="$dispatch('open-modal', 'kasir-modal'); resetKasirForm()" class="flex-shrink-0 w-full sm:w-auto inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-yellow-500 rounded-lg hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Add Kasir
+                Tambah Kasir
             </button>
         </div>
     </x-slot>
@@ -33,11 +33,11 @@
                 <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
                     <thead class="font-semibold text-gray-700 bg-gray-100 border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
                         <tr>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Name</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Nama</th>
                             <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Email</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Total Transactions</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Joined Date</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Actions</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Total Transaksi</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Tanggal Bergabung</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
@@ -75,7 +75,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                         </button>
-                                        <form action="{{ route('admin.kasir.destroy', $kasir->id) }}" method="POST" class="inline" onsubmit="return confirm('Delete this kasir? This action cannot be undone.')">
+                                        <form action="{{ route('admin.kasir.destroy', $kasir->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus kasir ini? Tindakan ini tidak dapat dibatalkan.')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="inline-flex items-center px-3 py-1 text-sm font-medium text-red-600 transition-colors rounded-lg bg-red-50 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50" {{ $kasir->transaksis_count > 0 ? 'disabled title="Cannot delete kasir with transactions"' : '' }}>
@@ -93,8 +93,8 @@
                                     <svg class="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                     </svg>
-                                    <p class="text-lg text-gray-600 dark:text-gray-400">No kasir accounts found</p>
-                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-500">Add your first kasir to get started</p>
+                                    <p class="text-lg text-gray-600 dark:text-gray-400">Belum ada akun kasir</p>
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-500">Tambahkan kasir pertama Anda untuk memulai</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -107,7 +107,7 @@
     <!-- Kasir Modal -->
     <x-modal name="kasir-modal" :show="false">
         <div class="p-6">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4" id="kasir-modal-title">Add Kasir</h3>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4" id="kasir-modal-title">Tambah Kasir</h3>
             
             <form id="kasir-form" method="POST" action="{{ route('admin.kasir.store') }}">
                 @csrf
@@ -115,7 +115,7 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Lengkap</label>
                         <input type="text" id="kasir-name" name="name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white" required>
                     </div>
 
@@ -125,20 +125,20 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kata Sandi</label>
                         <input type="password" id="kasir-password" name="password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white" required>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Minimum 8 characters</p>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Minimal 8 karakter</p>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Konfirmasi Kata Sandi</label>
                         <input type="password" id="kasir-password-confirmation" name="password_confirmation" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white" required>
                     </div>
                 </div>
 
                 <div class="mt-6 flex justify-end space-x-3">
-                    <x-secondary-button type="button" @click="$dispatch('close')">Cancel</x-secondary-button>
-                    <x-primary-button type="submit">Save</x-primary-button>
+                    <x-secondary-button type="button" @click="$dispatch('close')">Batal</x-secondary-button>
+                    <x-primary-button type="submit">Simpan</x-primary-button>
                 </div>
             </form>
         </div>
@@ -146,7 +146,7 @@
 
     <script>
         function resetKasirForm() {
-            document.getElementById('kasir-modal-title').textContent = 'Add Kasir';
+            document.getElementById('kasir-modal-title').textContent = 'Tambah Kasir';
             document.getElementById('kasir-form').action = '{{ route("admin.kasir.store") }}';
             document.getElementById('kasir-method').value = 'POST';
             document.getElementById('kasir-name').value = '';

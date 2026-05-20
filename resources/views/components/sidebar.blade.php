@@ -61,7 +61,7 @@
         @if(auth()->user()->role === 'admin')
             <!-- All Sales Section -->
             <div x-show="sidebarOpen" x-transition class="sidebar-section px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider uppercase">
-                All Sales
+                Semua Penjualan
             </div>
 
             <!-- POS -->
@@ -99,7 +99,7 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.transaksi.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.transaksi.*')
                ])
-               :title="!sidebarOpen ? 'Transactions' : ''">
+               :title="!sidebarOpen ? 'Histori' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
@@ -113,7 +113,7 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.reports.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.reports.*')
                ])
-               :title="!sidebarOpen ? 'Reports' : ''">
+               :title="!sidebarOpen ? 'Laporan' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
@@ -122,7 +122,7 @@
 
             <!-- All Data Section -->
             <div x-show="sidebarOpen" x-transition class="sidebar-section px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider uppercase">
-                All Data
+                Semua Data
             </div>
 
             <!-- Products -->
@@ -132,7 +132,7 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.products.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.products.*')
                ])
-               :title="!sidebarOpen ? 'Products' : ''">
+               :title="!sidebarOpen ? 'Data Produk' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
@@ -146,7 +146,7 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.img-product.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.img-product.*')
                ])
-               :title="!sidebarOpen ? 'Image Library' : ''">
+               :title="!sidebarOpen ? 'Gambar Produk' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -175,11 +175,11 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.kategoris.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.kategoris.*')
                ])
-               :title="!sidebarOpen ? 'Categories' : ''">
+               :title="!sidebarOpen ? 'Data Kategori' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                 </svg>
-                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Data Kategori</span>
+                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Kategori</span>
             </a>
 
             <!-- Event Diskon -->
@@ -193,7 +193,7 @@
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
                 </svg>
-                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Event Diskon</span>
+                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap">Diskon</span>
             </a>
 
             <!-- Kasir Management -->
@@ -203,7 +203,7 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('admin.kasir.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('admin.kasir.*')
                ])
-               :title="!sidebarOpen ? 'Kasir Management' : ''">
+               :title="!sidebarOpen ? 'Data Karyawan' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
@@ -213,7 +213,7 @@
         @elseif(auth()->user()->role === 'kasir')
             <!-- All Sales Section -->
             <div x-show="sidebarOpen" x-transition class="sidebar-section px-2 mt-4 mb-2 text-[11px] font-bold tracking-wider uppercase">
-                All Sales
+                Semua Penjualan
             </div>
 
             <!-- POS -->
@@ -237,7 +237,7 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('kasir.transaksi.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('kasir.transaksi.*')
                ])
-               :title="!sidebarOpen ? 'Transactions' : ''">
+               :title="!sidebarOpen ? 'Histori' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
@@ -251,7 +251,7 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('kasir.reports.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('kasir.reports.*')
                ])
-               :title="!sidebarOpen ? 'Reports' : ''">
+               :title="!sidebarOpen ? 'Laporan' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
@@ -270,7 +270,7 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('kasir.products.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('kasir.products.*')
                ])
-               :title="!sidebarOpen ? 'Products' : ''">
+               :title="!sidebarOpen ? 'Data Produk' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
@@ -284,7 +284,7 @@
                    'font-semibold bg-white bg-opacity-20 shadow-lg' => Request::routeIs('kasir.expenses.*'),
                    'font-medium hover:bg-white hover:bg-opacity-10' => !Request::routeIs('kasir.expenses.*')
                ])
-               :title="!sidebarOpen ? 'Expenses' : ''">
+               :title="!sidebarOpen ? 'Pengeluaran' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
@@ -299,14 +299,14 @@
         <div class="py-2" :class="sidebarOpen ? 'px-4' : 'px-2'">
             <button @click="theme = theme === 'dark' ? 'light' : 'dark'" 
                     class="sidebar-toggle-button flex items-center w-full p-2 gap-2 text-[14px] leading-[1.5] font-medium transition-all duration-200 rounded-md"
-                    :title="!sidebarOpen ? 'Toggle Theme' : ''">
+                    :title="!sidebarOpen ? 'Ganti Tema' : ''">
                 <svg class="flex-shrink-0 w-4 h-4" x-show="theme === 'light'" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                 </svg>
                 <svg class="flex-shrink-0 w-4 h-4" x-show="theme === 'dark'" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm5.657-9.193a1 1 0 00-1.414 0l-.707.707A1 1 0 005.05 6.464l.707-.707a1 1 0 011.414 0zM5 8a1 1 0 100-2H4a1 1 0 100 2h1z" clip-rule="evenodd"></path>
                 </svg>
-                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap" x-text="theme === 'dark' ? 'Light Mode' : 'Dark Mode'"></span>
+                <span x-show="sidebarOpen" x-transition class="whitespace-nowrap" x-text="theme === 'dark' ? 'Mode Terang' : 'Mode Gelap'"></span>
             </button>
         </div>
 
@@ -351,7 +351,7 @@
                 
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-yellow-400 to-orange-500">
-                    <h3 class="text-lg font-semibold text-white">User Settings</h3>
+                    <h3 class="text-lg font-semibold text-white">Pengaturan Pengguna</h3>
                     <button @click="profileModalOpen = false" class="text-white transition-colors hover:text-gray-200">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -383,7 +383,7 @@
                             <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                            <span class="font-medium">Edit Profile</span>
+                            <span class="font-medium">Edit Profil</span>
                         </a>
 
                         <form method="POST" action="{{ route('logout') }}">
@@ -392,7 +392,7 @@
                                 <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                 </svg>
-                                <span class="font-medium">Logout</span>
+                                <span class="font-medium">Keluar</span>
                             </button>
                         </form>
                     </div>

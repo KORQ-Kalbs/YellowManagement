@@ -25,7 +25,7 @@
                         <h3 class="mt-1 text-xl font-bold text-amber-950 dark:text-amber-100">{{ $activeDiscount->name }} - {{ floatval($activeDiscount->discount_percentage) }}% OFF</h3>
                         <p class="mt-1 text-sm text-amber-900/80 dark:text-amber-100/75">{{ $activeDiscount->description ?? 'Discount event is currently active.' }}</p>
                     </div>
-                    <x-badge type="success">Active</x-badge>
+                    <x-badge type="success">Aktif</x-badge>
                 </div>
             </div>
         @endif
@@ -204,8 +204,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="font-medium text-gray-900 dark:text-white">Dashboard Settings</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Soft-code welcome & menu</p>
+                                <p class="font-medium text-gray-900 dark:text-white">Pengaturan Dashboard</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Konfigurasi tampilan menu & sambutan</p>
                             </div>
                         </div>
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

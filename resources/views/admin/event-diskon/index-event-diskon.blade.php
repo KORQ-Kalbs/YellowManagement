@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between mb-8">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Discount Events</h1>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Manage ongoing and future discount events for the POS system.</p>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Mengelola acara diskon yang sedang berlangsung dan yang akan datang untuk sistem POS.</p>
         </div>
         <a href="{{ route('admin.event-diskon.create') }}" 
            class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white transition-all duration-200 bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">

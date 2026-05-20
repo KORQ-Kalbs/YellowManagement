@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-                    Transaction Details
+                    Detail Transaksi
                 </h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Invoice: {{ $transaksi->no_invoice }}
@@ -15,14 +15,14 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                     </svg>
-                    Download PDF
+                    Unduh PDF
                 </a>
                 @endif
                 <a href="{{ route('admin.transaksi.index') }}" class="inline-flex items-center px-4 py-2 font-medium text-gray-700 transition-colors bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    Back
+                    Kembali
                 </a>
             </div>
         </div>
@@ -32,34 +32,34 @@
         <!-- Transaction Info -->
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
             <!-- Transaction Details -->
-            <x-card title="Transaction Information">
+            <x-card title="Informasi Transaksi">
                 <div class="space-y-4">
                     <div class="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
                         <span class="font-medium text-gray-700 dark:text-gray-300">Invoice No.</span>
                         <span class="font-semibold text-gray-900 dark:text-white">{{ $transaksi->no_invoice }}</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                        <span class="font-medium text-gray-700 dark:text-gray-300">Date & Time</span>
+                        <span class="font-medium text-gray-700 dark:text-gray-300">Tanggal & Waktu</span>
                         <span class="text-gray-900 dark:text-white">{{ $transaksi->tanggal_transaksi->format('d/m/Y H:i') }}</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                        <span class="font-medium text-gray-700 dark:text-gray-300">Cashier</span>
+                        <span class="font-medium text-gray-700 dark:text-gray-300">Kasir</span>
                         <span class="text-gray-900 dark:text-white">{{ $transaksi->user->name }}</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
                         <span class="font-medium text-gray-700 dark:text-gray-300">Status</span>
                         <div>
                             @if($transaksi->status === 'completed')
-                                <x-badge type="completed">✓ Completed</x-badge>
+                                <x-badge type="completed">✓ Selesai</x-badge>
                             @elseif($transaksi->status === 'pending')
-                                <x-badge type="pending">⏳ Pending</x-badge>
+                                <x-badge type="pending">⏳ Menunggu</x-badge>
                             @else
-                                <x-badge type="cancelled">✕ Cancelled</x-badge>
+                                <x-badge type="cancelled">✕ Dibatalkan</x-badge>
                             @endif
                         </div>
                     </div>
                     <div class="flex justify-between py-2">
-                        <span class="text-lg font-bold text-gray-700 dark:text-gray-300">Total Price</span>
+                        <span class="text-lg font-bold text-gray-700 dark:text-gray-300">Total Harga</span>
                         <span class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
                             Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}
                         </span>
@@ -69,18 +69,18 @@
 
             <!-- Payment Details -->
             @if($transaksi->pembayaran)
-                <x-card title="Payment Information">
+                <x-card title="Informasi Pembayaran">
                     <div class="space-y-4">
                         <div class="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                            <span class="font-medium text-gray-700 dark:text-gray-300">Payment Method</span>
+                            <span class="font-medium text-gray-700 dark:text-gray-300">Metode Pembayaran</span>
                             <span class="font-semibold text-gray-900 uppercase dark:text-white">{{ $transaksi->pembayaran->metode_pembayaran }}</span>
                         </div>
                         <div class="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                            <span class="font-medium text-gray-700 dark:text-gray-300">Amount Paid</span>
+                            <span class="font-medium text-gray-700 dark:text-gray-300">Jumlah Bayar</span>
                             <span class="text-gray-900 dark:text-white">Rp {{ number_format($transaksi->pembayaran->jumlah_pembayaran, 0, ',', '.') }}</span>
                         </div>
                         <div class="flex justify-between py-2">
-                            <span class="font-medium text-gray-700 dark:text-gray-300">Change</span>
+                            <span class="font-medium text-gray-700 dark:text-gray-300">Kembalian</span>
                             <span class="font-semibold text-green-600 dark:text-green-400">Rp {{ number_format($transaksi->pembayaran->jumlah_pembayaran - $transaksi->total_harga, 0, ',', '.') }}</span>
                         </div>
                     </div>
@@ -89,12 +89,12 @@
         </div>
 
         <!-- Items List -->
-        <x-card title="Item Details" noPadding="true">
+        <x-card title="Detail Item" noPadding="true">
             <x-table>
                 <x-table-head>
-                    <x-table-heading>Product</x-table-heading>
-                    <x-table-heading>Unit Price</x-table-heading>
-                    <x-table-heading>Quantity</x-table-heading>
+                    <x-table-heading>Produk</x-table-heading>
+                    <x-table-heading>Harga Satuan</x-table-heading>
+                    <x-table-heading>Jumlah</x-table-heading>
                     <x-table-heading>Subtotal</x-table-heading>
                 </x-table-head>
                 <x-table-body>
@@ -137,17 +137,17 @@
                     @csrf
                     @method('PATCH')
                     <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-medium tracking-widest text-white uppercase transition duration-150 ease-in-out bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                        Complete Payment
+                        Selesaikan Pembayaran
                     </button>
                 </form>
             @endif
 
             @if($transaksi->status === 'pending')
-                <form action="{{ route('admin.transaksi.batalkan', $transaksi->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this transaction? Stock will be restored.')">
+                <form action="{{ route('admin.transaksi.batalkan', $transaksi->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan transaksi ini? Stok akan dikembalikan.')">
                     @csrf
                     @method('PATCH')
                     <x-danger-button type="submit">
-                        Cancel Transaction
+                        Batalkan Transaksi
                     </x-danger-button>
                 </form>
             @endif

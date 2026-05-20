@@ -2,8 +2,8 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Category Management</h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Organize your products by categories</p>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Manajemen Kategori</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Kelola kategori produk Anda</p>
             </div>
             <button @click="$dispatch('open-modal', 'category-modal'); resetCategoryForm()" class="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-white font-medium rounded-lg transition-colors">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,9 +32,9 @@
             @if(isset($kategoris) && $kategoris->count() > 0)
                 <x-table>
                     <x-table-head>
-                        <x-table-heading>Category Name</x-table-heading>
-                        <x-table-heading>Products Count</x-table-heading>
-                        <x-table-heading>Actions</x-table-heading>
+                        <x-table-heading>Nama Kategori</x-table-heading>
+                        <x-table-heading>Jumlah Produk</x-table-heading>
+                        <x-table-heading>Aksi</x-table-heading>
                     </x-table-head>
                     <x-table-body>
                         @foreach($kategoris as $kategori)
@@ -44,7 +44,7 @@
                                 </x-table-cell>
                                 <x-table-cell>
                                     <span class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-200">
-                                        {{ $kategori->products_count }} products
+                                        {{ $kategori->products_count }} produk
                                     </span>
                                 </x-table-cell>
                                 <x-table-cell>
@@ -56,14 +56,14 @@
                                             Edit
                                         </button>
                                         
-                                        <form action="{{ route('admin.kategoris.destroy', $kategori->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete this category?')">
+                                        <form action="{{ route('admin.kategoris.destroy', $kategori->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Hapus kategori ini?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="inline-flex items-center px-3 py-1 text-sm font-medium text-red-600 transition-colors rounded-lg bg-red-50 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50">
                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
-                                                Delete
+                                                Hapus
                                             </button>
                                         </form>
                                     </div>
@@ -83,8 +83,8 @@
                     <svg class="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                     </svg>
-                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">No categories found</h3>
-                    <p class="mt-2 text-gray-600 dark:text-gray-400">Create your first category to get started</p>
+                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">Belum ada kategori</h3>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Buat kategori pertama Anda untuk memulai</p>
                 </div>
             @endif
         </x-card>
@@ -93,7 +93,7 @@
     <!-- Category Modal -->
     <x-modal name="category-modal" :show="false">
         <div class="p-6">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4" id="category-modal-title">Add Category</h3>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4" id="category-modal-title">Tambah Kategori</h3>
             
             <form id="category-form" method="POST" action="{{ route('admin.kategoris.store') }}">
                 @csrf
@@ -102,14 +102,14 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category Name</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Kategori</label>
                         <input type="text" id="category-nama" name="nama_kategori" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white" required>
                     </div>
                 </div>
 
                 <div class="mt-6 flex justify-end space-x-3">
-                    <x-secondary-button type="button" @click="$dispatch('close')">Cancel</x-secondary-button>
-                    <x-primary-button type="submit">Save</x-primary-button>
+                    <x-secondary-button type="button" @click="$dispatch('close')">Batal</x-secondary-button>
+                    <x-primary-button type="submit">Simpan</x-primary-button>
                 </div>
             </form>
         </div>
@@ -117,7 +117,7 @@
 
     <script>
         function resetCategoryForm() {
-            document.getElementById('category-modal-title').textContent = 'Add Category';
+            document.getElementById('category-modal-title').textContent = 'Tambah Kategori';
             document.getElementById('category-form').action = '{{ route("admin.kategoris.store") }}';
             document.getElementById('category-method').value = 'POST';
             document.getElementById('category-id').value = '';
@@ -125,7 +125,7 @@
         }
 
         function editCategory(id, nama) {
-            document.getElementById('category-modal-title').textContent = 'Edit Category';
+            document.getElementById('category-modal-title').textContent = 'Edit Kategori';
             document.getElementById('category-form').action = '{{ route("admin.kategoris.update", ":id") }}'.replace(':id', id);
             document.getElementById('category-method').value = 'PUT';
             document.getElementById('category-id').value = id;

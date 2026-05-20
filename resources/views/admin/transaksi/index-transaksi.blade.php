@@ -3,17 +3,17 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-                    Transaction History
+                    Riwayat Transaksi
                 </h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    View and manage all system transactions
+                    Lihat dan kelola semua transaksi sistem
                 </p>
             </div>
             <a href="{{ route('admin.pos') }}" class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-yellow-500 rounded-lg hover:bg-yellow-600">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                New Transaction
+                Transaksi Baru
             </a>
         </div>
     </x-slot>
@@ -23,13 +23,13 @@
         <x-card>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
                 <div>
-                    <x-input-label for="search" value="Search Invoice" />
-                    <input type="text" id="search" placeholder="Invoice No..." class="block w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <x-input-label for="search" value="Cari Invoice" />
+                    <input type="text" id="search" placeholder="No. Invoice..." class="block w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 </div>
                 <div>
                     <x-input-label for="kasir" value="Kasir" />
                     <select id="kasir" class="block w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                        <option value="">All Kasir</option>
+                        <option value="">Semua Kasir</option>
                         @foreach(\App\Models\User::where('role', 'kasir')->get() as $kasir)
                             <option value="{{ $kasir->id }}">{{ $kasir->name }}</option>
                         @endforeach
@@ -38,14 +38,14 @@
                 <div>
                     <x-input-label for="status" value="Status" />
                     <select id="status" class="block w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                        <option value="">All Status</option>
-                        <option value="completed">Completed</option>
-                        <option value="pending">Pending</option>
-                        <option value="cancelled">Cancelled</option>
+                        <option value="">Semua Status</option>
+                        <option value="completed">Selesai</option>
+                        <option value="pending">Menunggu</option>
+                        <option value="cancelled">Dibatalkan</option>
                     </select>
                 </div>
                 <div>
-                    <x-input-label for="date" value="Date" />
+                    <x-input-label for="date" value="Tanggal" />
                     <input type="date" id="date" class="block w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 </div>
             </div>
@@ -56,14 +56,14 @@
             @if(isset($transaksis) && $transaksis->count() > 0)
                 <x-table>
                     <x-table-head>
-                        <x-table-heading>Invoice No.</x-table-heading>
+                        <x-table-heading>No. Invoice</x-table-heading>
                         <x-table-heading>Kasir</x-table-heading>
-                        <x-table-heading>Date & Time</x-table-heading>
-                        <x-table-heading>Items</x-table-heading>
+                        <x-table-heading>Tanggal & Waktu</x-table-heading>
+                        <x-table-heading>Item</x-table-heading>
                         <x-table-heading>Total</x-table-heading>
-                        <x-table-heading>Payment</x-table-heading>
+                        <x-table-heading>Pembayaran</x-table-heading>
                         <x-table-heading>Status</x-table-heading>
-                        <x-table-heading>Actions</x-table-heading>
+                        <x-table-heading>Aksi</x-table-heading>
                     </x-table-head>
                     <x-table-body>
                         @foreach($transaksis as $transaksi)
@@ -87,7 +87,7 @@
                                 </x-table-cell>
                                 <x-table-cell>
                                     <span class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-200">
-                                        {{ $transaksi->details->count() }} items
+                                        {{ $transaksi->details->count() }} item
                                     </span>
                                 </x-table-cell>
                                 <x-table-cell>
@@ -121,7 +121,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                             </svg>
-                                            View
+                                            Lihat
                                         </a>
                                         
                                         <button onclick="openReceiptDownloadModal({{ $transaksi->id }})" 
@@ -129,7 +129,7 @@
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                             </svg>
-                                            Download
+                                            Unduh
                                         </button>
                                     </div>
                                 </x-table-cell>
@@ -149,8 +149,8 @@
                     <svg class="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                     </svg>
-                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">No transactions yet</h3>
-                    <p class="mt-2 text-gray-600 dark:text-gray-400">Start creating transactions to see them here</p>
+                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">Belum ada transaksi</h3>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Mulai buat transaksi untuk melihatnya di sini</p>
                 </div>
             @endif
         </x-card>
@@ -158,18 +158,18 @@
 
     <x-modal name="receipt-download-modal" :show="false">
         <div class="p-6">
-            <h3 class="mb-2 text-lg font-bold text-gray-900 dark:text-white">Download Receipt</h3>
+            <h3 class="mb-2 text-lg font-bold text-gray-900 dark:text-white">Unduh Struk</h3>
             <p class="mb-6 text-sm text-gray-600 dark:text-gray-400">
-                Download the receipt as PDF.
+                Unduh struk transaksi dalam format PDF.
             </p>
 
             <a id="receiptDownloadPdf" href="#" x-on:click="$dispatch('close')" class="flex items-center justify-between w-full px-4 py-3 font-medium text-gray-700 transition-colors bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <span>Download PDF</span>
+                <span>Unduh PDF</span>
                 <span>DOMPDF</span>
             </a>
 
             <div class="flex justify-end mt-6">
-                <x-secondary-button type="button" x-on:click="$dispatch('close')">Cancel</x-secondary-button>
+                <x-secondary-button type="button" x-on:click="$dispatch('close')">Batal</x-secondary-button>
             </div>
         </div>
     </x-modal>

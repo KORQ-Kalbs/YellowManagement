@@ -2,14 +2,14 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Unit Management</h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Manage product measurement units</p>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Manajemen Satuan</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Kelola satuan ukuran produk</p>
             </div>
             <button class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-yellow-500 rounded-lg hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Add Unit
+                Tambah Satuan
             </button>
         </div>
     </x-slot>
@@ -21,10 +21,10 @@
                 <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
                     <thead class="font-semibold text-gray-700 bg-gray-100 border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
                         <tr>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Unit Name</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Symbol</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Products</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Actions</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Nama Satuan</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Simbol</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Produk</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
@@ -113,10 +113,10 @@
                 <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
                     <thead class="font-semibold text-gray-700 bg-gray-100 border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
                         <tr>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Unit Name</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Symbol</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Products</th>
-                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Actions</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Nama Satuan</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Simbol</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Produk</th>
+                            <th class="px-6 py-3 text-xs font-semibold tracking-wider uppercase">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
